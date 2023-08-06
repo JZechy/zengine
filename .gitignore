@@ -7,4 +7,4 @@
 [Bb]in/
 
 # JetBrains specific files
-*.UserSettings.dot
+*.DotSettings.user
