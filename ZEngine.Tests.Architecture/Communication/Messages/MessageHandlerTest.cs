@@ -28,14 +28,23 @@ public class MessageHandlerTest
         receiver.TestValue.Should().Be(1);
     }
 
+    /// <summary>
+    /// Tests receiving messages by system target.
+    /// </summary>
+    /// <remarks>
+    /// This also tests private method access.
+    /// </remarks>
     [Test]
-    public void Test_PrivateMethod()
+    public void Test_SystemTarget()
     {
         TestReceiver receiver = new();
-        receiver.SendMessage(SystemMethod.OnEnable.ToString());
+        receiver.SendMessage(SystemMethod.OnEnable);
         receiver.TestValue.Should().Be(3);
     }
     
+    /// <summary>
+    /// Tests extension access.
+    /// </summary>
     [Test]
     public void Test_Extending()
     {

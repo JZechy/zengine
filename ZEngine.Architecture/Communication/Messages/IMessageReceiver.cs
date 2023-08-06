@@ -10,4 +10,10 @@ public interface IMessageReceiver
     /// </summary>
     /// <param name="target"></param>
     void SendMessage(string target);
+
+    /// <summary>
+    /// Sends message to <paramref name="systemTarget"/> method.
+    /// </summary>
+    /// <param name="systemTarget"></param>
+    void SendMessage(SystemMethod systemTarget);
 }

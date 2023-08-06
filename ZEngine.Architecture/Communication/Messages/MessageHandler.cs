@@ -53,4 +53,9 @@ public class MessageHandler<TReceiver> where TReceiver : IMessageReceiver
             throw new MessageHandlerException(e);
         }
     }
+    
+    public void Handle(SystemMethod target)
+    {
+        Handle(target.ToString());
+    }
 }

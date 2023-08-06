@@ -52,4 +52,9 @@ internal class TestReceiver : IMessageReceiver
     {
         _messageHandler.Handle(target);
     }
+
+    public void SendMessage(SystemMethod systemTarget)
+    {
+        _messageHandler.Handle(systemTarget);
+    }
 }
