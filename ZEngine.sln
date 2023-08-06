@@ -6,9 +6,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solutions Items", "Solution
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{1A2F620B-4A2B-476D-917C-0AA0E00A1C24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5802921A-50C7-45AF-BF88-E029BB197FDB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Architecture", "1. Architecture", "{8E28AE44-9698-4192-A9E3-BB9A67133D90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Architecture", "1. Architecture", "{C596A96B-97FC-484D-8C71-CD59055CDEA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8E28AE44-9698-4192-A9E3-BB9A67133D90} = {1A2F620B-4A2B-476D-917C-0AA0E00A1C24}
+		{C596A96B-97FC-484D-8C71-CD59055CDEA4} = {5802921A-50C7-45AF-BF88-E029BB197FDB}
 	EndGlobalSection
 EndGlobal
