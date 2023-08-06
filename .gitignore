@@ -1,8 +1,8 @@
 ﻿# IDEs folders
-/.idea
-/.vs
+.idea/
+.vs/
 
-# Csharp files
+# Csharp files & folders
 [Oo]bj/
 [Bb]in/
 
