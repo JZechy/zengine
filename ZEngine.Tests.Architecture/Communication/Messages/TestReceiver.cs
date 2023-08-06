@@ -10,11 +10,11 @@ internal class TestReceiver : IMessageReceiver
     /// <summary>
     /// Handler for receiving messages.
     /// </summary>
-    private readonly MessageHandler<TestReceiver> _messageHandler;
+    private readonly MessageHandler _messageHandler;
         
     public TestReceiver()
     {
-        _messageHandler = new MessageHandler<TestReceiver>(this);
+        _messageHandler = new MessageHandler(this);
     }
         
     /// <summary>

@@ -3,10 +3,9 @@
 namespace ZEngine.Architecture.Communication.Messages;
 
 /// <summary>
-/// Class managing message receiving on behalf of <typeparamref name="TReceiver"/>.
+/// Class managing message receiving on behalf of object instance.
 /// </summary>
-/// <typeparam name="TReceiver"></typeparam>
-public class MessageHandler<TReceiver> where TReceiver : IMessageReceiver
+public class MessageHandler
 {
     /// <summary>
     /// List of all system methods that can receive messages.
@@ -21,12 +20,18 @@ public class MessageHandler<TReceiver> where TReceiver : IMessageReceiver
     /// <summary>
     /// Instance of the object, for which we are managing message receiving.
     /// </summary>
-    private readonly TReceiver _instance;
+    private readonly object _instance;
 
-    public MessageHandler(TReceiver instance)
+    public MessageHandler(object instance)
     {
+        Type type = instance.GetType();
+        if (type.GetInterface(nameof(IMessageReceiver)) is null)
+        {
+            throw new ArgumentException("Object instance does not implement IMessageReceiver interface.");
+        }
+
         _instance = instance;
-        _targets = instance.GetType()
+        _targets = type
             .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
             .Where(x => x.GetCustomAttribute<MessageTargetAttribute>() is not null || _systemTargets.Contains(x.Name))
             .Where(x => !x.GetParameters().Any()) // For now, only methods without parameters.
@@ -53,7 +58,7 @@ public class MessageHandler<TReceiver> where TReceiver : IMessageReceiver
             throw new MessageHandlerException(e);
         }
     }
-    
+
     public void Handle(SystemMethod target)
     {
         Handle(target.ToString());

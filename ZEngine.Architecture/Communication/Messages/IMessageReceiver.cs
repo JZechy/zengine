@@ -15,5 +15,5 @@ public interface IMessageReceiver
     /// Sends message to <paramref name="systemTarget"/> method.
     /// </summary>
     /// <param name="systemTarget"></param>
-    void SendMessage(SystemMethod systemTarget);
+    internal void SendMessage(SystemMethod systemTarget);
 }

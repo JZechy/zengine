@@ -19,5 +19,5 @@ public interface IGameComponent : IMessageReceiver
     /// <summary>
     /// Game object to which this component is attached.
     /// </summary>
-    IGameObject GameObject { get; }
+    IGameObject GameObject { get; internal set; }
 }

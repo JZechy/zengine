@@ -32,14 +32,13 @@ public interface IGameObject : IMessageReceiver
     /// <typeparam name="TComponent"></typeparam>
     /// <returns></returns>
     TComponent AddComponent<TComponent>() where TComponent : IGameComponent;
-    
+
     /// <summary>
-    /// Attaches existing component to this game object.
+    /// Creates a new instance of component of type <paramref name="componentType"/> and attaches it to this game object.
     /// </summary>
-    /// <param name="component"></param>
-    /// <typeparam name="TComponent"></typeparam>
+    /// <param name="componentType"></param>
     /// <returns></returns>
-    TComponent AddComponent<TComponent>(TComponent component) where TComponent : IGameComponent;
+    object AddComponent(Type componentType);
     
     /// <summary>
     /// Gets component of type <typeparamref name="TComponent"/> attached to this game object.
