@@ -1,0 +1,10 @@
+﻿# IDEs folders
+/.idea
+/.vs
+
+# Csharp files
+[Oo]bj/
+[Bb]in/
+
+# JetBrains specific files
+*.UserSettings.dot
