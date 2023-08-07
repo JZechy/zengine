@@ -29,6 +29,13 @@ public class GameObject : IGameObject
         _messageHandler = new MessageHandler(this);
         Name = name;
     }
+
+    public GameObject(string name, bool active)
+    {
+        _messageHandler = new MessageHandler(this);
+        Name = name;
+        Active = active;
+    }
     
     /// <inheritdoc />
     public string Name { get; set; } = "New Game Object";

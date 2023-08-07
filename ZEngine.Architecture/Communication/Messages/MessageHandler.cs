@@ -25,7 +25,7 @@ public class MessageHandler
     public MessageHandler(object instance)
     {
         Type type = instance.GetType();
-        if (type.GetInterface(nameof(IMessageReceiver)) is null)
+        if (!type.IsAssignableTo(typeof(IMessageReceiver)))
         {
             throw new ArgumentException("Object instance does not implement IMessageReceiver interface.");
         }
@@ -59,6 +59,10 @@ public class MessageHandler
         }
     }
 
+    /// <summary>
+    /// Handles received message by invoking method with the same name as <paramref name="target"/>.
+    /// </summary>
+    /// <param name="target"></param>
     public void Handle(SystemMethod target)
     {
         Handle(target.ToString());

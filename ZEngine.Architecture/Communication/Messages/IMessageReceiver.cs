@@ -14,6 +14,9 @@ public interface IMessageReceiver
     /// <summary>
     /// Sends message to <paramref name="systemTarget"/> method.
     /// </summary>
+    /// <remarks>
+    /// System methods should be invoked only by engine itself.
+    /// </remarks>
     /// <param name="systemTarget"></param>
-    internal void SendMessage(SystemMethod systemTarget);
+    void SendMessage(SystemMethod systemTarget);
 }
