@@ -1,6 +1,6 @@
 ﻿using ZEngine.Architecture.Communication.Messages;
 
-namespace ZEngine.Tests.Architecture.Communication.Messages;
+namespace ZEngine.Tests.Architecture.Communication.Messages.Cases;
 
 /// <summary>
 /// Implementation of <see cref="TestReceiver"/> for testing extending functionality.

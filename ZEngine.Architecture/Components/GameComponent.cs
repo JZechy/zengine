@@ -12,11 +12,11 @@ public abstract class GameComponent : IGameComponent
     /// Message handler for this component.
     /// </summary>
     private readonly MessageHandler _messageHandler;
-    
+
     /// <summary>
     /// Backing field.
     /// </summary>
-    private bool _enabled = true;
+    private bool _enabled;
 
     /// <inheritdoc />
     public bool Enabled

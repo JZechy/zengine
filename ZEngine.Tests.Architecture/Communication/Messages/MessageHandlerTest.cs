@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using ZEngine.Architecture.Communication.Messages;
+using ZEngine.Tests.Architecture.Communication.Messages.Cases;
 
 namespace ZEngine.Tests.Architecture.Communication.Messages;
 

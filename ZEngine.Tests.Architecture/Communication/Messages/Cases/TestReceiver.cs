@@ -1,6 +1,6 @@
 ﻿using ZEngine.Architecture.Communication.Messages;
 
-namespace ZEngine.Tests.Architecture.Communication.Messages;
+namespace ZEngine.Tests.Architecture.Communication.Messages.Cases;
 
 /// <summary>
 /// Clas for testing <see cref="MessageHandler{TReceiver}"/> functionality.
