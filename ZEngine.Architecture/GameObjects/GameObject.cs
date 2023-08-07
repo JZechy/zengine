@@ -19,6 +19,11 @@ public class GameObject : IGameObject
     /// </summary>
     private readonly MessageHandler _messageHandler;
 
+    /// <summary>
+    /// Current state of game object.
+    /// </summary>
+    private bool _active = true;
+
     public GameObject()
     {
         _messageHandler = new MessageHandler(this);
@@ -34,14 +39,22 @@ public class GameObject : IGameObject
     {
         _messageHandler = new MessageHandler(this);
         Name = name;
-        Active = active;
+        _active = active;
     }
     
     /// <inheritdoc />
     public string Name { get; set; } = "New Game Object";
 
     /// <inheritdoc />
-    public bool Active { get; set; } = true;
+    public bool Active
+    {
+        get => _active;
+        set
+        {
+            _active = value;
+            SendMessage(_active ? SystemMethod.OnEnable : SystemMethod.OnDisable);
+        }
+    }
 
     /// <inheritdoc />
     public IReadOnlyCollection<IGameComponent> Components => _components.Values.ToImmutableHashSet();
@@ -53,7 +66,7 @@ public class GameObject : IGameObject
     }
 
     /// <inheritdoc />
-    public object AddComponent(Type componentType)
+    public IGameComponent AddComponent(Type componentType)
     {
         if (!componentType.IsAssignableTo(typeof(IGameComponent)))
         {
@@ -70,7 +83,11 @@ public class GameObject : IGameObject
         {
             throw new ArgumentException($"Component of type {componentType.FullName} could not be created.");
         }
+        
+        component.GameObject = this;
         _components.Add(componentType, component);
+        component.SendMessage(SystemMethod.Awake);
+        component.Enabled = true;
         
         return component;
     }
@@ -82,7 +99,7 @@ public class GameObject : IGameObject
     }
 
     /// <inheritdoc />
-    public object GetComponent(Type componentType)
+    public IGameComponent GetComponent(Type componentType)
     {
         if (!HasComponent(componentType))
         {
@@ -107,12 +124,15 @@ public class GameObject : IGameObject
     /// <inheritdoc />
     public bool RemoveComponent<TComponent>() where TComponent : IGameComponent
     {
-        return _components.Remove(typeof(TComponent));
+        return RemoveComponent(typeof(TComponent));
     }
 
     /// <inheritdoc />
     public bool RemoveComponent(Type type)
     {
+        IGameComponent component = GetComponent(type);
+        component.SendMessage(SystemMethod.OnDestroy);
+        
         return _components.Remove(type);
     }
 
@@ -126,5 +146,21 @@ public class GameObject : IGameObject
     public void SendMessage(SystemMethod systemTarget)
     {
         _messageHandler.Handle(systemTarget);
+    }
+
+    private void OnEnable()
+    {
+        foreach(IGameComponent component in _components.Values)
+        {
+            component.SendMessage(SystemMethod.OnEnable);
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (IGameComponent component in _components.Values)
+        {
+            component.SendMessage(SystemMethod.OnDisable);
+        }
     }
 }

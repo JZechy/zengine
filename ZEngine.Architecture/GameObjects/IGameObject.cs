@@ -38,7 +38,7 @@ public interface IGameObject : IMessageReceiver
     /// </summary>
     /// <param name="componentType"></param>
     /// <returns></returns>
-    object AddComponent(Type componentType);
+    IGameComponent AddComponent(Type componentType);
     
     /// <summary>
     /// Gets component of type <typeparamref name="TComponent"/> attached to this game object.
@@ -52,7 +52,7 @@ public interface IGameObject : IMessageReceiver
     /// </summary>
     /// <param name="componentType"></param>
     /// <returns></returns>
-    object GetComponent(Type componentType);
+    IGameComponent GetComponent(Type componentType);
 
     /// <summary>
     /// Checks if this game object has component of type <typeparamref name="TComponent"/> attached.
