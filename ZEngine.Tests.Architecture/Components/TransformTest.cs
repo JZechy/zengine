@@ -49,9 +49,31 @@ public class TransformTest
         child.LocalPosition.Should().Be(child.Position);
         
         child.SetParent(parent);
+        child.Position.Should().Be(new Vector3(10, 10, 0));
         child.LocalPosition.Should().Be(child.Position - parent.Position);
         
         child.SetParent(null);
         child.LocalPosition.Should().Be(child.Position);
+    }
+
+    /// <summary>
+    /// Tests position of transform relative to its parent when parent position changes.
+    /// </summary>
+    [Test]
+    public void Test_ChangeParentPosition()
+    {
+        Transform parent = new()
+        {
+            Position = new Vector3(5, 5, 10)
+        };
+        Transform child = new()
+        {
+            Position = new Vector3(10, 10, 0)
+        };
+        
+        child.SetParent(parent);
+        
+        parent.Position = new Vector3(10, 10, 10);
+        child.Position.Should().Be(new Vector3(15, 15, 0));
     }
 }

@@ -12,12 +12,12 @@ public class Transform : GameComponent, IEnumerable<Transform>
     /// Collection of all available children of this transform.
     /// </summary>
     private readonly HashSet<Transform> _children = new();
-    
+
     /// <summary>
     /// Backing field holding actual position of the game object.
     /// </summary>
     private Vector3 _position = Vector3.Zero;
-    
+
     /// <summary>
     /// Backing field holding actual position of the game object relative to its parent.
     /// </summary>
@@ -31,6 +31,15 @@ public class Transform : GameComponent, IEnumerable<Transform>
         get => _position;
         set
         {
+            if (_children.Count > 0)
+            {
+                Vector3 delta = value - _position;
+                foreach (Transform child in _children)
+                {
+                    child.Position += delta;
+                }
+            }
+
             _position = value;
             _localPosition = Parent is null ? value : value - Parent.Position;
         }
@@ -51,7 +60,7 @@ public class Transform : GameComponent, IEnumerable<Transform>
             _position = Parent is null ? value : value + Parent.Position;
         }
     }
-    
+
     /// <summary>
     /// Parent of the game object. If null, game object is a root object.
     /// </summary>
@@ -75,7 +84,7 @@ public class Transform : GameComponent, IEnumerable<Transform>
         Parent?._children.Add(this);
         _localPosition = _position - parent.Position;
     }
-    
+
     /// <inheritdoc />
     public IEnumerator<Transform> GetEnumerator()
     {
