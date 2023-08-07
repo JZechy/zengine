@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using NUnit.Framework;
 using ZEngine.Architecture.Communication.Messages;
 
@@ -68,5 +67,15 @@ public class MessageHandlerTest
         this.Invoking(x => { _ = new MessageHandler(receiver); })
             .Should()
             .Throw<ArgumentException>();
+    }
+
+    /// <summary>
+    /// Invoking the message handler with a non-existing method should not throw an exception.
+    /// </summary>
+    [Test]
+    public void Test_NonExistingMethod()
+    {
+        TestReceiver receiver = new();
+        receiver.SendMessage(SystemMethod.OnDestroy);
     }
 }
