@@ -14,9 +14,43 @@ public class Transform : GameComponent, IEnumerable<Transform>
     private readonly HashSet<Transform> _children = new();
     
     /// <summary>
+    /// Backing field holding actual position of the game object.
+    /// </summary>
+    private Vector3 _position = Vector3.Zero;
+    
+    /// <summary>
+    /// Backing field holding actual position of the game object relative to its parent.
+    /// </summary>
+    private Vector3 _localPosition = Vector3.Zero;
+
+    /// <summary>
     /// Position of the game object.
     /// </summary>
-    public Vector3 Position { get; set; }
+    public Vector3 Position
+    {
+        get => _position;
+        set
+        {
+            _position = value;
+            _localPosition = Parent is null ? value : value - Parent.Position;
+        }
+    }
+
+    /// <summary>
+    /// Position of the game object relative to its parent.
+    /// </summary>
+    /// <remarks>
+    /// If parent is null, this property is equal to <see cref="Position"/>.
+    /// </remarks>
+    public Vector3 LocalPosition
+    {
+        get => _localPosition;
+        set
+        {
+            _localPosition = value;
+            _position = Parent is null ? value : value + Parent.Position;
+        }
+    }
     
     /// <summary>
     /// Parent of the game object. If null, game object is a root object.
@@ -29,13 +63,17 @@ public class Transform : GameComponent, IEnumerable<Transform>
     /// <param name="parent"></param>
     public void SetParent(Transform? parent)
     {
-        if (Parent is null)
+        if (parent is null)
         {
             Parent?._children.Remove(this);
+            Parent = null;
+            _localPosition = _position;
+            return;
         }
 
         Parent = parent;
         Parent?._children.Add(this);
+        _localPosition = _position - parent.Position;
     }
     
     /// <inheritdoc />
