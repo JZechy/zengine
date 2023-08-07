@@ -14,7 +14,34 @@ public class GameManager
     /// Indicates if the game loop is running.
     /// </summary>
     private bool _isRunning;
+    
+    /// <summary>
+    /// The frequency of game updates in Hz.
+    /// </summary>
+    public int UpdateFrequency { get; set; } = 60;
+    
+    /// <summary>
+    /// Orders game to exit.
+    /// </summary>
+    public bool ShouldExit { get; set; }
 
+    /// <summary>
+    /// The sleep time before the next update.
+    /// </summary>
+    private int SleepTime
+    {
+        get
+        {
+            int sleep = UpdateFrequency - (int)GameTime.DeltaTime;
+            if (sleep < 0)
+            {
+                sleep = 0;
+            }
+
+            return sleep;
+        }
+    }
+    
     /// <summary>
     /// Adds new instance of <see cref="IGameSystem"/> to the game.
     /// </summary>
@@ -33,8 +60,12 @@ public class GameManager
 
         while (_isRunning)
         {
+            GameTime.CalculateDeltaTime();
+            
             UpdateSystems();
             CheckGameExit();
+            
+            Thread.Sleep(SleepTime);
         }
     }
 
@@ -68,6 +99,9 @@ public class GameManager
     /// </summary>
     private void CheckGameExit()
     {
-        
+        if (ShouldExit)
+        {
+            _isRunning = false;
+        }
     }
 }

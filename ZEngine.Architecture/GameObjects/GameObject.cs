@@ -29,6 +29,8 @@ public class GameObject : IGameObject
         _messageHandler = new MessageHandler(this);
         Name = name;
         _active = active;
+
+        Initialize();
     }
 
     /// <inheritdoc />
@@ -43,6 +45,22 @@ public class GameObject : IGameObject
             _active = value;
             SendMessage(_active ? SystemMethod.OnEnable : SystemMethod.OnDisable);
         }
+    }
+
+    /// <inheritdoc />
+    public Transform Transform { get; private set; } = null!;
+
+    /// <summary>
+    /// For the update of children, we want only active game objects.
+    /// </summary>
+    private IEnumerable<IGameObject> ActiveChildren => Transform.Select(x => x.GameObject).Where(x => x.Active);
+
+    /// <summary>
+    /// Initializes the game object by adding required components.
+    /// </summary>
+    private void Initialize()
+    {
+        Transform = AddComponent<Transform>();
     }
 
     /// <inheritdoc />
@@ -132,7 +150,7 @@ public class GameObject : IGameObject
     /// <inheritdoc />
     public bool RemoveComponent(Type type)
     {
-        IGameComponent component = GetComponent(type);
+        IGameComponent component = GetRequiredComponent(type);
         component.SendMessage(SystemMethod.OnDestroy);
 
         return _components.Remove(type);
@@ -150,6 +168,9 @@ public class GameObject : IGameObject
         _messageHandler.Handle(systemTarget);
     }
 
+    /// <summary>
+    /// Enables all registered components.
+    /// </summary>
     private void OnEnable()
     {
         foreach (IGameComponent component in _components.Values)
@@ -158,11 +179,30 @@ public class GameObject : IGameObject
         }
     }
 
+    /// <summary>
+    /// Disables all registered components.
+    /// </summary>
     private void OnDisable()
     {
         foreach (IGameComponent component in _components.Values)
         {
             component.SendMessage(SystemMethod.OnDisable);
+        }
+    }
+
+    /// <summary>
+    /// Updates all child game objects and components.
+    /// </summary>
+    private void Update()
+    {
+        foreach (IGameObject gameObject in ActiveChildren)
+        {
+            gameObject.SendMessage(SystemMethod.Update);
+        }
+
+        foreach (IGameComponent gameComponent in _components.Values)
+        {
+            gameComponent.SendMessage(SystemMethod.Update);
         }
     }
 }

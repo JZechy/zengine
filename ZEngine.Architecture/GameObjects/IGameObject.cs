@@ -22,6 +22,11 @@ public interface IGameObject : IMessageReceiver
     bool Active { get; set; }
     
     /// <summary>
+    /// Gets access to the transform component.
+    /// </summary>
+    Transform Transform { get; }
+    
+    /// <summary>
     /// Gets readonly collection of components attached to this game object.
     /// </summary>
     IReadOnlyCollection<IGameComponent> Components { get; }
