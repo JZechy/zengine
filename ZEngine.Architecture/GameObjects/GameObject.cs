@@ -22,28 +22,17 @@ public class GameObject : IGameObject
     /// <summary>
     /// Current state of game object.
     /// </summary>
-    private bool _active = true;
+    private bool _active;
 
-    public GameObject()
-    {
-        _messageHandler = new MessageHandler(this);
-    }
-
-    public GameObject(string name)
-    {
-        _messageHandler = new MessageHandler(this);
-        Name = name;
-    }
-
-    public GameObject(string name, bool active)
+    public GameObject(string name = "New Game Object", bool active = true)
     {
         _messageHandler = new MessageHandler(this);
         Name = name;
         _active = active;
     }
-    
+
     /// <inheritdoc />
-    public string Name { get; set; } = "New Game Object";
+    public string Name { get; set; }
 
     /// <inheritdoc />
     public bool Active
@@ -77,35 +66,48 @@ public class GameObject : IGameObject
         {
             throw new ArgumentException($"Component of type {componentType.FullName} already exists on {Name}.");
         }
-        
+
         IGameComponent? component = (IGameComponent?) Activator.CreateInstance(componentType);
         if (component is null)
         {
             throw new ArgumentException($"Component of type {componentType.FullName} could not be created.");
         }
-        
+
         component.GameObject = this;
         _components.Add(componentType, component);
         component.SendMessage(SystemMethod.Awake);
         component.Enabled = true;
-        
+
         return component;
     }
 
     /// <inheritdoc />
-    public TComponent GetComponent<TComponent>() where TComponent : IGameComponent
+    public TComponent? GetComponent<TComponent>() where TComponent : IGameComponent
     {
-        return (TComponent) GetComponent(typeof(TComponent));
+        return (TComponent?) GetComponent(typeof(TComponent));
     }
 
     /// <inheritdoc />
-    public IGameComponent GetComponent(Type componentType)
+    public IGameComponent? GetComponent(Type componentType)
     {
-        if (!HasComponent(componentType))
+        _components.TryGetValue(componentType, out IGameComponent? component);
+        return component;
+    }
+
+    /// <inheritdoc />
+    public TComponent GetRequiredComponent<TComponent>() where TComponent : IGameComponent
+    {
+        return (TComponent) GetRequiredComponent(typeof(TComponent));
+    }
+
+    /// <inheritdoc />
+    public IGameComponent GetRequiredComponent(Type componentType)
+    {
+        if (!_components.ContainsKey(componentType))
         {
-            throw new ArgumentException("Component of type {componentType.FullName} does not exist on {Name}.");
+            throw new ArgumentException($"Component of type {componentType.FullName} does not exist on {Name}.");
         }
-        
+
         return _components[componentType];
     }
 
@@ -132,7 +134,7 @@ public class GameObject : IGameObject
     {
         IGameComponent component = GetComponent(type);
         component.SendMessage(SystemMethod.OnDestroy);
-        
+
         return _components.Remove(type);
     }
 
@@ -150,7 +152,7 @@ public class GameObject : IGameObject
 
     private void OnEnable()
     {
-        foreach(IGameComponent component in _components.Values)
+        foreach (IGameComponent component in _components.Values)
         {
             component.SendMessage(SystemMethod.OnEnable);
         }

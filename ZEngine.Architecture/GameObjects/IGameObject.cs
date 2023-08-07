@@ -44,15 +44,31 @@ public interface IGameObject : IMessageReceiver
     /// Gets component of type <typeparamref name="TComponent"/> attached to this game object.
     /// </summary>
     /// <typeparam name="TComponent"></typeparam>
-    /// <returns></returns>
-    TComponent GetComponent<TComponent>() where TComponent : IGameComponent;
+    /// <returns>Component instnace or null if not available.</returns>
+    TComponent? GetComponent<TComponent>() where TComponent : IGameComponent;
     
     /// <summary>
     /// Gets component of type <paramref name="componentType"/> attached to this game object.
     /// </summary>
     /// <param name="componentType"></param>
+    /// <returns>Component instnace or null if not available.</returns>
+    IGameComponent? GetComponent(Type componentType);
+
+    /// <summary>
+    /// Gets component of type <typeparamref name="TComponent"/> attached to this game object.
+    /// </summary>
+    /// <typeparam name="TComponent"></typeparam>
+    /// <exception cref="ArgumentException"></exception>
     /// <returns></returns>
-    IGameComponent GetComponent(Type componentType);
+    TComponent GetRequiredComponent<TComponent>() where TComponent : IGameComponent;
+    
+    /// <summary>
+    /// Gets component of type <paramref name="componentType"/> attached to this game object.
+    /// </summary>
+    /// <param name="componentType"></param>
+    /// <exception cref="ArgumentException"></exception>
+    /// <returns></returns>
+    IGameComponent GetRequiredComponent(Type componentType);
 
     /// <summary>
     /// Checks if this game object has component of type <typeparamref name="TComponent"/> attached.

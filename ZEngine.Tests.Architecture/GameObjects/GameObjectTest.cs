@@ -28,6 +28,9 @@ public class GameObjectTest
         gameObject.Invoking(x => x.AddComponent<Transform>()).Should().Throw<ArgumentException>();
         gameObject.RemoveComponent<Transform>().Should().BeTrue();
         gameObject.HasComponent<Transform>().Should().BeFalse();
+
+        gameObject.GetComponent<Transform>().Should().BeNull();
+        gameObject.Invoking(x => x.GetRequiredComponent<Transform>()).Should().Throw<ArgumentException>();
     }
 
     [Test]
