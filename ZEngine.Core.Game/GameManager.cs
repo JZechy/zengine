@@ -8,12 +8,23 @@ public class GameManager
     /// <summary>
     /// List of all registered systems for the game.
     /// </summary>
-    private List<IGameSystem> _systems = new();
+    private List<IGameSystem> _systems;
     
     /// <summary>
     /// Indicates if the game loop is running.
     /// </summary>
     private bool _isRunning;
+
+    public GameManager(IServiceProvider serviceProvider, IEnumerable<IGameSystem> gameSystems)
+    {
+        ServiceProvider = serviceProvider;
+        _systems = gameSystems.ToList();
+    }
+    
+    /// <summary>
+    /// Access to the game's service provider.
+    /// </summary>
+    public IServiceProvider ServiceProvider { get; }
     
     /// <summary>
     /// The frequency of game updates in Hz.
@@ -40,7 +51,7 @@ public class GameManager
     }
     
     /// <summary>
-    /// Adds new instance of <see cref="IGameSystem"/> to the game.
+    /// Adds additional instance of <see cref="IGameSystem"/> to the game.
     /// </summary>
     /// <param name="gameSystem"></param>
     public void AddSystem(IGameSystem gameSystem)
