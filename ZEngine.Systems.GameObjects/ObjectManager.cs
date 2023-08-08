@@ -46,7 +46,7 @@ public class ObjectManager
     /// Object manager is instantiated by <see cref="GameObjectSystem"/> during its initialization.
     /// </remarks>
     /// <param name="gameObjectSystem"></param>
-    internal static void Create(GameObjectSystem gameObjectSystem)
+    internal static void CreateInstance(GameObjectSystem gameObjectSystem)
     {
         Instance = new ObjectManager(gameObjectSystem);
     }
@@ -55,7 +55,7 @@ public class ObjectManager
     /// Creates a new instance of game object.
     /// </summary>
     /// <returns></returns>
-    public static IGameObject CreateObject()
+    public static IGameObject Create()
     {
         GameObject gameObject = new();
         Instance._gameObjectSystem.Register(gameObject);
@@ -68,7 +68,7 @@ public class ObjectManager
     /// </summary>
     /// <param name="parent">Parent game object.</param>
     /// <returns></returns>
-    public static IGameObject CreateObject(IGameObject parent)
+    public static IGameObject Create(IGameObject parent)
     {
         GameObject gameObject = new();
         gameObject.Transform.SetParent(parent.Transform);

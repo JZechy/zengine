@@ -10,6 +10,16 @@ namespace ZEngine.Systems.GameObjects;
 public class GameObjectSystem : IGameSystem
 {
     /// <summary>
+    /// Thread-safe lock for adding new game objects.
+    /// </summary>
+    private static readonly object AddingLock = new();
+    
+    /// <summary>
+    /// Thread-safe lock for removing game objects.
+    /// </summary>
+    private static readonly object RemovingLock = new();
+    
+    /// <summary>
     /// Collection of all game objects available in the game.
     /// </summary>
     private readonly HashSet<IGameObject> _gameObjects = new();
@@ -40,7 +50,7 @@ public class GameObjectSystem : IGameSystem
     /// <inheritdoc />
     public void Initialize()
     {
-        ObjectManager.Create(this);
+        ObjectManager.CreateInstance(this);
     }
 
     /// <inheritdoc />
@@ -71,7 +81,11 @@ public class GameObjectSystem : IGameSystem
     public void Register(IGameObject gameObject)
     {
         gameObject.SendMessage(SystemMethod.Awake);
-        _newGameObjects.Add(gameObject);
+        
+        lock (AddingLock)
+        {
+            _newGameObjects.Add(gameObject);
+        }
     }
     
     /// <summary>
@@ -80,7 +94,10 @@ public class GameObjectSystem : IGameSystem
     /// <param name="gameObject"></param>
     public void Unregister(IGameObject gameObject)
     {
-        _destroyedGameObjects.Add(gameObject);
+        lock (RemovingLock)
+        {
+            _destroyedGameObjects.Add(gameObject);
+        }
     }
     
     /// <summary>
@@ -88,13 +105,16 @@ public class GameObjectSystem : IGameSystem
     /// </summary>
     private void AddNewObjects()
     {
-        foreach (IGameObject gameObject in _newGameObjects)
+        lock (AddingLock)
         {
-            gameObject.Active = true;
-            _gameObjects.Add(gameObject);
+            foreach (IGameObject gameObject in _newGameObjects)
+            {
+                gameObject.Active = true;
+                _gameObjects.Add(gameObject);
+            }
+
+            _newGameObjects.Clear();
         }
-        
-        _newGameObjects.Clear();
     }
 
     /// <summary>
@@ -102,12 +122,15 @@ public class GameObjectSystem : IGameSystem
     /// </summary>
     private void DestroyObjects()
     {
-        foreach (IGameObject gameObject in _destroyedGameObjects)
+        lock (RemovingLock)
         {
-            gameObject.SendMessage(SystemMethod.OnDestroy);
-            _gameObjects.Remove(gameObject);
+            foreach (IGameObject gameObject in _destroyedGameObjects)
+            {
+                gameObject.SendMessage(SystemMethod.OnDestroy);
+                _gameObjects.Remove(gameObject);
+            }
+
+            _destroyedGameObjects.Clear();
         }
-        
-        _destroyedGameObjects.Clear();
     }
 }
