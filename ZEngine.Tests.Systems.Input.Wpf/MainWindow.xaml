@@ -7,10 +7,28 @@
         mc:Ignorable="d"
         Title="ZEngine Windows Devices Test" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="EventsListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+        <!-- Define two columns -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Keyboard Events ListBox -->
+        <ListBox x:Name="KeyboardEventsListBox" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
             <ListBox.Template>
                 <ControlTemplate>
-                    <ScrollViewer x:Name="EventsScrollViewer" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer x:Name="KeyboardEventsScrollViewer" VerticalScrollBarVisibility="Auto">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ListBox.Template>
+        </ListBox>
+
+        <!-- Mouse Events ListBox -->
+        <ListBox x:Name="MouseEventsListBox" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+            <ListBox.Template>
+                <ControlTemplate>
+                    <ScrollViewer x:Name="MouseEventsScrollViewer" VerticalScrollBarVisibility="Auto">
                         <ItemsPresenter />
                     </ScrollViewer>
                 </ControlTemplate>

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 using ZEngine.Systems.Inputs.Devices.Events;
 using ZEngine.Systems.Inputs.Devices.Keyboards;
-using ZEngine.Systems.Inputs.Devices.Keyboards.Events;
 using ZEngine.Systems.Inputs.Devices.Pointers;
 using ZEngine.Systems.Inputs.Devices.Pointers.Events;
 using Key = ZEngine.Systems.Inputs.Devices.Keyboards.Key;
 using KeyboardDevice = ZEngine.Systems.Inputs.Devices.Keyboards.KeyboardDevice;
+using KeyboardEventArgs = ZEngine.Systems.Inputs.Devices.Keyboards.Events.KeyboardEventArgs;
+using MouseButton = ZEngine.Systems.Inputs.Devices.Pointers.MouseButton;
+using MouseDevice = ZEngine.Systems.Inputs.Devices.Pointers.MouseDevice;
+using MouseEventArgs = ZEngine.Systems.Inputs.Devices.Pointers.Events.MouseEventArgs;
 
 namespace ZEngine.Tests.Systems.Input.Wpf;
 
@@ -56,7 +60,7 @@ public partial class MainWindow : Window
     {
         if (e is KeyboardEventArgs keyboardEvent)
         {
-            LogKeyboardEvent(keyboardEvent.Key.ToString(), keyboardEvent.KeyState);
+            LogKeyboardEvent(keyboardEvent.Key, keyboardEvent.KeyState);
         }
     }
 
@@ -64,7 +68,7 @@ public partial class MainWindow : Window
     {
         if (e is MouseEventArgs mouseEvent)
         {
-            LogKeyboardEvent(mouseEvent.MouseButton.ToString(), mouseEvent.KeyState);
+            LogMouseEvent(mouseEvent.MouseButton, mouseEvent.KeyState);
         }
 
         if (e is MousePositionEventArgs positionEvent)
@@ -78,16 +82,23 @@ public partial class MainWindow : Window
     /// </summary>
     /// <param name="key">The key that was acted upon.</param>
     /// <param name="state">The state of the key.</param>
-    private void LogKeyboardEvent(string key, KeyState state)
+    private void LogKeyboardEvent(Key key, KeyState state)
     {
         // Add the event to the ListBox.
-        EventsListBox.Items.Add($"Key {key} is {state}.");
-        EventsListBox.ScrollIntoView(EventsListBox.Items[^1]);
+        KeyboardEventsListBox.Items.Add($"Key {key} is {state}.");
+        KeyboardEventsListBox.ScrollIntoView(KeyboardEventsListBox.Items[^1]);
+    }
+
+    private void LogMouseEvent(MouseButton key, KeyState state)
+    {
+        // Add the event to the ListBox.
+        MouseEventsListBox.Items.Add($"Key {key} is {state}.");
+        MouseEventsListBox.ScrollIntoView(MouseEventsListBox.Items[^1]);
     }
 
     private void LogMousePosition(MousePosition mousePosition)
     {
-        EventsListBox.Items.Add($"Mouse position is {mousePosition.X}, {mousePosition.Y}.");
-        EventsListBox.ScrollIntoView(EventsListBox.Items[^1]);
+        MouseEventsListBox.Items.Add($"Mouse position is {mousePosition.X}, {mousePosition.Y}.");
+        MouseEventsListBox.ScrollIntoView(MouseEventsListBox.Items[^1]);
     }
 }
