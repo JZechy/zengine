@@ -36,7 +36,7 @@ public class ObjectManager
 
             return _objectManager;
         }
-        set => _objectManager = value;
+        private set => _objectManager = value;
     }
     
     /// <summary>
