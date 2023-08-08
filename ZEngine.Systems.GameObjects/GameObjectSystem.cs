@@ -1,4 +1,5 @@
-﻿using ZEngine.Architecture.Communication.Messages;
+﻿using ZEngine.Architecture.Communication.Events;
+using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.GameObjects;
 using ZEngine.Core;
 
@@ -33,6 +34,16 @@ public class GameObjectSystem : IGameSystem
     /// Collection of all game objects, that were destroyed in the current frame.
     /// </summary>
     private readonly HashSet<IGameObject> _destroyedGameObjects = new();
+    
+    /// <summary>
+    /// Event Mediator serves for notifying about new game object or removed ones.
+    /// </summary>
+    private readonly IEventMediator _eventMediator;
+
+    public GameObjectSystem(IEventMediator eventMediator)
+    {
+        _eventMediator = eventMediator;
+    }
     
     /// <summary>
     /// From the native systems, this system has the highest priority.

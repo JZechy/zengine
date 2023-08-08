@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+using Moq;
 using NUnit.Framework;
+using ZEngine.Architecture.Communication.Events;
 using ZEngine.Architecture.GameObjects;
 using ZEngine.Systems.GameObjects;
 using ZEngine.Tests.Systems.GameObjects.TestingComponents;
@@ -16,7 +18,7 @@ public class GameObjectSystemTest
     {
         this.Invoking(x => { _ = ObjectManager.Instance; }).Should().Throw<InvalidOperationException>();
 
-        GameObjectSystem system = new();
+        GameObjectSystem system = new(Mock.Of<IEventMediator>());
         system.Initialize();
 
         ObjectManager.Instance.Should().NotBeNull();
@@ -28,7 +30,7 @@ public class GameObjectSystemTest
     [Test]
     public void Test_SystemLifetime()
     {
-        GameObjectSystem system = new();
+        GameObjectSystem system = new(Mock.Of<IEventMediator>());
         system.Initialize();
 
         IGameObject gameObject = ObjectManager.Create();

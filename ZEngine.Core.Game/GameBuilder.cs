@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ZEngine.Architecture.Communication.Events;
 
 namespace ZEngine.Core.Game;
 
@@ -10,6 +11,7 @@ public class GameBuilder
     private GameBuilder()
     {
         Services.AddSingleton<GameManager>();
+        Services.AddSingleton<IEventMediator, EventMediator>();
     }
     
     /// <summary>
