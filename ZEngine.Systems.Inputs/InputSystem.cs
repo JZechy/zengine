@@ -21,7 +21,6 @@ public class InputSystem : IInputSystem
     public InputSystem(ILogger<InputSystem> logger, IEnumerable<IDevice> devices)
     {
         _logger = logger;
-        
         _devices.AddRange(devices);
     }
 
@@ -43,6 +42,8 @@ public class InputSystem : IInputSystem
     /// <inheritdoc />
     public void Initialize()
     {
+        InputManager.CreateInstance(this);
+        
         foreach (IDevice device in _devices)
         {
             device.Initialize();
