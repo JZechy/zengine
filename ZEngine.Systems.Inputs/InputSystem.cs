@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using ZEngine.Systems.Inputs.Devices.Events;
-using ZEngine.Systems.Inputs.Devices.Keyboards;
-using ZEngine.Systems.Inputs.Devices.Pointers;
 
 namespace ZEngine.Systems.Inputs;
 
