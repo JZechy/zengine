@@ -20,6 +20,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ZEngine.Architecture\ZEngine.Architecture.csproj" />
+
+
     </ItemGroup>
 
 
