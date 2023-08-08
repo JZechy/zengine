@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using ZEngine.Architecture.Communication.Events;
 
@@ -13,7 +14,7 @@ public class EventMediatorTest
     public void Test_Subscribing()
     {
         bool wasCalled = false;
-        EventMediator mediator = new();
+        EventMediator mediator = new(new NullLoggerFactory());
         mediator.Subscribe<TestMessage>(Receiver);
         mediator.Notify(new TestMessage());
         wasCalled.Should().BeTrue();

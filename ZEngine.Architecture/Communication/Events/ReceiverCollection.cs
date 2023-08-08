@@ -1,4 +1,5 @@
 using System.Collections;
+using Microsoft.Extensions.Logging;
 
 namespace ZEngine.Architecture.Communication.Events;
 
@@ -9,9 +10,19 @@ namespace ZEngine.Architecture.Communication.Events;
 public class ReceiverCollection<TMessage> : IReceiverCollection where TMessage : IEventMessage
 {
     /// <summary>
+    /// Logs the collection's actions.
+    /// </summary>
+    private readonly ILogger<ReceiverCollection<TMessage>> _logger;
+
+    /// <summary>
     /// Collection of receivers.
     /// </summary>
     private readonly HashSet<Action<TMessage>> _receivers = new();
+
+    public ReceiverCollection(ILogger<ReceiverCollection<TMessage>> logger)
+    {
+        _logger = logger;
+    }
 
     /// <inheritdoc />
     public int Count
@@ -42,9 +53,9 @@ public class ReceiverCollection<TMessage> : IReceiverCollection where TMessage :
                 {
                     action.Invoke((TMessage) message);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // TODO: Proper behaviour.
+                    _logger.LogError(e, "An error occurred while notifying a receiver.");
                 }
             }
         }

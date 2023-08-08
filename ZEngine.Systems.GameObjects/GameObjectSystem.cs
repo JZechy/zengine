@@ -1,4 +1,5 @@
-﻿using ZEngine.Architecture.Communication.Events;
+﻿using Microsoft.Extensions.Logging;
+using ZEngine.Architecture.Communication.Events;
 using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.GameObjects;
 using ZEngine.Core;
@@ -41,9 +42,15 @@ public class GameObjectSystem : IGameSystem
     /// </summary>
     private readonly IEventMediator _eventMediator;
 
-    public GameObjectSystem(IEventMediator eventMediator)
+    /// <summary>
+    /// Logs exceptions catched from game objects.
+    /// </summary>
+    private readonly ILogger<GameObjectSystem> _logger;
+
+    public GameObjectSystem(IEventMediator eventMediator, ILogger<GameObjectSystem> logger)
     {
         _eventMediator = eventMediator;
+        _logger = logger;
     }
 
     /// <summary>
@@ -77,9 +84,9 @@ public class GameObjectSystem : IGameSystem
             {
                 gameObject.SendMessage(SystemMethod.Update);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // TODO: Log exception.
+                _logger.LogError(e, "An exception occured while updating game object {GameObjectName}", gameObject.Name);
             }
         }
     }
@@ -93,9 +100,9 @@ public class GameObjectSystem : IGameSystem
             {
                 gameObject.SendMessage(SystemMethod.OnDestroy);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // TODO: Log exception.
+                _logger.LogError(e, "An exception occured while destroying game object {GameObjectName}", gameObject.Name);
             }
         }
     }
@@ -110,9 +117,9 @@ public class GameObjectSystem : IGameSystem
         {
             gameObject.SendMessage(SystemMethod.Awake);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            // TODO: Log exception.
+            _logger.LogError(e, "An exception occured while awaking game object {GameObjectName}", gameObject.Name);
         }
 
         lock (AddingLock)
@@ -146,9 +153,9 @@ public class GameObjectSystem : IGameSystem
                 {
                     gameObject.Active = true;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // TODO: Log exception.
+                    _logger.LogWarning(e, "An exception occured while activating game object {GameObjectName}", gameObject.Name);
                 }
 
                 _eventMediator.Notify(new GameObjectAdded(gameObject));
@@ -172,9 +179,9 @@ public class GameObjectSystem : IGameSystem
                 {
                     gameObject.SendMessage(SystemMethod.OnDestroy);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // TODO: Log exception.
+                    _logger.LogError(e, "An exception occured while destroying game object {GameObjectName}", gameObject.Name);
                 }
 
                 _eventMediator.Notify(new GameObjectRemoved(gameObject));

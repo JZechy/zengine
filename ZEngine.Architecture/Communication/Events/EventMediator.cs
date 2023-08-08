@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 
 namespace ZEngine.Architecture.Communication.Events;
 
@@ -8,9 +9,19 @@ namespace ZEngine.Architecture.Communication.Events;
 public class EventMediator : IEventMediator
 {
     /// <summary>
+    /// Creates a logger for receiver collections.
+    /// </summary>
+    private readonly ILoggerFactory _loggerFactory;
+
+    /// <summary>
     /// Dictionary assigning a collection of receivers to a specific message type.
     /// </summary>
     private readonly ConcurrentDictionary<Type, IReceiverCollection> _receivers = new();
+
+    public EventMediator(ILoggerFactory loggerFactory)
+    {
+        _loggerFactory = loggerFactory;
+    }
 
     /// <inheritdoc />
     public void Subscribe<TMessage>(Action<TMessage> receiver) where TMessage : IEventMessage
@@ -18,7 +29,7 @@ public class EventMediator : IEventMediator
         Type messageType = typeof(TMessage);
         if (!_receivers.ContainsKey(messageType))
         {
-            _receivers.TryAdd(messageType, new ReceiverCollection<TMessage>());
+            _receivers.TryAdd(messageType, new ReceiverCollection<TMessage>(_loggerFactory.CreateLogger<ReceiverCollection<TMessage>>()));
         }
 
         _receivers[messageType].Add(receiver);
