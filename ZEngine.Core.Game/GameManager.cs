@@ -87,9 +87,16 @@ public class GameManager
     /// </summary>
     private void UpdateSystems()
     {
-        foreach (IGameSystem gameSystem in _systems)
+        try
         {
-            gameSystem.Update();
+            foreach (IGameSystem gameSystem in _systems)
+            {
+                gameSystem.Update();
+            }
+        }
+        catch (AbortGameException)
+        {
+            ShouldExit = true;
         }
     }
 
