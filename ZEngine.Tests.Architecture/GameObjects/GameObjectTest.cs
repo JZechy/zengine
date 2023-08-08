@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.Components;
 using ZEngine.Architecture.GameObjects;
 using ZEngine.Tests.Architecture.GameObjects.Cases;
@@ -56,5 +57,19 @@ public class GameObjectTest
         // Destroy component
         gameObject.RemoveComponent<GameObjectLifetime>();
         lifetime.Destroyed.Should().BeTrue();
+    }
+
+    [Test]
+    public void Test_Activation()
+    {
+        GameObject gameObject = new();
+        GameObjectLifetime lifetime = gameObject.AddComponent<GameObjectLifetime>();
+        lifetime.Awaken.Should().BeFalse();
+        lifetime.EnableCalled.Should().BeFalse();
+
+        gameObject.SendMessage(SystemMethod.Awake);
+        gameObject.Active = true;
+        lifetime.Awaken.Should().BeTrue();
+        lifetime.EnableCalled.Should().BeTrue();
     }
 }

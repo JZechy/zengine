@@ -93,9 +93,9 @@ public class GameObject : IGameObject
 
         component.GameObject = this;
         _components.Add(componentType, component);
-        component.SendMessage(SystemMethod.Awake);
         if (Active)
         {
+            component.SendMessage(SystemMethod.Awake);
             component.SendMessage(SystemMethod.OnEnable);
         }
 
