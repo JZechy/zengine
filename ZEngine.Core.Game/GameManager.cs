@@ -1,10 +1,17 @@
-﻿namespace ZEngine.Core.Game;
+﻿using Microsoft.Extensions.Logging;
+
+namespace ZEngine.Core.Game;
 
 /// <summary>
 /// Main manager responsible for game loop and systems management.
 /// </summary>
 public class GameManager
 {
+    /// <summary>
+    /// Main game logger.
+    /// </summary>
+    private readonly ILogger<GameManager> _logger;
+
     /// <summary>
     /// List of all registered systems for the game.
     /// </summary>
@@ -15,8 +22,9 @@ public class GameManager
     /// </summary>
     private bool _isRunning;
 
-    public GameManager(IServiceProvider serviceProvider, IEnumerable<IGameSystem> gameSystems)
+    public GameManager(IServiceProvider serviceProvider, IEnumerable<IGameSystem> gameSystems, ILogger<GameManager> logger)
     {
+        _logger = logger;
         ServiceProvider = serviceProvider;
         _systems = gameSystems.ToList();
     }
@@ -84,6 +92,7 @@ public class GameManager
     /// </summary>
     private void Initialize()
     {
+        _logger.LogInformation("Initializing game...");
         _isRunning = true;
         _systems = _systems.OrderBy(x => x.Priority).ToList();
 

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
 using ZEngine.Core;
@@ -18,7 +19,7 @@ public class GameManagerTest
     [Test]
     public void Test_BasicGameLoop()
     {
-        GameManager gameManager = new(Mock.Of<IServiceProvider>(), Enumerable.Empty<IGameSystem>());
+        GameManager gameManager = new(Mock.Of<IServiceProvider>(), Enumerable.Empty<IGameSystem>(), new NullLogger<GameManager>());
         BasicSystem basicSystem = new(); // Basic system will interrupt the game loop after some iterations.
         gameManager.AddSystem(basicSystem);
         

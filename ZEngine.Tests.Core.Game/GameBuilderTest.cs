@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using ZEngine.Core;
 using ZEngine.Core.Game;
@@ -16,6 +18,7 @@ public class GameBuilderTest
     public void TestGameBuilder()
     {
         GameBuilder builder = GameBuilder.Create();
+        builder.Services.AddSingleton<ILogger<GameManager>>(_ => new NullLogger<GameManager>());
         builder.Services.AddSingleton<IGameSystem, BasicSystem>();
         
         GameManager gameManager = builder.Build();
