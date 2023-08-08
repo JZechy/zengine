@@ -4,6 +4,8 @@ using System.Windows.Threading;
 using ZEngine.Systems.Inputs.Devices.Events;
 using ZEngine.Systems.Inputs.Devices.Keyboards;
 using ZEngine.Systems.Inputs.Devices.Keyboards.Events;
+using ZEngine.Systems.Inputs.Devices.Pointers;
+using ZEngine.Systems.Inputs.Devices.Pointers.Events;
 using Key = ZEngine.Systems.Inputs.Devices.Keyboards.Key;
 using KeyboardDevice = ZEngine.Systems.Inputs.Devices.Keyboards.KeyboardDevice;
 
@@ -18,7 +20,9 @@ public partial class MainWindow : Window
     /// Instance of device implementation for the keyboard.
     /// </summary>
     private readonly KeyboardDevice _keyboardDevice = new();
-    
+
+    private readonly MouseDevice _mouseDevice = new();
+
     /// <summary>
     /// Timer used to update the input system.
     /// </summary>
@@ -29,12 +33,13 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         _keyboardDevice.DeviceEvent += OnKeyboardEvent;
+        _mouseDevice.DeviceEvent += MouseDeviceOnDeviceEvent;
 
         _updateTimer.Interval = TimeSpan.FromMilliseconds(1000 / 60f);
         _updateTimer.Tick += UpdateTick;
         _updateTimer.Start();
     }
-    
+
 
     /// <summary>
     /// Every timer tick, update the devices.
@@ -44,13 +49,27 @@ public partial class MainWindow : Window
     private void UpdateTick(object? sender, EventArgs e)
     {
         _keyboardDevice.Update();
+        _mouseDevice.Update();
     }
 
     private void OnKeyboardEvent(object? sender, DeviceEventArgs e)
     {
         if (e is KeyboardEventArgs keyboardEvent)
         {
-            LogKeyboardEvent(keyboardEvent.Key, keyboardEvent.KeyState);
+            LogKeyboardEvent(keyboardEvent.Key.ToString(), keyboardEvent.KeyState);
+        }
+    }
+
+    private void MouseDeviceOnDeviceEvent(object? sender, DeviceEventArgs e)
+    {
+        if (e is MouseEventArgs mouseEvent)
+        {
+            LogKeyboardEvent(mouseEvent.MouseButton.ToString(), mouseEvent.KeyState);
+        }
+
+        if (e is MousePositionEventArgs positionEvent)
+        {
+            LogMousePosition(positionEvent.MousePosition);
         }
     }
 
@@ -59,10 +78,16 @@ public partial class MainWindow : Window
     /// </summary>
     /// <param name="key">The key that was acted upon.</param>
     /// <param name="state">The state of the key.</param>
-    private void LogKeyboardEvent(Key key, KeyState state)
+    private void LogKeyboardEvent(string key, KeyState state)
     {
         // Add the event to the ListBox.
-        KeyboardEventsListBox.Items.Add($"Key {key} is {state}.");
-        KeyboardEventsListBox.ScrollIntoView(KeyboardEventsListBox.Items[^1]);
+        EventsListBox.Items.Add($"Key {key} is {state}.");
+        EventsListBox.ScrollIntoView(EventsListBox.Items[^1]);
+    }
+
+    private void LogMousePosition(MousePosition mousePosition)
+    {
+        EventsListBox.Items.Add($"Mouse position is {mousePosition.X}, {mousePosition.Y}.");
+        EventsListBox.ScrollIntoView(EventsListBox.Items[^1]);
     }
 }

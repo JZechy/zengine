@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ZEngine Windows Devices Test" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="KeyboardEventsListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+        <ListBox x:Name="EventsListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
             <ListBox.Template>
                 <ControlTemplate>
                     <ScrollViewer x:Name="EventsScrollViewer" VerticalScrollBarVisibility="Auto">

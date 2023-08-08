@@ -25,8 +25,19 @@ public class KeyboardDevice : IDevice
     private readonly byte[] _currentState = new byte[256];
 
     /// <summary>
+    /// Array of supported keys.
+    /// </summary>
+    private readonly byte[] _supportedKeys = Enum.GetValues<Key>()
+        .Select(x => (byte) x)
+        .ToArray();
+
+    /// <summary>
     /// Win32 API call to get keyboard state.
     /// </summary>
+    /// <remarks>
+    /// This method is returning a byte array of 256 bytes, where each byte represents current state of a key. For the scan codes,
+    /// refers to the <see cref="KeyScanCode"/>. For the key codes, refers to the <see cref="Key"/>.
+    /// </remarks>
     /// <param name="lpKeyState"></param>
     /// <returns></returns>
     [DllImport("user32.dll")]
@@ -40,14 +51,12 @@ public class KeyboardDevice : IDevice
     /// <inheritdoc />
     public void Update()
     {
-        GetKeyboardState(_currentState);
-
-        // We iterate only through the keys that are supported by our engine.
-        byte[] keys = Enum.GetValues<Key>()
-            .Select(x => (byte) x)
-            .ToArray();
+        if (!GetKeyboardState(_currentState))
+        {
+            return;
+        }
         
-        foreach (byte key in keys)
+        foreach (byte key in _supportedKeys)
         {
             bool wasDown = ((KeyScanCode) _previousState[key]).HasFlag(KeyScanCode.Pressed);
             bool isDown = ((KeyScanCode) _currentState[key]).HasFlag(KeyScanCode.Pressed);

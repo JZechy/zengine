@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using ZEngine.Systems.Inputs.Devices.Events;
 using ZEngine.Systems.Inputs.Devices.Keyboards;
+using ZEngine.Systems.Inputs.Devices.Pointers;
 
 namespace ZEngine.Systems.Inputs;
 
@@ -24,6 +25,7 @@ public class InputSystem : IInputSystem
         _logger = logger;
         
         _devices.Add(new KeyboardDevice());
+        _devices.Add(new MouseDevice());
     }
 
     /// <summary>
