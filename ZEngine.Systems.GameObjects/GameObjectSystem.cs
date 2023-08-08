@@ -61,7 +61,14 @@ public class GameObjectSystem : IGameSystem
         
         foreach (IGameObject gameObject in ActiveRootObjects)
         {
-            gameObject.SendMessage(SystemMethod.Update);
+            try
+            {
+                gameObject.SendMessage(SystemMethod.Update);
+            }
+            catch (Exception)
+            {
+                // TODO: Log exception.
+            }
         }
     }
 
@@ -70,7 +77,14 @@ public class GameObjectSystem : IGameSystem
     {
         foreach (IGameObject gameObject in ActiveRootObjects)
         {
-            gameObject.SendMessage(SystemMethod.OnDestroy);
+            try
+            {
+                gameObject.SendMessage(SystemMethod.OnDestroy);
+            }
+            catch (Exception)
+            {
+                // TODO: Log exception.
+            }
         }
     }
 
@@ -80,8 +94,15 @@ public class GameObjectSystem : IGameSystem
     /// <param name="gameObject"></param>
     public void Register(IGameObject gameObject)
     {
-        gameObject.SendMessage(SystemMethod.Awake);
-        
+        try
+        {
+            gameObject.SendMessage(SystemMethod.Awake);
+        }
+        catch (Exception)
+        {
+            // TODO: Log exception.
+        }
+
         lock (AddingLock)
         {
             _newGameObjects.Add(gameObject);
@@ -109,7 +130,15 @@ public class GameObjectSystem : IGameSystem
         {
             foreach (IGameObject gameObject in _newGameObjects)
             {
-                gameObject.Active = true;
+                try
+                {
+                    gameObject.Active = true;
+                }
+                catch (Exception)
+                {
+                    // TODO: Log exception.
+                }
+
                 _gameObjects.Add(gameObject);
             }
 
@@ -126,7 +155,15 @@ public class GameObjectSystem : IGameSystem
         {
             foreach (IGameObject gameObject in _destroyedGameObjects)
             {
-                gameObject.SendMessage(SystemMethod.OnDestroy);
+                try
+                {
+                    gameObject.SendMessage(SystemMethod.OnDestroy);
+                }
+                catch (Exception)
+                {
+                    // TODO: Log exception.
+                }
+
                 _gameObjects.Remove(gameObject);
             }
 

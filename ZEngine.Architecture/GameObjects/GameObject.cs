@@ -77,7 +77,7 @@ public class GameObject : IGameObject
     {
         if (!componentType.IsAssignableTo(typeof(IGameComponent)))
         {
-            throw new ArgumentException("Component type must be assignable to IGameComponent.");
+            throw new ArgumentException($"Component of type {componentType.FullName} must be assignable to IGameComponent.");
         }
 
         if (_components.ContainsKey(componentType))
