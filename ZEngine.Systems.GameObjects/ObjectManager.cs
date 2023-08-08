@@ -39,6 +39,13 @@ public class ObjectManager
         set => _objectManager = value;
     }
     
+    /// <summary>
+    /// Factory method for creating a new instance of <see cref="ObjectManager"/>.
+    /// </summary>
+    /// <remarks>
+    /// Object manager is instantiated by <see cref="GameObjectSystem"/> during its initialization.
+    /// </remarks>
+    /// <param name="gameObjectSystem"></param>
     internal static void Create(GameObjectSystem gameObjectSystem)
     {
         Instance = new ObjectManager(gameObjectSystem);
@@ -48,8 +55,34 @@ public class ObjectManager
     /// Creates a new instance of game object.
     /// </summary>
     /// <returns></returns>
-    public static IGameObject Instantiate()
+    public static IGameObject CreateObject()
     {
-        return Instance._gameObjectSystem.Instantiate();
+        GameObject gameObject = new();
+        Instance._gameObjectSystem.Register(gameObject);
+
+        return gameObject;
+    }
+    
+    /// <summary>
+    /// Creates a new instance of game object as a child of another game object.
+    /// </summary>
+    /// <param name="parent">Parent game object.</param>
+    /// <returns></returns>
+    public static IGameObject CreateObject(IGameObject parent)
+    {
+        GameObject gameObject = new();
+        gameObject.Transform.SetParent(parent.Transform);
+        Instance._gameObjectSystem.Register(gameObject);
+
+        return gameObject;
+    }
+
+    /// <summary>
+    /// Destroys a game object.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    public static void Destroy(IGameObject gameObject)
+    {
+        Instance._gameObjectSystem.Unregister(gameObject);
     }
 }

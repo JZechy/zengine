@@ -24,7 +24,7 @@ public class GameObject : IGameObject
     /// </summary>
     private bool _active;
 
-    public GameObject(string name = "New Game Object", bool active = true)
+    public GameObject(string name = "New Game Object", bool active = false)
     {
         _messageHandler = new MessageHandler(this);
         Name = name;
@@ -94,7 +94,10 @@ public class GameObject : IGameObject
         component.GameObject = this;
         _components.Add(componentType, component);
         component.SendMessage(SystemMethod.Awake);
-        component.Enabled = true;
+        if (Active)
+        {
+            component.SendMessage(SystemMethod.OnEnable);
+        }
 
         return component;
     }
@@ -169,13 +172,24 @@ public class GameObject : IGameObject
     }
 
     /// <summary>
+    /// If the game object was created with existing components, we need to call Awake on them.
+    /// </summary>
+    private void Awake()
+    {
+        foreach (IGameComponent component in _components.Values)
+        {
+            component.SendMessage(SystemMethod.Awake);
+        }
+    }
+
+    /// <summary>
     /// Enables all registered components.
     /// </summary>
     private void OnEnable()
     {
         foreach (IGameComponent component in _components.Values)
         {
-            component.SendMessage(SystemMethod.OnEnable);
+            component.Enabled = true;
         }
     }
 
@@ -186,7 +200,7 @@ public class GameObject : IGameObject
     {
         foreach (IGameComponent component in _components.Values)
         {
-            component.SendMessage(SystemMethod.OnDisable);
+            component.Enabled = false;
         }
     }
 
@@ -204,5 +218,23 @@ public class GameObject : IGameObject
         {
             gameComponent.SendMessage(SystemMethod.Update);
         }
+    }
+
+    /// <summary>
+    /// Detroys all child game objects and components.
+    /// </summary>
+    private void OnDestroy()
+    {
+        foreach (IGameObject gameObject in Transform.Select(x => x.GameObject))
+        {
+            gameObject.SendMessage(SystemMethod.OnDestroy);
+        }
+
+        foreach (IGameComponent gameComponent in _components.Values)
+        {
+            gameComponent.SendMessage(SystemMethod.OnDestroy);
+        }
+        
+        _components.Clear();
     }
 }

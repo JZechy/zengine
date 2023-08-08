@@ -19,4 +19,9 @@ public interface IGameSystem
     /// Updates the system.
     /// </summary>
     void Update();
+
+    /// <summary>
+    /// Called once the game is closed.
+    /// </summary>
+    void CleanUp();
 }

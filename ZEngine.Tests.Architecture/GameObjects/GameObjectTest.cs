@@ -17,7 +17,7 @@ public class GameObjectTest
     [Test]
     public void Test_GameObjectComponent()
     {
-        GameObject gameObject = new();
+        GameObject gameObject = new("Test", true);
         
         Transform transform = gameObject.GetRequiredComponent<Transform>();
         transform.GameObject.Should().Be(gameObject);
@@ -35,7 +35,7 @@ public class GameObjectTest
     [Test]
     public void Test_GameObjectComponent_Lifetime()
     {
-        GameObject gameObject = new();
+        GameObject gameObject = new("Test", true);
 
         // Initialize the component.
         GameObjectLifetime lifetime = gameObject.AddComponent<GameObjectLifetime>();

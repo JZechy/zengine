@@ -96,4 +96,10 @@ public class Transform : GameComponent, IEnumerable<Transform>
     {
         return GetEnumerator();
     }
+
+    private void OnDestroy()
+    {
+        SetParent(null);
+        _children.Clear();
+    }
 }

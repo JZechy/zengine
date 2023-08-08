@@ -32,13 +32,10 @@ public class GameManager
     {
         get
         {
-            int sleep = UpdateFrequency - (int)GameTime.DeltaTime;
-            if (sleep < 0)
-            {
-                sleep = 0;
-            }
+            int targetFrameTime = 1000 / UpdateFrequency;
+            int sleep = targetFrameTime - (int)GameTime.DeltaTime;
 
-            return sleep;
+            return Math.Max(sleep, 0);
         }
     }
     
@@ -67,6 +64,8 @@ public class GameManager
             
             Thread.Sleep(SleepTime);
         }
+        
+        CleanUp();
     }
 
     /// <summary>
@@ -91,6 +90,17 @@ public class GameManager
         foreach (IGameSystem gameSystem in _systems)
         {
             gameSystem.Update();
+        }
+    }
+
+    /// <summary>
+    /// Initiate cleaning after the game loop is finished.
+    /// </summary>
+    private void CleanUp()
+    {
+        foreach (IGameSystem gameSystem in _systems)
+        {
+            gameSystem.CleanUp();
         }
     }
 

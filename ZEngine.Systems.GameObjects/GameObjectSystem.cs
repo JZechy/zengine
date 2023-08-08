@@ -15,6 +15,16 @@ public class GameObjectSystem : IGameSystem
     private readonly HashSet<IGameObject> _gameObjects = new();
     
     /// <summary>
+    /// Collection of all game objects, that were created in the current frame.
+    /// </summary>
+    private readonly HashSet<IGameObject> _newGameObjects = new();
+    
+    /// <summary>
+    /// Collection of all game objects, that were destroyed in the current frame.
+    /// </summary>
+    private readonly HashSet<IGameObject> _destroyedGameObjects = new();
+    
+    /// <summary>
     /// From the native systems, this system has the highest priority.
     /// </summary>
     public int Priority => 1;
@@ -36,21 +46,68 @@ public class GameObjectSystem : IGameSystem
     /// <inheritdoc />
     public void Update()
     {
+        DestroyObjects();
+        AddNewObjects();
+        
         foreach (IGameObject gameObject in ActiveRootObjects)
         {
             gameObject.SendMessage(SystemMethod.Update);
         }
     }
 
-    /// <summary>
-    /// Creates a new instance of game object.
-    /// </summary>
-    /// <returns></returns>
-    public IGameObject Instantiate()
+    /// <inheritdoc />
+    public void CleanUp()
     {
-        GameObject gameObject = new();
-        _gameObjects.Add(gameObject);
+        foreach (IGameObject gameObject in ActiveRootObjects)
+        {
+            gameObject.SendMessage(SystemMethod.OnDestroy);
+        }
+    }
 
-        return gameObject;
+    /// <summary>
+    /// Registers a game object in the system.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    public void Register(IGameObject gameObject)
+    {
+        gameObject.SendMessage(SystemMethod.Awake);
+        _newGameObjects.Add(gameObject);
+    }
+    
+    /// <summary>
+    /// Marks a game object as destroyed.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    public void Unregister(IGameObject gameObject)
+    {
+        _destroyedGameObjects.Add(gameObject);
+    }
+    
+    /// <summary>
+    /// Adds new game objects to the collection of all game objects.
+    /// </summary>
+    private void AddNewObjects()
+    {
+        foreach (IGameObject gameObject in _newGameObjects)
+        {
+            gameObject.Active = true;
+            _gameObjects.Add(gameObject);
+        }
+        
+        _newGameObjects.Clear();
+    }
+
+    /// <summary>
+    /// Destroyes game objects, that were marked as destroyed.
+    /// </summary>
+    private void DestroyObjects()
+    {
+        foreach (IGameObject gameObject in _destroyedGameObjects)
+        {
+            gameObject.SendMessage(SystemMethod.OnDestroy);
+            _gameObjects.Remove(gameObject);
+        }
+        
+        _destroyedGameObjects.Clear();
     }
 }
