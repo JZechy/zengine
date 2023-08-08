@@ -57,7 +57,7 @@ public class ObjectManager
     /// <returns></returns>
     public static IGameObject Create()
     {
-        GameObject gameObject = new();
+        GameObject gameObject = new("New Game Object", true);
         Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
@@ -70,7 +70,7 @@ public class ObjectManager
     /// <returns></returns>
     public static IGameObject Create(IGameObject parent)
     {
-        GameObject gameObject = new();
+        GameObject gameObject = new("New Game Object", true);
         gameObject.Transform.SetParent(parent.Transform);
         Instance._gameObjectSystem.Register(gameObject);
 

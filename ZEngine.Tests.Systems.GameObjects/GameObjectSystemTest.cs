@@ -38,8 +38,8 @@ public class GameObjectSystemTest
         component.AwakeCalled.Should().BeTrue();
 
         system.Update();
-        component.UpdateCalled.Should().BeTrue();
         component.OnEnableCalled.Should().BeTrue();
+        component.UpdateCalled.Should().BeTrue();
         ObjectManager.Destroy(gameObject);
         component.OnDestroyCalled.Should().BeFalse(); // Game Object is destroyed in next frame.
 
