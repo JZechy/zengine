@@ -42,19 +42,24 @@ public class KeyboardDevice : IDevice
     {
         GetKeyboardState(_currentState);
 
-        for (int i = 0; i < _currentState.Length; i++)
+        // We iterate only through the keys that are supported by our engine.
+        byte[] keys = Enum.GetValues<Key>()
+            .Select(x => (byte) x)
+            .ToArray();
+        
+        foreach (byte key in keys)
         {
-            bool wasDown = (_previousState[i] & 0x80) != 0;
-            bool isDown = (_currentState[i] & 0x80) != 0;
+            bool wasDown = ((KeyScanCode) _previousState[key]).HasFlag(KeyScanCode.Pressed);
+            bool isDown = ((KeyScanCode) _currentState[key]).HasFlag(KeyScanCode.Pressed);
 
             switch (wasDown)
             {
                 case true when !isDown:
-                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) i, KeyState.Released));
+                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) key, KeyState.Released));
                     break;
                 case false when isDown:
-                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) i, KeyState.Down));
-                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) i, KeyState.Pressed)); // Pressed requires more logic.
+                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) key, KeyState.Down));
+                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) key, KeyState.Pressed)); // TODO: Pressed requires more logic. And magic :P
                     break;
             }
         }

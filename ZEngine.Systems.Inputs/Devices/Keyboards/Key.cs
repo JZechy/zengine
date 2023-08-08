@@ -1,26 +1,36 @@
 ﻿namespace ZEngine.Systems.Inputs.Devices.Keyboards;
 
-public enum Key
+/// <summary>
+/// Enumeration of supported keyboard keys and their respective codes.
+/// </summary>
+public enum Key : byte
 {
-    Unknown = -1,
+    #region Navigation keys
+
+    PageUp = 33,
+    PageDown = 34,
+    End = 35,
+    Home = 36,
+    LeftArrow = 37,
+    UpArrow = 38,
+    RightArrow = 39,
+    DownArrow = 40,
+
+    #endregion
+    
+    #region Character keys
+
     Space = 32,
-    Apostrophe = 39,
-    Comma = 44,
-    Minus = 45,
-    Period = 46,
-    Slash = 47,
-    D0 = 48,
-    D1 = 49,
-    D2 = 50,
-    D3 = 51,
-    D4 = 52,
-    D5 = 53,
-    D6 = 54,
-    D7 = 55,
-    D8 = 56,
-    D9 = 57,
-    Semicolon = 59,
-    Equal = 61,
+    Alpha0 = 48,
+    Alpha1 = 49,
+    Alpha2 = 50,
+    Alpha3 = 51,
+    Alpha4 = 52,
+    Alpha5 = 53,
+    Alpha6 = 54,
+    Alpha7 = 55,
+    Alpha8 = 56,
+    Alpha9 = 57,
     A = 65,
     B = 66,
     C = 67,
@@ -46,42 +56,7 @@ public enum Key
     W = 87,
     X = 88,
     Y = 89,
-    Z = 90,
-    LeftBracket = 91,
-    Backslash = 92,
-    RightBracket = 93,
-    GraveAccent = 96,
-    World1 = 161,
-    World2 = 162,
-    Escape = 256,
-    Enter = 257,
-    Tab = 258,
-    Backspace = 259,
-    Insert = 260,
-    Delete = 261,
-    Right = 262,
-    Left = 263,
-    Down = 264,
-    Up = 265,
-    PageUp = 266,
-    PageDown = 267,
-    Home = 268,
-    End = 269,
-    CapsLock = 280,
-    ScrollLock = 281,
-    NumLock = 282,
-    PrintScreen = 283,
-    Pause = 284,
-    F1 = 290,
-    F2 = 291,
-    F3 = 292,
-    F4 = 293,
-    F5 = 294,
-    F6 = 295,
-    F7 = 296,
-    F8 = 297,
-    F9 = 298,
-    F10 = 299,
-    F11 = 300,
-    F12 = 301
+    Z = 90
+
+    #endregion
 }
