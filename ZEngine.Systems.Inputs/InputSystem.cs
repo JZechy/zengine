@@ -20,12 +20,11 @@ public class InputSystem : IInputSystem
     /// </summary>
     private readonly List<IDevice> _devices = new();
 
-    public InputSystem(ILogger<InputSystem> logger)
+    public InputSystem(ILogger<InputSystem> logger, IEnumerable<IDevice> devices)
     {
         _logger = logger;
         
-        _devices.Add(new KeyboardDevice());
-        _devices.Add(new MouseDevice());
+        _devices.AddRange(devices);
     }
 
     /// <summary>
@@ -33,6 +32,15 @@ public class InputSystem : IInputSystem
     /// do anything with the game objects.
     /// </summary>
     public int Priority => 0;
+
+    /// <summary>
+    /// Registers additionaly device to the input system.
+    /// </summary>
+    /// <param name="device"></param>
+    public void AddDevice(IDevice device)
+    {
+        _devices.Add(device);
+    }
 
     /// <inheritdoc />
     public void Initialize()
