@@ -2,6 +2,7 @@
 using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.GameObjects;
 using ZEngine.Core;
+using ZEngine.Systems.GameObjects.Events;
 
 namespace ZEngine.Systems.GameObjects;
 
@@ -14,27 +15,27 @@ public class GameObjectSystem : IGameSystem
     /// Thread-safe lock for adding new game objects.
     /// </summary>
     private static readonly object AddingLock = new();
-    
+
     /// <summary>
     /// Thread-safe lock for removing game objects.
     /// </summary>
     private static readonly object RemovingLock = new();
-    
+
     /// <summary>
     /// Collection of all game objects available in the game.
     /// </summary>
     private readonly HashSet<IGameObject> _gameObjects = new();
-    
+
     /// <summary>
     /// Collection of all game objects, that were created in the current frame.
     /// </summary>
     private readonly HashSet<IGameObject> _newGameObjects = new();
-    
+
     /// <summary>
     /// Collection of all game objects, that were destroyed in the current frame.
     /// </summary>
     private readonly HashSet<IGameObject> _destroyedGameObjects = new();
-    
+
     /// <summary>
     /// Event Mediator serves for notifying about new game object or removed ones.
     /// </summary>
@@ -44,12 +45,12 @@ public class GameObjectSystem : IGameSystem
     {
         _eventMediator = eventMediator;
     }
-    
+
     /// <summary>
     /// From the native systems, this system has the highest priority.
     /// </summary>
     public int Priority => 1;
-    
+
     /// <summary>
     /// Every update, we wnat to iterate over active game objects and those, who are not children of any other game object.
     /// </summary>
@@ -69,7 +70,7 @@ public class GameObjectSystem : IGameSystem
     {
         DestroyObjects();
         AddNewObjects();
-        
+
         foreach (IGameObject gameObject in ActiveRootObjects)
         {
             try
@@ -119,7 +120,7 @@ public class GameObjectSystem : IGameSystem
             _newGameObjects.Add(gameObject);
         }
     }
-    
+
     /// <summary>
     /// Marks a game object as destroyed.
     /// </summary>
@@ -131,7 +132,7 @@ public class GameObjectSystem : IGameSystem
             _destroyedGameObjects.Add(gameObject);
         }
     }
-    
+
     /// <summary>
     /// Adds new game objects to the collection of all game objects.
     /// </summary>
@@ -150,6 +151,7 @@ public class GameObjectSystem : IGameSystem
                     // TODO: Log exception.
                 }
 
+                _eventMediator.Notify(new GameObjectAdded(gameObject));
                 _gameObjects.Add(gameObject);
             }
 
@@ -175,6 +177,7 @@ public class GameObjectSystem : IGameSystem
                     // TODO: Log exception.
                 }
 
+                _eventMediator.Notify(new GameObjectRemoved(gameObject));
                 _gameObjects.Remove(gameObject);
             }
 
