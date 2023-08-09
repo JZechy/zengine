@@ -8,6 +8,15 @@ namespace ZEngine.Systems.Inputs.Events.Paths;
 /// </summary>
 public class MouseInputPath : InputPath
 {
+    public MouseInputPath()
+    {
+    }
+
+    public MouseInputPath(MouseButton mouseButton)
+    {
+        MouseButton = mouseButton;
+    }
+    
     /// <inheritdoc />
     public override DeviceType Device => DeviceType.Mouse;
     

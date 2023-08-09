@@ -2,6 +2,7 @@
 using ZEngine.Systems.Inputs.Devices.Events;
 using ZEngine.Systems.Inputs.Devices.Keyboards.Events;
 using ZEngine.Systems.Inputs.Devices.Pointers.Events;
+using ZEngine.Systems.Inputs.Extensions;
 
 namespace ZEngine.Systems.Inputs;
 
@@ -10,6 +11,8 @@ namespace ZEngine.Systems.Inputs;
 /// </summary>
 public class InputSystem : IInputSystem
 {
+    private readonly ILoggerFactory _loggerFactory;
+
     /// <summary>
     /// Logger for the input system.
     /// </summary>
@@ -20,9 +23,15 @@ public class InputSystem : IInputSystem
     /// </summary>
     private readonly List<IDevice> _devices = new();
 
-    public InputSystem(ILogger<InputSystem> logger, IEnumerable<IDevice> devices)
+    /// <summary>
+    /// Instance of input manager for passing events to the game.
+    /// </summary>
+    private InputManager _inputManager = null!;
+
+    public InputSystem(ILoggerFactory loggerFactory, IEnumerable<IDevice> devices)
     {
-        _logger = logger;
+        _loggerFactory = loggerFactory;
+        _logger = loggerFactory.CreateLogger<InputSystem>();
         _devices.AddRange(devices);
     }
 
@@ -44,7 +53,7 @@ public class InputSystem : IInputSystem
     /// <inheritdoc />
     public void Initialize()
     {
-        InputManager.CreateInstance(this);
+        _inputManager = InputManager.CreateInstance(_loggerFactory);
         
         foreach (IDevice device in _devices)
         {
@@ -97,7 +106,7 @@ public class InputSystem : IInputSystem
     /// <param name="keyboardStateChanged"></param>
     private void ProcessKeyboardEvent(KeyboardStateChanged keyboardStateChanged)
     {
-        
+        _inputManager.ProcessInput(keyboardStateChanged.ToContext());
     }
 
     /// <summary>
@@ -106,6 +115,14 @@ public class InputSystem : IInputSystem
     /// <param name="mouseStateChanged"></param>
     private void ProcessMouseEvent(MouseStateChanged mouseStateChanged)
     {
-        
+        switch (mouseStateChanged)
+        {
+            case MousePositionStateChanged mouseMoved:
+                _inputManager.ProcessInput(mouseMoved.ToContext());
+                break;
+            case MouseButtonStateChanged mouseButtonStateChanged:
+                _inputManager.ProcessInput(mouseButtonStateChanged.ToContext());
+                break;
+        }
     }
 }

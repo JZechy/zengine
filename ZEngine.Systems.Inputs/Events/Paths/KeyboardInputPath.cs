@@ -8,6 +8,16 @@ namespace ZEngine.Systems.Inputs.Events.Paths;
 /// </summary>
 public class KeyboardInputPath : InputPath
 {
+    public KeyboardInputPath()
+    {
+        
+    }
+
+    public KeyboardInputPath(Key key)
+    {
+        Key = key;
+    }
+    
     /// <inheritdoc />
     public override DeviceType Device => DeviceType.Keyboard;
     

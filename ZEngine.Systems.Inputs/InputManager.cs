@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 using ZEngine.Systems.Inputs.Events;
 using ZEngine.Systems.Inputs.Events.Collections;
-using ZEngine.Systems.Inputs.Events.Delegates;
 using ZEngine.Systems.Inputs.Events.Paths;
 
 namespace ZEngine.Systems.Inputs;
@@ -11,24 +11,28 @@ namespace ZEngine.Systems.Inputs;
 /// </summary>
 public class InputManager
 {
+    private readonly ILogger<InputManager> _logger;
+
     /// <summary>
     /// Actual instance of the input manager.
     /// </summary>
     private static InputManager? _instance;
-    
-    /// <summary>
-    /// Reference to the input system.
-    /// </summary>
-    private readonly InputSystem _inputSystem;
-    
-    /// <summary>
-    /// Collection of registered callbacks for a specific input path.
-    /// </summary>
-    private readonly ConcurrentDictionary<string, IInputPathCollection> _inputPathsCallbacks = new();
 
-    private InputManager(InputSystem inputSystem)
+    /// <summary>
+    /// Collection of callback managers.
+    /// </summary>
+    private readonly ConcurrentBag<IDeviceCallbackManager> _callbackManagers;
+
+    private InputManager(ILoggerFactory loggerFactory)
     {
-        _inputSystem = inputSystem;
+        _logger = loggerFactory.CreateLogger<InputManager>();
+        
+        _callbackManagers = new ConcurrentBag<IDeviceCallbackManager>()
+        {
+            new KeyboardInputCallbackManager(loggerFactory),
+            new MouseButtonCallbackManager(loggerFactory),
+            new PointerPositionCallbackManager(loggerFactory)
+        };
     }
 
     /// <summary>
@@ -51,41 +55,75 @@ public class InputManager
     /// <summary>
     /// Factory method to create a new instance of the input manager.
     /// </summary>
-    /// <param name="inputSystem"></param>
-    internal static void CreateInstance(InputSystem inputSystem)
+    internal static InputManager CreateInstance(ILoggerFactory loggerFactory)
     {
-        _instance = new InputManager(inputSystem);
+        _instance = new InputManager(loggerFactory);
+        return _instance;
     }
 
     /// <summary>
-    /// Registers new keyboard input.
+    /// Pass the input context to all registered callbacks.
     /// </summary>
-    /// <param name="inputPath"></param>
-    /// <param name="callback"></param>
-    public void RegisterKeyboardInput(KeyboardInputPath inputPath, KeyboardInputCallback callback)
+    /// <param name="inputContext"></param>
+    internal void ProcessInput(InputContext inputContext)
     {
-        string path = inputPath.Path;
-        if (!_inputPathsCallbacks.ContainsKey(path))
-        {
-            _inputPathsCallbacks.TryAdd(path, new GenericInputPathCollection<KeyboardInputCallback, KeyboardContext>(inputPath));
-        }
-        
-        _inputPathsCallbacks[path].Add(callback);
+        IDeviceCallbackManager callbackManager = GetCallbackManager(inputContext);
+        callbackManager.Invoke(inputContext);
     }
 
     /// <summary>
-    /// Registers new mouse input.
+    /// Registers new input callback for given device path.
     /// </summary>
-    /// <param name="inputPath"></param>
+    /// <param name="devicePath"></param>
     /// <param name="callback"></param>
-    public void RegisterMouseInput(MouseInputPath inputPath, MouseInputCallback callback)
+    /// <typeparam name="TPath"></typeparam>
+    /// <typeparam name="TContext"></typeparam>
+    public void Register<TPath, TContext>(TPath devicePath, Action<InputContext<TContext>> callback) where TPath : InputPath
     {
-        string path = inputPath.Path;
-        if (!_inputPathsCallbacks.ContainsKey(path))
+        IDeviceCallbackManager callbackManager = GetCallbackManager(typeof(InputContext<TContext>));
+        callbackManager.Register(devicePath.Path, callback);
+    }
+
+    /// <summary>
+    /// Removes input callback for given device path.
+    /// </summary>
+    /// <param name="devicePath"></param>
+    /// <param name="callback"></param>
+    /// <typeparam name="TPath"></typeparam>
+    /// <typeparam name="TContext"></typeparam>
+    public void Unregister<TPath, TContext>(TPath devicePath, Action<InputContext<TContext>> callback) where TPath : InputPath
+    {
+        IDeviceCallbackManager callbackManager = GetCallbackManager(typeof(InputContext<TContext>));
+        callbackManager.Unregister(devicePath.Path, callback);
+    }
+    
+    /// <summary>
+    /// Finds a suitable manager by given input contex type.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    private IDeviceCallbackManager GetCallbackManager(InputContext context)
+    {
+        Type contextType = context.GetType();
+
+        return GetCallbackManager(contextType);
+    }
+    
+    /// <summary>
+    /// Finds a suitable manager by given input contex type.
+    /// </summary>
+    /// <param name="contextType"></param>
+    /// <returns></returns>
+    private IDeviceCallbackManager GetCallbackManager(Type contextType)
+    {
+        try
         {
-            _inputPathsCallbacks.TryAdd(path, new GenericInputPathCollection<MouseInputCallback, MouseButtonContext>(inputPath));
+            return _callbackManagers.First(manager => manager.ContextType == contextType);
         }
-        
-        _inputPathsCallbacks[path].Add(callback);
+        catch (InvalidOperationException)
+        {
+            _logger.LogError("Could not find a suitable callback manager for given context type: {ContextType}", contextType);
+            throw;
+        }
     }
 }

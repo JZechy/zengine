@@ -14,20 +14,19 @@ public static class MouseStateChangedExtension
     /// <returns></returns>
     public static InputContext<MouseButtonContext> ToContext(this MouseButtonStateChanged stateChanged)
     {
-        return new InputContext<MouseButtonContext>
+        MouseInputPath inputPath = new()
         {
-            InputPath = new MouseInputPath
-            {
-                MouseButton = stateChanged.MouseButton
-            },
-            Context = new MouseButtonContext
-            {
-                Button = stateChanged.MouseButton,
-                State = stateChanged.KeyState
-            }
+            MouseButton = stateChanged.MouseButton
         };
+        MouseButtonContext context = new()
+        {
+            Button = stateChanged.MouseButton,
+            State = stateChanged.KeyState
+        };
+
+        return new InputContext<MouseButtonContext>(inputPath, context);
     }
-    
+
     /// <summary>
     /// Converts native state changed event to the context for input manager.   
     /// </summary>
@@ -35,13 +34,12 @@ public static class MouseStateChangedExtension
     /// <returns></returns>
     public static InputContext<PointerPositionContext> ToContext(this MousePositionStateChanged stateChanged)
     {
-        return new InputContext<PointerPositionContext>
+        MousePositionPath inputPath = new();
+        PointerPositionContext context = new()
         {
-            InputPath = new MousePositionPath(),
-            Context = new PointerPositionContext
-            {
-                Position = new Vector2(stateChanged.MousePosition.X, stateChanged.MousePosition.Y)
-            }
+            Position = new Vector2(stateChanged.MousePosition.X, stateChanged.MousePosition.Y)
         };
+
+        return new InputContext<PointerPositionContext>(inputPath, context);
     }
 }

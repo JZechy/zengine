@@ -13,17 +13,16 @@ public static class KeyboardStateChangedExtension
     /// <returns></returns>
     public static InputContext<KeyboardContext> ToContext(this KeyboardStateChanged stateChanged)
     {
-        return new InputContext<KeyboardContext>
+        KeyboardInputPath inputPath = new()
         {
-            InputPath = new KeyboardInputPath
-            {
-                Key = stateChanged.Key
-            },
-            Context = new KeyboardContext
-            {
-                Key = stateChanged.Key,
-                State = stateChanged.KeyState
-            }
+            Key = stateChanged.Key
         };
+        KeyboardContext context = new()
+        {
+            Key = stateChanged.Key,
+            State = stateChanged.KeyState
+        };
+        
+        return new InputContext<KeyboardContext>(inputPath, context);
     }
 }
