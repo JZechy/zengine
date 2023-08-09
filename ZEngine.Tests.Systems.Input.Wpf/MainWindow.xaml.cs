@@ -4,14 +4,13 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using ZEngine.Systems.Inputs.Devices.Events;
 using ZEngine.Systems.Inputs.Devices.Keyboards;
+using ZEngine.Systems.Inputs.Devices.Keyboards.Events;
 using ZEngine.Systems.Inputs.Devices.Pointers;
 using ZEngine.Systems.Inputs.Devices.Pointers.Events;
 using Key = ZEngine.Systems.Inputs.Devices.Keyboards.Key;
 using KeyboardDevice = ZEngine.Systems.Inputs.Devices.Keyboards.KeyboardDevice;
-using KeyboardEventArgs = ZEngine.Systems.Inputs.Devices.Keyboards.Events.KeyboardEventArgs;
 using MouseButton = ZEngine.Systems.Inputs.Devices.Pointers.MouseButton;
 using MouseDevice = ZEngine.Systems.Inputs.Devices.Pointers.MouseDevice;
-using MouseEventArgs = ZEngine.Systems.Inputs.Devices.Pointers.Events.MouseEventArgs;
 
 namespace ZEngine.Tests.Systems.Input.Wpf;
 
@@ -36,8 +35,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _keyboardDevice.DeviceEvent += OnKeyboardEvent;
-        _mouseDevice.DeviceEvent += MouseDeviceOnDeviceEvent;
+        _keyboardDevice.StateChanged += OnKeyboardEvent;
+        _mouseDevice.StateChanged += MouseDeviceOnDeviceEvent;
 
         _updateTimer.Interval = TimeSpan.FromMilliseconds(1000 / 60f);
         _updateTimer.Tick += UpdateTick;
@@ -56,22 +55,22 @@ public partial class MainWindow : Window
         _mouseDevice.Update();
     }
 
-    private void OnKeyboardEvent(object? sender, DeviceEventArgs e)
+    private void OnKeyboardEvent(object? sender, DeviceStateChanged e)
     {
-        if (e is KeyboardEventArgs keyboardEvent)
+        if (e is KeyboardStateChanged keyboardEvent)
         {
             LogKeyboardEvent(keyboardEvent.Key, keyboardEvent.KeyState);
         }
     }
 
-    private void MouseDeviceOnDeviceEvent(object? sender, DeviceEventArgs e)
+    private void MouseDeviceOnDeviceEvent(object? sender, DeviceStateChanged e)
     {
-        if (e is MouseEventArgs mouseEvent)
+        if (e is MouseButtonStateChanged mouseEvent)
         {
             LogMouseEvent(mouseEvent.MouseButton, mouseEvent.KeyState);
         }
 
-        if (e is MousePositionEventArgs positionEvent)
+        if (e is MousePositionStateChanged positionEvent)
         {
             LogMousePosition(positionEvent.MousePosition);
         }

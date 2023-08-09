@@ -1,14 +1,13 @@
-﻿using ZEngine.Systems.Inputs.Devices.Events;
-using ZEngine.Systems.Inputs.Devices.Keyboards;
+﻿using ZEngine.Systems.Inputs.Devices.Keyboards;
 
 namespace ZEngine.Systems.Inputs.Devices.Pointers.Events;
 
 /// <summary>
-/// Events raised by the mouse device.
+/// Event raised when the state of a mouse button changes.
 /// </summary>
-public class MouseEventArgs : DeviceEventArgs
+public class MouseButtonStateChanged : MouseStateChanged
 {
-    public MouseEventArgs(MouseButton mouseButton, KeyState keyState)
+    public MouseButtonStateChanged(MouseButton mouseButton, KeyState keyState)
     {
         MouseButton = mouseButton;
         KeyState = keyState;

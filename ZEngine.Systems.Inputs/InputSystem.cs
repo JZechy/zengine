@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using ZEngine.Systems.Inputs.Devices.Events;
+using ZEngine.Systems.Inputs.Devices.Keyboards.Events;
+using ZEngine.Systems.Inputs.Devices.Pointers.Events;
 
 namespace ZEngine.Systems.Inputs;
 
@@ -47,7 +49,7 @@ public class InputSystem : IInputSystem
         foreach (IDevice device in _devices)
         {
             device.Initialize();
-            device.DeviceEvent += DeviceOnDeviceEvent;
+            device.StateChanged += DeviceOnStateChanged;
         }
     }
 
@@ -65,7 +67,7 @@ public class InputSystem : IInputSystem
     {
         foreach (IDevice device in _devices)
         {
-            device.DeviceEvent -= DeviceOnDeviceEvent;
+            device.StateChanged -= DeviceOnStateChanged;
             device.Dispose();
         }
     }
@@ -76,8 +78,34 @@ public class InputSystem : IInputSystem
     /// <param name="sender"></param>
     /// <param name="e"></param>
     /// <exception cref="NotImplementedException"></exception>
-    private void DeviceOnDeviceEvent(object? sender, DeviceEventArgs e)
+    private void DeviceOnStateChanged(object? sender, DeviceStateChanged e)
     {
-        // TODO: Handles the device event, and dispatches to the public API.
+        switch (e)
+        {
+            case KeyboardStateChanged keyboardStateChanged:
+                ProcessKeyboardEvent(keyboardStateChanged);
+                break;
+            case MouseStateChanged mouseStateChanged:
+                ProcessMouseEvent(mouseStateChanged);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Process the keyboard and pass the event to the input manager.
+    /// </summary>
+    /// <param name="keyboardStateChanged"></param>
+    private void ProcessKeyboardEvent(KeyboardStateChanged keyboardStateChanged)
+    {
+        
+    }
+
+    /// <summary>
+    /// Process the mouse and pass the event to the input manager.
+    /// </summary>
+    /// <param name="mouseStateChanged"></param>
+    private void ProcessMouseEvent(MouseStateChanged mouseStateChanged)
+    {
+        
     }
 }

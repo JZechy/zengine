@@ -5,7 +5,7 @@ namespace ZEngine.Systems.Inputs.Devices.Keyboards.Events;
 /// <summary>
 /// Event args when a change in a key state occurs.
 /// </summary>
-public class KeyboardEventArgs : DeviceEventArgs
+public class KeyboardStateChanged : DeviceStateChanged
 {
     /// <summary>
     /// They key for which the state has changed.
@@ -17,7 +17,7 @@ public class KeyboardEventArgs : DeviceEventArgs
     /// </summary>
     public KeyState KeyState { get; }
 
-    public KeyboardEventArgs(Key key, KeyState keyState)
+    public KeyboardStateChanged(Key key, KeyState keyState)
     {
         Key = key;
         KeyState = keyState;

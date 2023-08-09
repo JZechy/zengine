@@ -12,7 +12,7 @@ public class KeyboardDevice : IDevice
     /// <summary>
     /// Event raised when a keyboard state changes.
     /// </summary>
-    public event EventHandler<DeviceEventArgs>? DeviceEvent;
+    public event EventHandler<DeviceStateChanged>? StateChanged;
 
     /// <summary>
     /// What was previous state of the keyboard.
@@ -64,11 +64,11 @@ public class KeyboardDevice : IDevice
             switch (wasDown)
             {
                 case true when !isDown:
-                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) key, KeyState.Released));
+                    StateChanged?.Invoke(this, new KeyboardStateChanged((Key) key, KeyState.Released));
                     break;
                 case false when isDown:
-                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) key, KeyState.Down));
-                    DeviceEvent?.Invoke(this, new KeyboardEventArgs((Key) key, KeyState.Pressed)); // TODO: Pressed requires more logic. And magic :P
+                    StateChanged?.Invoke(this, new KeyboardStateChanged((Key) key, KeyState.Down));
+                    StateChanged?.Invoke(this, new KeyboardStateChanged((Key) key, KeyState.Pressed)); // TODO: Pressed requires more logic. And magic :P
                     break;
             }
         }

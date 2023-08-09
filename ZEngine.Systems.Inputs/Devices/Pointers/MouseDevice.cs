@@ -13,7 +13,7 @@ public class MouseDevice : IDevice
     /// <summary>
     /// Event that is invoked when a mouse event occurs.
     /// </summary>
-    public event EventHandler<DeviceEventArgs>? DeviceEvent;
+    public event EventHandler<DeviceStateChanged>? StateChanged;
 
     /// <summary>
     /// Previous keyboard state - This is also containing mouse buttons.
@@ -77,7 +77,7 @@ public class MouseDevice : IDevice
     }
 
     /// <summary>
-    /// Reads current mouse position, if the position changes, it will invoke the <see cref="DeviceEvent"/> with the new position.
+    /// Reads current mouse position, if the position changes, it will invoke the <see cref="StateChanged"/> with the new position.
     /// </summary>
     private void ReadMousePosition()
     {
@@ -91,12 +91,12 @@ public class MouseDevice : IDevice
             return;
         }
 
-        DeviceEvent?.Invoke(this, new MousePositionEventArgs(position));
+        StateChanged?.Invoke(this, new MousePositionStateChanged(position));
         _previousPositon = position;
     }
 
     /// <summary>
-    /// Reads the pressed mouse buttons, and invokes the <see cref="DeviceEvent"/> with the appropriate event.
+    /// Reads the pressed mouse buttons, and invokes the <see cref="StateChanged"/> with the appropriate event.
     /// </summary>
     private void ReadMouseButtons()
     {
@@ -113,11 +113,11 @@ public class MouseDevice : IDevice
             switch (wasDown)
             {
                 case true when !isDown:
-                    DeviceEvent?.Invoke(this, new MouseEventArgs((MouseButton) key, KeyState.Released));
+                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton) key, KeyState.Released));
                     break;
                 case false when isDown:
-                    DeviceEvent?.Invoke(this, new MouseEventArgs((MouseButton) key, KeyState.Down));
-                    DeviceEvent?.Invoke(this, new MouseEventArgs((MouseButton) key, KeyState.Pressed)); // TODO: Pressed requires more logic. And magic :P
+                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton) key, KeyState.Down));
+                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton) key, KeyState.Pressed)); // TODO: Pressed requires more logic. And magic :P
                     break;
             }
         }

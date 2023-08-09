@@ -3,4 +3,4 @@
 /// <summary>
 /// Delegate that is used to handle mouse input events.
 /// </summary>
-public delegate void MouseInputCallback(InputContext<MouseContext> context);
+public delegate void MouseInputCallback(InputContext<MouseButtonContext> context);

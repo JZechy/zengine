@@ -83,7 +83,7 @@ public class InputManager
         string path = inputPath.Path;
         if (!_inputPathsCallbacks.ContainsKey(path))
         {
-            _inputPathsCallbacks.TryAdd(path, new GenericInputPathCollection<MouseInputCallback, MouseContext>(inputPath));
+            _inputPathsCallbacks.TryAdd(path, new GenericInputPathCollection<MouseInputCallback, MouseButtonContext>(inputPath));
         }
         
         _inputPathsCallbacks[path].Add(callback);

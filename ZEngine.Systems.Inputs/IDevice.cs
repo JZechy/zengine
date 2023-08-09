@@ -10,7 +10,7 @@ public interface IDevice : IDisposable
     /// <summary>
     /// Event raised when device state changes.
     /// </summary>
-    event EventHandler<DeviceEventArgs> DeviceEvent; 
+    event EventHandler<DeviceStateChanged> StateChanged; 
     
     /// <summary>
     /// Initializes the device.
