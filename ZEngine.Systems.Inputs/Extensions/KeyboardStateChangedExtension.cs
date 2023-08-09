@@ -19,7 +19,6 @@ public static class KeyboardStateChangedExtension
         };
         KeyboardContext context = new()
         {
-            Key = stateChanged.Key,
             State = stateChanged.KeyState
         };
         

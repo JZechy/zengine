@@ -8,11 +8,6 @@ namespace ZEngine.Systems.Inputs.Events;
 public struct KeyboardContext
 {
     /// <summary>
-    /// For which key the event was triggered.
-    /// </summary>
-    public Key Key { get; set; }
-    
-    /// <summary>
     /// What is current state of the key.
     /// </summary>
     public KeyState State { get; set; }

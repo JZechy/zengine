@@ -39,9 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEngine.Tests.Systems.GameO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEngine.Systems.Inputs", "ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj", "{23CB31FD-50BA-425D-AF23-6BBD901B706B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEngine.Tests.Systems.Input.Wpf", "ZEngine.Tests.Systems.Input.Wpf\ZEngine.Tests.Systems.Input.Wpf.csproj", "{35804282-F87B-45FC-91BC-A302106FBE88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEngine.Tests.Systems.Inputs.Wpf", "ZEngine.Tests.Systems.Inputs.Wpf\ZEngine.Tests.Systems.Inputs.Wpf.csproj", "{35804282-F87B-45FC-91BC-A302106FBE88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEngine.Tests.Systems.Input", "ZEngine.Tests.Systems.Input\ZEngine.Tests.Systems.Input.csproj", "{12C5A024-61B7-42E4-8A86-ADB1C12BEBAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEngine.Tests.Systems.Inputs", "ZEngine.Tests.Systems.Inputs\ZEngine.Tests.Systems.Inputs.csproj", "{12C5A024-61B7-42E4-8A86-ADB1C12BEBAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

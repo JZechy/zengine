@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ZEngine.Tests.Systems.Input.Wpf
+namespace ZEngine.Tests.Systems.Inputs.Wpf
 {
     /// <summary>
     /// Interaction logic for App.xaml

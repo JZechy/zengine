@@ -12,7 +12,7 @@ using KeyboardDevice = ZEngine.Systems.Inputs.Devices.Keyboards.KeyboardDevice;
 using MouseButton = ZEngine.Systems.Inputs.Devices.Pointers.MouseButton;
 using MouseDevice = ZEngine.Systems.Inputs.Devices.Pointers.MouseDevice;
 
-namespace ZEngine.Tests.Systems.Input.Wpf;
+namespace ZEngine.Tests.Systems.Inputs.Wpf;
 
 /// <summary>
 /// This window is used to test different windows devices in the input system.
