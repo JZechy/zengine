@@ -32,6 +32,14 @@ public class InputManagerTest
             State = KeyState.Pressed
         }));
         called.Should().BeTrue();
+
+        called = false;
+        inputManager.UnregisterKeyboardInput(new KeyboardInputPath(Key.W), KeyboardCallback);
+        inputManager.ProcessInput(new InputContext<KeyboardContext>(new KeyboardInputPath(Key.W), new KeyboardContext
+        {
+            State = KeyState.Pressed
+        }));
+        called.Should().BeFalse();
         
         return;
 
