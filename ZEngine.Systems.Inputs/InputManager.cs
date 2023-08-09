@@ -1,4 +1,10 @@
-﻿namespace ZEngine.Systems.Inputs;
+﻿using System.Collections.Concurrent;
+using ZEngine.Systems.Inputs.Events;
+using ZEngine.Systems.Inputs.Events.Collections;
+using ZEngine.Systems.Inputs.Events.Delegates;
+using ZEngine.Systems.Inputs.Events.Paths;
+
+namespace ZEngine.Systems.Inputs;
 
 /// <summary>
 /// Input Manager is a exposed public API that can be used to bind input events to actions.
@@ -14,6 +20,11 @@ public class InputManager
     /// Reference to the input system.
     /// </summary>
     private readonly InputSystem _inputSystem;
+    
+    /// <summary>
+    /// Collection of registered callbacks for a specific input path.
+    /// </summary>
+    private readonly ConcurrentDictionary<string, IInputPathCollection> _inputPathsCallbacks = new();
 
     private InputManager(InputSystem inputSystem)
     {
@@ -44,5 +55,37 @@ public class InputManager
     internal static void CreateInstance(InputSystem inputSystem)
     {
         _instance = new InputManager(inputSystem);
+    }
+
+    /// <summary>
+    /// Registers new keyboard input.
+    /// </summary>
+    /// <param name="inputPath"></param>
+    /// <param name="callback"></param>
+    public void RegisterKeyboardInput(KeyboardInputPath inputPath, KeyboardInputCallback callback)
+    {
+        string path = inputPath.Path;
+        if (!_inputPathsCallbacks.ContainsKey(path))
+        {
+            _inputPathsCallbacks.TryAdd(path, new GenericInputPathCollection<KeyboardInputCallback, KeyboardContext>(inputPath));
+        }
+        
+        _inputPathsCallbacks[path].Add(callback);
+    }
+
+    /// <summary>
+    /// Registers new mouse input.
+    /// </summary>
+    /// <param name="inputPath"></param>
+    /// <param name="callback"></param>
+    public void RegisterMouseInput(MouseInputPath inputPath, MouseInputCallback callback)
+    {
+        string path = inputPath.Path;
+        if (!_inputPathsCallbacks.ContainsKey(path))
+        {
+            _inputPathsCallbacks.TryAdd(path, new GenericInputPathCollection<MouseInputCallback, MouseContext>(inputPath));
+        }
+        
+        _inputPathsCallbacks[path].Add(callback);
     }
 }
