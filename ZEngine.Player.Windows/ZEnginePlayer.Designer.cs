@@ -1,6 +1,6 @@
 ﻿namespace ZEngine.Player.Windows;
 
-partial class ZenginePlayer
+partial class ZEnginePlayer
 {
     /// <summary>
     ///  Required designer variable.

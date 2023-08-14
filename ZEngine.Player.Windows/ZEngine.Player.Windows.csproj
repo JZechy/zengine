@@ -10,6 +10,12 @@
 
     <ItemGroup>
       <PackageReference Include="OpenTK" Version="4.8.0" />
+      <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ZEngine.Core.Game\ZEngine.Core.Game.csproj" />
+      <ProjectReference Include="..\ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj" />
     </ItemGroup>
 
 </Project>

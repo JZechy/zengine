@@ -38,4 +38,13 @@ public class GameBuilder
 
         return provider.GetRequiredService<GameManager>();
     }
+
+    /// <summary>
+    /// Registers a game system.
+    /// </summary>
+    /// <typeparam name="TGameSystem"></typeparam>
+    public void AddSystem<TGameSystem>() where TGameSystem : class, IGameSystem
+    {
+        Services.AddSingleton<IGameSystem, TGameSystem>();
+    }
 }

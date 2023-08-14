@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ZEngine.Core.Game\ZEngine.Core.Game.csproj" />
       <ProjectReference Include="..\ZEngine.Core\ZEngine.Core.csproj" />
     </ItemGroup>
 

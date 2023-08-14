@@ -70,19 +70,22 @@ public class GameManager
     /// <summary>
     /// Starts the game loop.
     /// </summary>
-    public void Start()
+    public async void Start()
     {
         Initialize();
 
-        while (_isRunning)
+        await Task.Run(() =>
         {
-            GameTime.CalculateDeltaTime();
-            
-            UpdateSystems();
-            CheckGameExit();
-            
-            Thread.Sleep(SleepTime);
-        }
+            while (_isRunning)
+            {
+                GameTime.CalculateDeltaTime();
+
+                UpdateSystems();
+                CheckGameExit();
+
+                Thread.Sleep(SleepTime);
+            }
+        });
         
         CleanUp();
     }
