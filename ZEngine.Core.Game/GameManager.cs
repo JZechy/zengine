@@ -13,14 +13,14 @@ public class GameManager
     private readonly ILogger<GameManager> _logger;
 
     /// <summary>
+    /// Cancellation token source used to stop the game loop.
+    /// </summary>
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+
+    /// <summary>
     /// List of all registered systems for the game.
     /// </summary>
     private List<IGameSystem> _systems;
-    
-    /// <summary>
-    /// Indicates if the game loop is running.
-    /// </summary>
-    private bool _isRunning;
 
     public GameManager(IServiceProvider serviceProvider, IEnumerable<IGameSystem> gameSystems, ILogger<GameManager> logger)
     {
@@ -74,20 +74,22 @@ public class GameManager
     {
         Initialize();
 
-        await Task.Run(() =>
-        {
-            while (_isRunning)
-            {
-                GameTime.CalculateDeltaTime();
-
-                UpdateSystems();
-                CheckGameExit();
-
-                Thread.Sleep(SleepTime);
-            }
-        });
+        await Task.Run(GameLoop);
         
         CleanUp();
+    }
+
+    private void GameLoop()
+    {
+        while (!_cancellationTokenSource.IsCancellationRequested)
+        {
+            GameTime.CalculateDeltaTime();
+
+            UpdateSystems();
+            CheckGameExit();
+
+            Thread.Sleep(SleepTime);
+        }
     }
 
     /// <summary>
@@ -96,7 +98,6 @@ public class GameManager
     private void Initialize()
     {
         _logger.LogInformation("Initializing game...");
-        _isRunning = true;
         _systems = _systems.OrderBy(x => x.Priority).ToList();
 
         foreach (IGameSystem gameSystem in _systems)
@@ -141,7 +142,7 @@ public class GameManager
     {
         if (ShouldExit)
         {
-            _isRunning = false;
+            _cancellationTokenSource.Cancel();
         }
     }
 }
