@@ -24,6 +24,11 @@ public class GameObject : IGameObject
     /// </summary>
     private bool _active;
 
+    /// <summary>
+    /// Instance of transform object.
+    /// </summary>
+    private Transform? _transform;
+
     public GameObject(string name = "New Game Object", bool active = false)
     {
         _messageHandler = new MessageHandler(this);
@@ -46,7 +51,7 @@ public class GameObject : IGameObject
     }
 
     /// <inheritdoc />
-    public Transform Transform { get; private set; } = null!;
+    public Transform Transform => _transform ??= GetRequiredComponent<Transform>();
 
     /// <summary>
     /// For the update of children, we want only active game objects.

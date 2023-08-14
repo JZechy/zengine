@@ -18,7 +18,7 @@ public abstract class GameComponent : IGameComponent
     /// <summary>
     /// Backing field.
     /// </summary>
-    private bool _enabled;
+    private bool _enabled = true;
 
     /// <inheritdoc />
     public bool Enabled
