@@ -1,4 +1,6 @@
-﻿using ZEngine.Architecture.GameObjects;
+﻿using ZEngine.Architecture.Components;
+using ZEngine.Architecture.GameObjects;
+using ZEngine.Systems.GameObjects.Prefabs;
 
 namespace ZEngine.Systems.GameObjects;
 
@@ -58,6 +60,7 @@ public class ObjectManager
     public static IGameObject Create()
     {
         GameObject gameObject = new("New Game Object", true);
+        gameObject.AddComponent<Transform>();
         Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
@@ -71,7 +74,43 @@ public class ObjectManager
     public static IGameObject Create(IGameObject parent)
     {
         GameObject gameObject = new("New Game Object", true);
+        gameObject.AddComponent<Transform>();
         gameObject.Transform.SetParent(parent.Transform);
+        Instance._gameObjectSystem.Register(gameObject);
+
+        return gameObject;
+    }
+
+    /// <summary>
+    /// Creates a new instance of game object from a prefab.
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <returns></returns>
+    public static IGameObject FromPrefab(IPrefab prefab)
+    {
+        IGameObject gameObject = prefab.Instantiate();
+        if (!gameObject.HasComponent<Transform>())
+        {
+            gameObject.AddComponent<Transform>();
+        }
+        Instance._gameObjectSystem.Register(gameObject);
+
+        return gameObject;
+    }
+
+    /// <summary>
+    /// Creates a new instance of game object from a prefab as a child of another game object.
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public static IGameObject FromPrefab(IPrefab prefab, IGameObject parent)
+    {
+        IGameObject gameObject = prefab.Instantiate(parent);
+        if (!gameObject.HasComponent<Transform>())
+        {
+            gameObject.AddComponent<Transform>();
+        }
         Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;

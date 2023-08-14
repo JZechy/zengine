@@ -29,8 +29,6 @@ public class GameObject : IGameObject
         _messageHandler = new MessageHandler(this);
         Name = name;
         _active = active;
-
-        Initialize();
     }
 
     /// <inheritdoc />
@@ -59,14 +57,6 @@ public class GameObject : IGameObject
     /// For the update of components, we want only enabled components.
     /// </summary>
     private IEnumerable<IGameComponent> EnabledComponents => _components.Values.Where(x => x.Enabled);
-
-    /// <summary>
-    /// Initializes the game object by adding required components.
-    /// </summary>
-    private void Initialize()
-    {
-        Transform = AddComponent<Transform>();
-    }
 
     /// <inheritdoc />
     public IReadOnlyCollection<IGameComponent> Components => _components.Values.ToImmutableHashSet();
@@ -105,6 +95,26 @@ public class GameObject : IGameObject
         }
 
         return component;
+    }
+
+    /// <inheritdoc />
+    public void AddComponent(IGameComponent component)
+    {
+        Type componentType = component.GetType();
+        if (_components.ContainsKey(componentType))
+        {
+            throw new ArgumentException($"Component of type {componentType.FullName} already exists on {Name}.");
+        }
+        
+        component.GameObject = this;
+        _components.Add(componentType, component);
+        if (!Active)
+        {
+            return;
+        }
+        
+        component.SendMessage(SystemMethod.Awake);
+        component.SendMessage(SystemMethod.OnEnable);
     }
 
     /// <inheritdoc />

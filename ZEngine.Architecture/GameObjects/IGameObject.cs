@@ -44,6 +44,12 @@ public interface IGameObject : IMessageReceiver
     /// <param name="componentType"></param>
     /// <returns></returns>
     IGameComponent AddComponent(Type componentType);
+
+    /// <summary>
+    /// Adds existing instance of component.
+    /// </summary>
+    /// <param name="component"></param>
+    void AddComponent(IGameComponent component);
     
     /// <summary>
     /// Gets component of type <typeparamref name="TComponent"/> attached to this game object.

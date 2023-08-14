@@ -11,7 +11,7 @@ public interface IPrefab
     /// <summary>
     /// Name of created game object.
     /// </summary>
-    string Name { get; }
+    string Name { get; set; }
     
     /// <summary>
     /// Adds a new component to the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
@@ -33,7 +33,7 @@ public interface IPrefab
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    object AddComponent(Type type);
+    IGameComponent AddComponent(Type type);
 
     /// <summary>
     /// Tries to get a component from the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
@@ -46,9 +46,10 @@ public interface IPrefab
     /// <summary>
     /// Tries to get a component from the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
     /// </summary>
+    /// <param name="type"></param>
     /// <param name="component"></param>
     /// <returns></returns>
-    bool TryGetComponent(out object? component);
+    bool TryGetComponent(Type type, out IGameComponent? component);
     
     /// <summary>
     /// Tries to remove a component from the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
@@ -69,4 +70,11 @@ public interface IPrefab
     /// </summary>
     /// <returns></returns>
     IGameObject Instantiate();
+
+    /// <summary>
+    /// Creates a new instance of the <see cref="GameObject"/> described by this <see cref="IPrefab"/> as a child of the given <see cref="IGameObject"/>
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    IGameObject Instantiate(IGameObject parent);
 }
