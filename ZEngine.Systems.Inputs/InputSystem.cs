@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 using ZEngine.Systems.Inputs.Devices.Events;
 using ZEngine.Systems.Inputs.Devices.Keyboards.Events;
 using ZEngine.Systems.Inputs.Devices.Pointers.Events;
@@ -22,6 +23,11 @@ public class InputSystem : IInputSystem
     /// Collection of all registered devices.
     /// </summary>
     private readonly List<IDevice> _devices = new();
+
+    /// <summary>
+    /// This queue is used to store catched changes in device state.
+    /// </summary>
+    private readonly ConcurrentQueue<DeviceStateChanged> _deviceStateChanges = new();
 
     /// <summary>
     /// Instance of input manager for passing events to the game.
@@ -65,9 +71,19 @@ public class InputSystem : IInputSystem
     /// <inheritdoc />
     public void Update()
     {
-        foreach (IDevice device in _devices)
+        if(!_deviceStateChanges.TryDequeue(out DeviceStateChanged? deviceStateChanged))
         {
-            device.Update();
+            return;
+        }
+        
+        switch (deviceStateChanged)
+        {
+            case KeyboardStateChanged keyboardStateChanged:
+                ProcessKeyboardEvent(keyboardStateChanged);
+                break;
+            case MouseStateChanged mouseStateChanged:
+                ProcessMouseEvent(mouseStateChanged);
+                break;
         }
     }
 
@@ -81,6 +97,15 @@ public class InputSystem : IInputSystem
         }
     }
 
+    /// <inheritdoc />
+    public void ScanDevices()
+    {
+        foreach (IDevice device in _devices)
+        {
+            device.Scan();
+        }
+    }
+
     /// <summary>
     /// Handles device events.
     /// </summary>
@@ -89,15 +114,7 @@ public class InputSystem : IInputSystem
     /// <exception cref="NotImplementedException"></exception>
     private void DeviceOnStateChanged(object? sender, DeviceStateChanged e)
     {
-        switch (e)
-        {
-            case KeyboardStateChanged keyboardStateChanged:
-                ProcessKeyboardEvent(keyboardStateChanged);
-                break;
-            case MouseStateChanged mouseStateChanged:
-                ProcessMouseEvent(mouseStateChanged);
-                break;
-        }
+        _deviceStateChanges.Enqueue(e);
     }
 
     /// <summary>

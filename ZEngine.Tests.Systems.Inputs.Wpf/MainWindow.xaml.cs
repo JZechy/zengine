@@ -51,8 +51,8 @@ public partial class MainWindow : Window
     /// <param name="e"></param>
     private void UpdateTick(object? sender, EventArgs e)
     {
-        _keyboardDevice.Update();
-        _mouseDevice.Update();
+        _keyboardDevice.Scan();
+        _mouseDevice.Scan();
     }
 
     private void OnKeyboardEvent(object? sender, DeviceStateChanged e)

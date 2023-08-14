@@ -49,7 +49,7 @@ public class KeyboardDevice : IDevice
     }
 
     /// <inheritdoc />
-    public void Update()
+    public void Scan()
     {
         if (!GetKeyboardState(_currentState))
         {

@@ -18,7 +18,7 @@ public interface IDevice : IDisposable
     void Initialize();
 
     /// <summary>
-    /// Updates the devices current state.
+    /// Scan the device for changes.
     /// </summary>
-    void Update();
+    void Scan();
 }
