@@ -1,4 +1,6 @@
-﻿using ZEngine.Architecture.Communication.Messages;
+﻿using System.Reflection;
+using FastDeepCloner;
+using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.GameObjects;
 
 namespace ZEngine.Architecture.Components;
@@ -16,7 +18,7 @@ public abstract class GameComponent : IGameComponent
     /// <summary>
     /// Backing field.
     /// </summary>
-    private bool _enabled;
+    private bool _enabled = true;
 
     /// <inheritdoc />
     public bool Enabled
@@ -35,6 +37,18 @@ public abstract class GameComponent : IGameComponent
     protected GameComponent()
     {
         _messageHandler = new MessageHandler(this);
+    }
+
+    /// <inheritdoc />
+    public IGameComponent Clone()
+    {
+        FastDeepClonerSettings settings = new()
+        {
+            CloneLevel = CloneLevel.Hierarki,
+            FieldType = FieldType.Both
+        };
+
+        return this.Clone(settings);
     }
 
     /// <inheritdoc />

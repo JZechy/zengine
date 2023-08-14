@@ -24,13 +24,16 @@ public class GameObject : IGameObject
     /// </summary>
     private bool _active;
 
+    /// <summary>
+    /// Instance of transform object.
+    /// </summary>
+    private Transform? _transform;
+
     public GameObject(string name = "New Game Object", bool active = false)
     {
         _messageHandler = new MessageHandler(this);
         Name = name;
         _active = active;
-
-        Initialize();
     }
 
     /// <inheritdoc />
@@ -48,7 +51,7 @@ public class GameObject : IGameObject
     }
 
     /// <inheritdoc />
-    public Transform Transform { get; private set; } = null!;
+    public Transform Transform => _transform ??= GetRequiredComponent<Transform>();
 
     /// <summary>
     /// For the update of children, we want only active game objects.
@@ -59,14 +62,6 @@ public class GameObject : IGameObject
     /// For the update of components, we want only enabled components.
     /// </summary>
     private IEnumerable<IGameComponent> EnabledComponents => _components.Values.Where(x => x.Enabled);
-
-    /// <summary>
-    /// Initializes the game object by adding required components.
-    /// </summary>
-    private void Initialize()
-    {
-        Transform = AddComponent<Transform>();
-    }
 
     /// <inheritdoc />
     public IReadOnlyCollection<IGameComponent> Components => _components.Values.ToImmutableHashSet();
@@ -105,6 +100,26 @@ public class GameObject : IGameObject
         }
 
         return component;
+    }
+
+    /// <inheritdoc />
+    public void AddComponent(IGameComponent component)
+    {
+        Type componentType = component.GetType();
+        if (_components.ContainsKey(componentType))
+        {
+            throw new ArgumentException($"Component of type {componentType.FullName} already exists on {Name}.");
+        }
+        
+        component.GameObject = this;
+        _components.Add(componentType, component);
+        if (!Active)
+        {
+            return;
+        }
+        
+        component.SendMessage(SystemMethod.Awake);
+        component.SendMessage(SystemMethod.OnEnable);
     }
 
     /// <inheritdoc />
