@@ -47,4 +47,13 @@ public class GameBuilder
     {
         Services.AddSingleton<IGameSystem, TGameSystem>();
     }
+
+    /// <summary>
+    /// Register a game system with custom implementation callback.
+    /// </summary>
+    /// <param name="implementationCallback"></param>
+    public void AddSystem(Func<IServiceProvider, IGameSystem> implementationCallback)
+    {
+        Services.AddSingleton(implementationCallback);
+    }
 }

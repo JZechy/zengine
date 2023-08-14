@@ -65,7 +65,7 @@ public class MouseDevice : IDevice
     }
 
     /// <inheritdoc />
-    public void Update()
+    public void Scan()
     {
         ReadMouseButtons();
         ReadMousePosition();
