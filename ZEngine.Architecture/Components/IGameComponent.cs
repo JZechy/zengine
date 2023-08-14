@@ -20,4 +20,10 @@ public interface IGameComponent : IMessageReceiver
     /// Game object to which this component is attached.
     /// </summary>
     IGameObject GameObject { get; set; }
+
+    /// <summary>
+    /// Clones this component to new instance.
+    /// </summary>
+    /// <returns></returns>
+    IGameComponent Clone();
 }

@@ -11,7 +11,11 @@ public class Transform : GameComponent, IEnumerable<Transform>
     /// <summary>
     /// Collection of all available children of this transform.
     /// </summary>
-    private readonly HashSet<Transform> _children = new();
+    /// <remarks>
+    /// This cannot be readonly because of deep clone.
+    /// </remarks>
+    // ReSharper disable once FieldCanBeMadeReadOnly.Local
+    private HashSet<Transform> _children = new();
 
     /// <summary>
     /// Backing field holding actual position of the game object.
