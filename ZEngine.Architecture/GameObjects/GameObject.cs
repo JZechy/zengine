@@ -54,6 +54,11 @@ public class GameObject : IGameObject
     /// For the update of children, we want only active game objects.
     /// </summary>
     private IEnumerable<IGameObject> ActiveChildren => Transform.Select(x => x.GameObject).Where(x => x.Active);
+    
+    /// <summary>
+    /// For the update of components, we want only enabled components.
+    /// </summary>
+    private IEnumerable<IGameComponent> EnabledComponents => _components.Values.Where(x => x.Enabled);
 
     /// <summary>
     /// Initializes the game object by adding required components.
@@ -214,7 +219,7 @@ public class GameObject : IGameObject
             gameObject.SendMessage(SystemMethod.Update);
         }
 
-        foreach (IGameComponent gameComponent in _components.Values)
+        foreach (IGameComponent gameComponent in EnabledComponents)
         {
             gameComponent.SendMessage(SystemMethod.Update);
         }
