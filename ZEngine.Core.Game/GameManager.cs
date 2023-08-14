@@ -73,12 +73,13 @@ public class GameManager
     public async void Start()
     {
         Initialize();
-
         await Task.Run(GameLoop);
-        
         CleanUp();
     }
 
+    /// <summary>
+    /// Method processing the actual game loop.
+    /// </summary>
     private void GameLoop()
     {
         while (!_cancellationTokenSource.IsCancellationRequested)
