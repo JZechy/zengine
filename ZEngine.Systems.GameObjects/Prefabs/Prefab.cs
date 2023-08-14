@@ -103,13 +103,4 @@ public class Prefab : IPrefab
         
         return gameObject;
     }
-
-    /// <inheritdoc />
-    public IGameObject Instantiate(IGameObject parent)
-    {
-        IGameObject gameObject = Instantiate();
-        gameObject.Transform.SetParent(parent.Transform);
-
-        return gameObject;
-    }
 }

@@ -69,12 +69,5 @@ public interface IPrefab
     /// Creates a new instance of the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
     /// </summary>
     /// <returns></returns>
-    IGameObject Instantiate();
-
-    /// <summary>
-    /// Creates a new instance of the <see cref="GameObject"/> described by this <see cref="IPrefab"/> as a child of the given <see cref="IGameObject"/>
-    /// </summary>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    IGameObject Instantiate(IGameObject parent);
+    internal IGameObject Instantiate();
 }

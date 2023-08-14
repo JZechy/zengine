@@ -106,11 +106,8 @@ public class ObjectManager
     /// <returns></returns>
     public static IGameObject FromPrefab(IPrefab prefab, IGameObject parent)
     {
-        IGameObject gameObject = prefab.Instantiate(parent);
-        if (!gameObject.HasComponent<Transform>())
-        {
-            gameObject.AddComponent<Transform>();
-        }
+        IGameObject gameObject = FromPrefab(prefab);
+        gameObject.Transform.SetParent(parent.Transform);
         Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
