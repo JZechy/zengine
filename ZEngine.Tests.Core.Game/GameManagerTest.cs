@@ -17,13 +17,16 @@ public class GameManagerTest
     /// Test basic game loop behaviour.
     /// </summary>
     [Test]
-    public void Test_BasicGameLoop()
+    public async Task Test_BasicGameLoop()
     {
         GameManager gameManager = new(Mock.Of<IServiceProvider>(), Enumerable.Empty<IGameSystem>(), new NullLogger<GameManager>());
         BasicSystem basicSystem = new(); // Basic system will interrupt the game loop after some iterations.
         gameManager.AddSystem(basicSystem);
         
         gameManager.Start();
+        
+        await gameManager.Task;
+        
         GameTime.DeltaTime.Should().BeGreaterThan(0);
         
         basicSystem.Initialized.Should().BeTrue();

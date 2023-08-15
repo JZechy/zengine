@@ -18,6 +18,11 @@ public class GameManager
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     /// <summary>
+    /// Task completion source used to wait for the game loop to finish.
+    /// </summary>
+    private readonly TaskCompletionSource _gameLoopCompletion = new();
+
+    /// <summary>
     /// List of all registered systems for the game.
     /// </summary>
     private List<IGameSystem> _systems;
@@ -28,21 +33,26 @@ public class GameManager
         ServiceProvider = serviceProvider;
         _systems = gameSystems.ToList();
     }
-    
+
     /// <summary>
     /// Access to the game's service provider.
     /// </summary>
     public IServiceProvider ServiceProvider { get; }
-    
+
     /// <summary>
     /// The frequency of game updates in Hz.
     /// </summary>
     public int UpdateFrequency { get; set; } = 60;
-    
+
+    /// <summary>
+    /// Gets a task that completes when the game is finished.
+    /// </summary>
+    public Task Task => _gameLoopCompletion.Task;
+
     /// <summary>
     /// Orders game to exit.
     /// </summary>
-    public bool ShouldExit { get; set; }
+    private bool ShouldExit { get; set; }
 
     /// <summary>
     /// The sleep time before the next update.
@@ -52,12 +62,12 @@ public class GameManager
         get
         {
             int targetFrameTime = 1000 / UpdateFrequency;
-            int sleep = targetFrameTime - (int)GameTime.DeltaTime;
+            int sleep = targetFrameTime - (int) GameTime.DeltaTime;
 
             return Math.Max(sleep, 0);
         }
     }
-    
+
     /// <summary>
     /// Adds additional instance of <see cref="IGameSystem"/> to the game.
     /// </summary>
@@ -75,6 +85,8 @@ public class GameManager
         Initialize();
         await Task.Run(GameLoop);
         CleanUp();
+        
+        _gameLoopCompletion.SetResult();
     }
 
     /// <summary>

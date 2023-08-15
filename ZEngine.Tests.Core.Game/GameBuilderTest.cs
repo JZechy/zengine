@@ -15,7 +15,7 @@ namespace ZEngine.Tests.Core.Game;
 public class GameBuilderTest
 {
     [Test]
-    public void TestGameBuilder()
+    public async Task TestGameBuilder()
     {
         GameBuilder builder = GameBuilder.Create();
         builder.Services.AddSingleton<ILogger<GameManager>>(_ => new NullLogger<GameManager>());
@@ -27,6 +27,7 @@ public class GameBuilderTest
             .First();
         
         gameManager.Start();
+        await gameManager.Task;
 
         basicSystem.Initialized.Should().BeTrue();
         basicSystem.Updated.Should().BeTrue();
