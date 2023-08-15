@@ -88,11 +88,21 @@ public class ObjectManager
     /// <returns></returns>
     public static IGameObject FromPrefab(IPrefab prefab)
     {
-        IGameObject gameObject = prefab.Instantiate();
+        GameObject gameObject = new()
+        {
+            Name = prefab.Name
+        };
+        
+        foreach (IGameComponent component in prefab.Components)
+        {
+            gameObject.AddComponent(component.Clone());
+        }
+        
         if (!gameObject.HasComponent<Transform>())
         {
             gameObject.AddComponent<Transform>();
         }
+        
         Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
@@ -108,7 +118,6 @@ public class ObjectManager
     {
         IGameObject gameObject = FromPrefab(prefab);
         gameObject.Transform.SetParent(parent.Transform);
-        Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
     }

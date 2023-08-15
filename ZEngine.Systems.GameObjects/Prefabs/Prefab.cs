@@ -12,11 +12,12 @@ public class Prefab : IPrefab
     /// List of components to add to the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
     /// </summary>
     private readonly Dictionary<Type, IGameComponent> _components = new();
-
-    /// <summary>
-    /// Gets/sets the name of the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
-    /// </summary>
+    
+    /// <inheritdoc />
     public string Name { get; set; } = "Prefab Clone";
+    
+    /// <inheritdoc />
+    public IReadOnlyCollection<IGameComponent> Components => _components.Values;
 
     /// <inheritdoc />
     public TComponent AddComponent<TComponent>() where TComponent : class, IGameComponent
@@ -86,21 +87,5 @@ public class Prefab : IPrefab
     public bool TryRemoveComponent(Type type)
     {
         return _components.Remove(type);
-    }
-
-    /// <inheritdoc />
-    public IGameObject Instantiate()
-    {
-        GameObject gameObject = new()
-        {
-            Name = Name
-        };
-
-        foreach (IGameComponent component in _components.Values)
-        {
-            gameObject.AddComponent(component.Clone());
-        }
-        
-        return gameObject;
     }
 }

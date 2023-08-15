@@ -14,6 +14,11 @@ public interface IPrefab
     string Name { get; set; }
     
     /// <summary>
+    /// Gets collection of defined components.
+    /// </summary>
+    IReadOnlyCollection<IGameComponent> Components { get; }
+    
+    /// <summary>
     /// Adds a new component to the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
     /// </summary>
     /// <typeparam name="TComponent"></typeparam>
@@ -64,10 +69,4 @@ public interface IPrefab
     /// <param name="type"></param>
     /// <returns></returns>
     bool TryRemoveComponent(Type type);
-    
-    /// <summary>
-    /// Creates a new instance of the <see cref="GameObject"/> described by this <see cref="IPrefab"/>
-    /// </summary>
-    /// <returns></returns>
-    internal IGameObject Instantiate();
 }
