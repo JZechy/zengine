@@ -28,7 +28,7 @@ public class PrefabTest
         IGameObject gameObject = ObjectManager.FromPrefab(prefab);
         Transform transform = gameObject.GetRequiredComponent<Transform>();
 
-        prefab.TryGetComponent(out Transform? prefabTransform).Should().BeTrue();
-        transform.Position.Should().Be(prefabTransform!.Position);
+        Transform prefabTransform = prefab.GetRequiredComponent<Transform>();
+        transform.Position.Should().Be(prefabTransform.Position);
     }
 }
