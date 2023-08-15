@@ -1,10 +1,20 @@
-﻿namespace ZEngine.Architecture.Components;
+﻿namespace ZEngine.Architecture.Components.Model;
 
 /// <summary>
 /// This interface describes all possible ways, how to work with game component model on a object.
 /// </summary>
 public interface IGameComponentModel
 {
+    /// <summary>
+    /// Event fired when new component is added to the game object.
+    /// </summary>
+    event EventHandler<IGameComponent>? ComponentAdded;
+
+    /// <summary>
+    /// Event fired when component is removed from the game object.
+    /// </summary>
+    event EventHandler<IGameComponent>? ComponentRemoved;
+    
     #region Add components
     
     /// <summary>

@@ -19,7 +19,6 @@ public class GameObjectTest
     public void Test_GameObjectComponent()
     {
         GameObject gameObject = new("Test", true);
-        gameObject.AddComponent<Transform>();
         
         Transform transform = gameObject.GetRequiredComponent<Transform>();
         transform.GameObject.Should().Be(gameObject);
