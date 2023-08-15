@@ -55,7 +55,7 @@ public class GameManager
     private bool ShouldExit { get; set; }
 
     /// <summary>
-    /// The sleep time before the next update.
+    /// The sleep time in ms before the next update.
     /// </summary>
     private int SleepTime
     {
@@ -85,14 +85,14 @@ public class GameManager
         Initialize();
         await Task.Run(GameLoop);
         CleanUp();
-        
+
         _gameLoopCompletion.SetResult();
     }
 
     /// <summary>
     /// Method processing the actual game loop.
     /// </summary>
-    private void GameLoop()
+    private async void GameLoop()
     {
         while (!_cancellationTokenSource.IsCancellationRequested)
         {
@@ -101,7 +101,7 @@ public class GameManager
             UpdateSystems();
             CheckGameExit();
 
-            Thread.Sleep(SleepTime);
+            await Task.Delay(SleepTime);
         }
     }
 
@@ -112,10 +112,24 @@ public class GameManager
     {
         _logger.LogInformation("Initializing game...");
         _systems = _systems.OrderBy(x => x.Priority).ToList();
+        List<IGameSystem> failedSystems = new();
 
         foreach (IGameSystem gameSystem in _systems)
         {
-            gameSystem.Initialize();
+            try
+            {
+                gameSystem.Initialize();
+            }
+            catch (Exception e)
+            {
+                failedSystems.Add(gameSystem);
+                _logger.LogCritical(e, "An unhandled exception occurred while initializing game system {SystemName}. Failing systems are removed.", gameSystem.GetType().Name);
+            }
+        }
+
+        foreach (IGameSystem gameSystem in failedSystems)
+        {
+            _systems.Remove(gameSystem);
         }
     }
 
@@ -124,16 +138,21 @@ public class GameManager
     /// </summary>
     private void UpdateSystems()
     {
-        try
+        foreach (IGameSystem gameSystem in _systems)
         {
-            foreach (IGameSystem gameSystem in _systems)
+            try
             {
                 gameSystem.Update();
             }
-        }
-        catch (AbortGameException)
-        {
-            ShouldExit = true;
+            catch (AbortGameException)
+            {
+                ShouldExit = true;
+                break;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e, "An unhandled exception occurred while updating game system {SystemName}.", gameSystem.GetType().Name);
+            }
         }
     }
 
@@ -144,7 +163,14 @@ public class GameManager
     {
         foreach (IGameSystem gameSystem in _systems)
         {
-            gameSystem.CleanUp();
+            try
+            {
+                gameSystem.CleanUp();
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e, "An unhandled exception occurred while cleaning up game system {SystemName}.", gameSystem.GetType().Name);
+            }
         }
     }
 
