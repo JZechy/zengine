@@ -25,7 +25,7 @@ public class PrefabTest
         };
         prefab.AddComponent<Transform>(x => x.Position = new Vector3(10, 10, 10));
 
-        IGameObject gameObject = ObjectManager.FromPrefab(prefab);
+        IGameObject gameObject = GameObjectManager.FromPrefab(prefab);
         Transform transform = gameObject.GetRequiredComponent<Transform>();
 
         Transform prefabTransform = prefab.GetRequiredComponent<Transform>();

@@ -7,27 +7,27 @@ namespace ZEngine.Systems.GameObjects;
 /// <summary>
 /// Exposed API for managing game objects.
 /// </summary>
-public class ObjectManager
+public class GameObjectManager
 {
     /// <summary>
-    /// Current instance of <see cref="ObjectManager"/>.
+    /// Current instance of <see cref="GameObjectManager"/>.
     /// </summary>
-    private static ObjectManager? _objectManager;
+    private static GameObjectManager? _objectManager;
     
     /// <summary>
     /// Reference to the <see cref="GameObjectSystem"/> instance.
     /// </summary>
     private readonly GameObjectSystem _gameObjectSystem;
 
-    private ObjectManager(GameObjectSystem gameObjectSystem)
+    private GameObjectManager(GameObjectSystem gameObjectSystem)
     {
         _gameObjectSystem = gameObjectSystem;
     }
 
     /// <summary>
-    /// Current instance of <see cref="ObjectManager"/>.
+    /// Current instance of <see cref="GameObjectManager"/>.
     /// </summary>
-    public static ObjectManager Instance
+    public static GameObjectManager Instance
     {
         get
         {
@@ -42,7 +42,7 @@ public class ObjectManager
     }
     
     /// <summary>
-    /// Factory method for creating a new instance of <see cref="ObjectManager"/>.
+    /// Factory method for creating a new instance of <see cref="GameObjectManager"/>.
     /// </summary>
     /// <remarks>
     /// Object manager is instantiated by <see cref="GameObjectSystem"/> during its initialization.
@@ -50,7 +50,7 @@ public class ObjectManager
     /// <param name="gameObjectSystem"></param>
     internal static void CreateInstance(GameObjectSystem gameObjectSystem)
     {
-        Instance = new ObjectManager(gameObjectSystem);
+        Instance = new GameObjectManager(gameObjectSystem);
     }
     
     /// <summary>

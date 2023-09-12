@@ -69,7 +69,7 @@ public class GameObjectSystem : IGameSystem
     /// <inheritdoc />
     public void Initialize()
     {
-        ObjectManager.CreateInstance(this);
+        GameObjectManager.CreateInstance(this);
     }
 
     /// <inheritdoc />

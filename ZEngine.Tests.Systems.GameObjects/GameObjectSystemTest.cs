@@ -17,12 +17,12 @@ public class GameObjectSystemTest
     [Test]
     public void Test_Initialization()
     {
-        this.Invoking(x => { _ = ObjectManager.Instance; }).Should().Throw<InvalidOperationException>();
+        this.Invoking(x => { _ = GameObjectManager.Instance; }).Should().Throw<InvalidOperationException>();
 
         GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>());
         system.Initialize();
 
-        ObjectManager.Instance.Should().NotBeNull();
+        GameObjectManager.Instance.Should().NotBeNull();
     }
 
     /// <summary>
@@ -34,14 +34,14 @@ public class GameObjectSystemTest
         GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>());
         system.Initialize();
 
-        IGameObject gameObject = ObjectManager.Create();
+        IGameObject gameObject = GameObjectManager.Create();
         SystemTestComponent component = gameObject.AddComponent<SystemTestComponent>();
         component.AwakeCalled.Should().BeTrue();
 
         system.Update();
         component.OnEnableCalled.Should().BeTrue();
         component.UpdateCalled.Should().BeTrue();
-        ObjectManager.Destroy(gameObject);
+        GameObjectManager.Destroy(gameObject);
         component.OnDestroyCalled.Should().BeFalse(); // Game Object is destroyed in next frame.
 
         system.Update();
