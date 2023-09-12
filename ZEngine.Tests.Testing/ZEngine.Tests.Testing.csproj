@@ -24,6 +24,7 @@
 
 
     <ItemGroup>
+      <ProjectReference Include="..\ZEngine.Systems.ThreadSynchronization\ZEngine.Systems.ThreadSynchronization.csproj" />
       <ProjectReference Include="..\ZEngine.Testing\ZEngine.Testing.csproj" />
     </ItemGroup>
 
