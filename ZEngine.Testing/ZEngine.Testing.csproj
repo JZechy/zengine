@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="xunit" Version="2.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ZEngine.Core.Game\ZEngine.Core.Game.csproj" />
+      <ProjectReference Include="..\ZEngine.Core\ZEngine.Core.csproj" />
+      <ProjectReference Include="..\ZEngine.Systems.GameObjects\ZEngine.Systems.GameObjects.csproj" />
+    </ItemGroup>
+
+</Project>
