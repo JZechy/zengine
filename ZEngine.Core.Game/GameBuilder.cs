@@ -10,8 +10,13 @@ public class GameBuilder
 {
     private GameBuilder()
     {
-        Services.AddSingleton<IGameManager, GameManager>();
-        Services.AddSingleton<IEventMediator, EventMediator>();
+        RegisterBasics();
+    }
+
+    private GameBuilder(IServiceCollection services)
+    {
+        Services = services;
+        RegisterBasics();
     }
     
     /// <summary>
@@ -26,6 +31,25 @@ public class GameBuilder
     public static GameBuilder Create()
     {
         return new GameBuilder();
+    }
+
+    /// <summary>
+    /// Creates a new instance of the GameBuilder based on the provided service collection.
+    /// </summary>
+    /// <param name="services">Instance of existing collection services.</param>
+    /// <returns></returns>
+    public static GameBuilder Create(IServiceCollection services)
+    {
+        return new GameBuilder(services);
+    }
+
+    /// <summary>
+    /// Register basic engine services.
+    /// </summary>
+    private void RegisterBasics()
+    {
+        Services.AddSingleton<IGameManager, GameManager>();
+        Services.AddSingleton<IEventMediator, EventMediator>();
     }
 
     /// <summary>
