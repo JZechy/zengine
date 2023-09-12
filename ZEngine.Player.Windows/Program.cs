@@ -33,7 +33,7 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        GameManager gameManager = InitializeEngine();
+        IGameManager gameManager = InitializeEngine();
         gameManager.Start();
         InputHook();
         
@@ -47,7 +47,7 @@ internal static class Program
     /// Initializes the engine with the default services.
     /// </summary>
     /// <returns></returns>
-    private static GameManager InitializeEngine()
+    private static IGameManager InitializeEngine()
     {
         GameBuilder builder = GameBuilder.Create();
         

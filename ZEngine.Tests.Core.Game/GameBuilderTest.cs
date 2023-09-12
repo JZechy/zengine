@@ -21,13 +21,13 @@ public class GameBuilderTest
         builder.Services.AddSingleton<ILogger<GameManager>>(_ => new NullLogger<GameManager>());
         builder.Services.AddSingleton<IGameSystem, BasicSystem>();
         
-        GameManager gameManager = builder.Build();
+        IGameManager gameManager = builder.Build();
         BasicSystem basicSystem = gameManager.ServiceProvider.GetServices<IGameSystem>()
             .OfType<BasicSystem>()
             .First();
         
         gameManager.Start();
-        await gameManager.Task;
+        await gameManager.GameTask;
 
         basicSystem.Initialized.Should().BeTrue();
         basicSystem.Updated.Should().BeTrue();

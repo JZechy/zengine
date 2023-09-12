@@ -5,7 +5,7 @@ namespace ZEngine.Core.Game;
 /// <summary>
 /// Main manager responsible for game loop and systems management.
 /// </summary>
-public class GameManager
+public class GameManager : IGameManager
 {
     /// <summary>
     /// Main game logger.
@@ -34,20 +34,14 @@ public class GameManager
         _systems = gameSystems.ToList();
     }
 
-    /// <summary>
-    /// Access to the game's service provider.
-    /// </summary>
+    /// <inheritdoc />
     public IServiceProvider ServiceProvider { get; }
 
-    /// <summary>
-    /// The frequency of game updates in Hz.
-    /// </summary>
+    /// <inheritdoc />
     public int UpdateFrequency { get; set; } = 60;
 
-    /// <summary>
-    /// Gets a task that completes when the game is finished.
-    /// </summary>
-    public Task Task => _gameLoopCompletion.Task;
+    /// <inheritdoc />
+    public Task GameTask => _gameLoopCompletion.Task;
 
     /// <summary>
     /// Orders game to exit.
@@ -68,25 +62,31 @@ public class GameManager
         }
     }
 
-    /// <summary>
-    /// Adds additional instance of <see cref="IGameSystem"/> to the game.
-    /// </summary>
-    /// <param name="gameSystem"></param>
+    /// <inheritdoc />
     public void AddSystem(IGameSystem gameSystem)
     {
         _systems.Add(gameSystem);
     }
 
-    /// <summary>
-    /// Starts the game loop.
-    /// </summary>
-    public async void Start()
+    /// <inheritdoc />
+    public void Start()
     {
-        Initialize();
-        await Task.Run(GameLoop);
-        CleanUp();
+        Task.Run(GameLoop);
+    }
 
-        _gameLoopCompletion.SetResult();
+    /// <inheritdoc />
+    public void Stop()
+    {
+        StopAsync()
+            .GetAwaiter()
+            .GetResult();
+    }
+
+    /// <inheritdoc />
+    public Task StopAsync()
+    {
+        ShouldExit = true;
+        return GameTask;
     }
 
     /// <summary>
@@ -94,6 +94,8 @@ public class GameManager
     /// </summary>
     private async void GameLoop()
     {
+        Initialize();
+
         while (!_cancellationTokenSource.IsCancellationRequested)
         {
             GameTime.CalculateDeltaTime();
@@ -103,6 +105,9 @@ public class GameManager
 
             await Task.Delay(SleepTime);
         }
+
+        CleanUp();
+        _gameLoopCompletion.SetResult();
     }
 
     /// <summary>

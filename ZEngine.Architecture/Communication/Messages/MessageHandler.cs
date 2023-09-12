@@ -34,7 +34,7 @@ public class MessageHandler
         _targets = type
             .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
             .Where(x => x.GetCustomAttribute<MessageTargetAttribute>() is not null || _systemTargets.Contains(x.Name))
-            .Where(x => !x.GetParameters().Any()) // For now, only methods without parameters.
+            .Where(x => !x.GetParameters().Any()) // TODO: For now, only methods without parameters.
             .ToDictionary(x => x.Name, x => x);
     }
 

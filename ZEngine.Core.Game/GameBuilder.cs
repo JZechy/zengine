@@ -10,7 +10,7 @@ public class GameBuilder
 {
     private GameBuilder()
     {
-        Services.AddSingleton<GameManager>();
+        Services.AddSingleton<IGameManager, GameManager>();
         Services.AddSingleton<IEventMediator, EventMediator>();
     }
     
@@ -32,11 +32,11 @@ public class GameBuilder
     /// Builds the basic dependencies and creates GameManager.
     /// </summary>
     /// <returns></returns>
-    public GameManager Build()
+    public IGameManager Build()
     {
         IServiceProvider provider = Services.BuildServiceProvider();
 
-        return provider.GetRequiredService<GameManager>();
+        return provider.GetRequiredService<IGameManager>();
     }
 
     /// <summary>
