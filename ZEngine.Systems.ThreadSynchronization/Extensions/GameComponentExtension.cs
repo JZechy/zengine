@@ -14,7 +14,7 @@ public static class GameComponentExtension
     /// <returns></returns>
     public static Task Synchronize<TGameComponent>(this TGameComponent component, Action<TGameComponent> action)
     {
-        return ThreadSynchronization.RunAsync(() => { action.Invoke(component); });
+        return ThreadSynchronization.RunAsync(() => action.Invoke(component));
     }
 
     /// <summary>
