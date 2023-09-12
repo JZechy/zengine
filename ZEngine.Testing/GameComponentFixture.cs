@@ -21,7 +21,7 @@ public abstract class GameComponentFixture<TFixtureFactory, TGameComponent> : ZE
     /// <summary>
     /// Initialized instance of the component.
     /// </summary>
-    public TGameComponent Component { get; set; } = default!;
+    protected TGameComponent Component { get; set; } = default!;
 
     public override async Task InitializeAsync()
     {

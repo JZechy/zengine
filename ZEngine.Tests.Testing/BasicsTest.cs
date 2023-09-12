@@ -38,6 +38,9 @@ public class BasicsTest : GameComponentTest<BasicsTest.TestingComponent>
     /// <summary>
     /// The predicate should be cancelled after the default timeout (1000 ms).
     /// </summary>
+    /// <remarks>
+    /// Default timeout is after 1s, so it never reach the value of 5 and it will be cancelled.
+    /// </remarks>
     [Fact]
     public async Task Test_PredicateTimeout()
     {
