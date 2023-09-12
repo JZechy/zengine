@@ -2,9 +2,7 @@
 using Xunit;
 using Xunit.Abstractions;
 using ZEngine.Architecture.Components;
-using ZEngine.Architecture.GameObjects;
 using ZEngine.Core;
-using ZEngine.Systems.GameObjects;
 using ZEngine.Testing.Extensions;
 using ZEngine.Tests.Testing.SetUp;
 
@@ -13,7 +11,7 @@ namespace ZEngine.Tests.Testing;
 /// <summary>
 /// Tests the basic abilities of the test framework.
 /// </summary>
-public class BasicsTest : FrameworkTest
+public class BasicsTest : GameComponentTest<BasicsTest.TestingComponent>
 {
     public BasicsTest(FrameworkTestFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
     {
@@ -25,21 +23,16 @@ public class BasicsTest : FrameworkTest
     [Fact]
     public void Test_BasicTest()
     {
-        IGameObject go = GameObjectManager.Create();
-        TestingComponent component = go.AddComponent<TestingComponent>();
-        component.Should().NotBeNull();
+        Component.Should().NotBeNull();
     }
 
     /// <summary>
     /// Tests awaiting when until thje component's member doesn't reach a specific value.
     /// </summary>
     [Fact]
-    public async Task Test_AwaitTheValue()
+    public async Task Test_AwaitPredicate()
     {
-        IGameObject go = GameObjectManager.Create();
-        TestingComponent component = go.AddComponent<TestingComponent>();
-
-        await component.TestPredicate(x => x.ElapsedTime > 0.5);
+        await Component.TestPredicate(x => x.ElapsedTime > 0.5);
     }
 
     /// <summary>
@@ -48,10 +41,7 @@ public class BasicsTest : FrameworkTest
     [Fact]
     public async Task Test_PredicateTimeout()
     {
-        IGameObject go = GameObjectManager.Create();
-        TestingComponent component = go.AddComponent<TestingComponent>();
-
-        await component.Awaiting(x => x.TestPredicate(y => y.ElapsedTime > 5))
+        await Component.Awaiting(x => x.TestPredicate(y => y.ElapsedTime > 5))
             .Should()
             .ThrowAsync<TaskCanceledException>();
     }

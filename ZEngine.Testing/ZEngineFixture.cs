@@ -47,14 +47,14 @@ public abstract class ZEngineFixture<TFixtureFactory> : IClassFixture<TFixtureFa
     public IServiceProvider ServiceProvider => GameManager.ServiceProvider;
 
     /// <inheritdoc />
-    public Task InitializeAsync()
+    public virtual Task InitializeAsync()
     {
         GameManager.Start();
         return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public Task DisposeAsync()
+    public virtual Task DisposeAsync()
     {
         return GameManager.StopAsync();
     }
