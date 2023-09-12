@@ -27,7 +27,7 @@ public class GameManagerTest
         
         await gameManager.GameTask;
         
-        GameTime.DeltaTime.Should().BeGreaterThan(0);
+        GameTime.DeltaTimeMs.Should().BeGreaterThan(0);
         
         basicSystem.Initialized.Should().BeTrue();
         basicSystem.Updated.Should().BeTrue();

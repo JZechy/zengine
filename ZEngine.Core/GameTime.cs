@@ -9,21 +9,33 @@ public static class GameTime
     /// The last time when the game was updated.
     /// </summary>
     private static DateTime? _lastUpdateTime;
-    
+
     /// <summary>
-    /// Gets the delta time between the last update and the current update.
+    /// Time between previous and current frame.
     /// </summary>
-    public static double DeltaTime { get; private set; }
+    private static TimeSpan _frameSpan = TimeSpan.Zero;
+
+    /// <summary>
+    /// Gets the delta time between the last update and the current update in miliseconds.
+    /// </summary>
+    public static double DeltaTimeMs => _frameSpan.TotalMilliseconds;
+
+    /// <summary>
+    /// Gets the delta time between the last update and the current update in seconds.
+    /// </summary>
+    public static double DeltaTime => _frameSpan.TotalSeconds;
 
     /// <summary>
     /// Calculates the delta time.
     /// </summary>
     public static void CalculateDeltaTime()
     {
-        DeltaTime = _lastUpdateTime is null 
-            ? 0d 
-            : DateTime.Now.Subtract(_lastUpdateTime.Value).TotalMilliseconds;
+        DateTime now = DateTime.Now;
 
-        _lastUpdateTime = DateTime.Now;
+        _frameSpan = _lastUpdateTime is null
+            ? TimeSpan.Zero
+            : now.Subtract(_lastUpdateTime.Value);
+
+        _lastUpdateTime = now;
     }
 }

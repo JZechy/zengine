@@ -56,7 +56,7 @@ public class GameManager : IGameManager
         get
         {
             int targetFrameTime = 1000 / UpdateFrequency;
-            int sleep = targetFrameTime - (int) GameTime.DeltaTime;
+            int sleep = targetFrameTime - (int) GameTime.DeltaTimeMs;
 
             return Math.Max(sleep, 0);
         }
@@ -96,14 +96,23 @@ public class GameManager : IGameManager
     {
         Initialize();
 
-        while (!_cancellationTokenSource.IsCancellationRequested)
+        try
         {
-            GameTime.CalculateDeltaTime();
+            while (!_cancellationTokenSource.IsCancellationRequested)
+            {
+                GameTime.CalculateDeltaTime();
 
-            UpdateSystems();
-            CheckGameExit();
+                UpdateSystems();
+                CheckGameExit();
 
-            await Task.Delay(SleepTime);
+                await Task.Delay(SleepTime);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogCritical(e, "An unhandled exception occurred while running the game loop.");
+            _gameLoopCompletion.SetException(e);
+            return;
         }
 
         CleanUp();
