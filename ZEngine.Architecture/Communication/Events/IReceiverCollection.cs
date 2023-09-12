@@ -1,12 +1,15 @@
-using System.Collections;
-
 namespace ZEngine.Architecture.Communication.Events;
 
 /// <summary>
 /// Represents thread-safe collection of subscribers for a specific message type.
 /// </summary>
-public interface IReceiverCollection : ICollection
+public interface IReceiverCollection
 {
+    /// <summary>
+    /// Returns has many receivers is there.
+    /// </summary>
+    int Count { get; }
+    
     /// <summary>
     /// Notifies all subscribers in the collection.
     /// </summary>
