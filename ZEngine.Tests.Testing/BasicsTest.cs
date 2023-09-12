@@ -3,6 +3,7 @@ using Xunit;
 using Xunit.Abstractions;
 using ZEngine.Architecture.Components;
 using ZEngine.Core;
+using ZEngine.Systems.ThreadSynchronization.Extensions;
 using ZEngine.Testing.Extensions;
 using ZEngine.Tests.Testing.SetUp;
 
