@@ -14,6 +14,11 @@ public abstract class GameComponentFixture<TFixtureFactory, TGameComponent> : ZE
     where TFixtureFactory : class, ITestFactory
     where TGameComponent : IGameComponent
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="factory"></param>
+    /// <param name="testOutputHelper"></param>
     protected GameComponentFixture(TFixtureFactory factory, ITestOutputHelper testOutputHelper) : base(factory, testOutputHelper)
     {
     }
@@ -23,6 +28,9 @@ public abstract class GameComponentFixture<TFixtureFactory, TGameComponent> : ZE
     /// </summary>
     protected TGameComponent Component { get; set; } = default!;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public override async Task InitializeAsync()
     {
         await base.InitializeAsync();

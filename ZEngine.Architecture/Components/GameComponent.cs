@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using FastDeepCloner;
+﻿using FastDeepCloner;
 using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.GameObjects;
 
@@ -34,6 +33,9 @@ public abstract class GameComponent : IGameComponent
     /// <inheritdoc />
     public IGameObject GameObject { get; set; } = null!;
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected GameComponent()
     {
         _messageHandler = new MessageHandler(this);

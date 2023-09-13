@@ -10,6 +10,10 @@ public class MessageHandlerException : Exception
     /// </summary>
     private const string ExceptionMessage = "An expection has been thrown by target of invocation.";
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="innerException"></param>
     public MessageHandlerException(Exception innerException) : base(ExceptionMessage, innerException)
     {
     }

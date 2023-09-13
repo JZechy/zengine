@@ -3,7 +3,7 @@
 namespace ZEngine.Tests.Architecture.Communication.Messages.Cases;
 
 /// <summary>
-/// Clas for testing <see cref="MessageHandler{TReceiver}"/> functionality.
+/// Clas for testing Message Handler functionality.
 /// </summary>
 internal class TestReceiver : IMessageReceiver
 {

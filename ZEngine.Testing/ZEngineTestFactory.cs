@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using ZEngine.Core.Game;
 using ZEngine.Systems.GameObjects.Extensions;
 using ZEngine.Systems.ThreadSynchronization.Extensions;
-using ZEngine.Testing.System;
 using ZEngine.Testing.System.Extensions;
 
 namespace ZEngine.Testing;

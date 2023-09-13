@@ -19,6 +19,10 @@ public class ReceiverCollection<TMessage> : IReceiverCollection where TMessage :
     /// </summary>
     private readonly ConcurrentHashSet<Action<TMessage>> _receivers = new();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logger"></param>
     public ReceiverCollection(ILogger<ReceiverCollection<TMessage>> logger)
     {
         _logger = logger;

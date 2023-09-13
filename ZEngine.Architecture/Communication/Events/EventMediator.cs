@@ -18,6 +18,10 @@ public class EventMediator : IEventMediator
     /// </summary>
     private readonly ConcurrentDictionary<Type, IReceiverCollection> _receivers = new();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="loggerFactory"></param>
     public EventMediator(ILoggerFactory loggerFactory)
     {
         _loggerFactory = loggerFactory;

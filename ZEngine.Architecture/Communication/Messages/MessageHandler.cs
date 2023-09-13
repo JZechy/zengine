@@ -22,6 +22,11 @@ public class MessageHandler
     /// </summary>
     private readonly object _instance;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="instance"></param>
+    /// <exception cref="ArgumentException"></exception>
     public MessageHandler(object instance)
     {
         Type type = instance.GetType();

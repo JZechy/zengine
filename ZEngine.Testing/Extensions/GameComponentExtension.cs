@@ -3,6 +3,9 @@ using ZEngine.Testing.System;
 
 namespace ZEngine.Testing.Extensions;
 
+/// <summary>
+/// Extends the <see cref="IGameComponent"/> interface with testing methods.
+/// </summary>
 public static class GameComponentExtension
 {
     /// <summary>

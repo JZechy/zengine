@@ -101,6 +101,9 @@ public class Transform : GameComponent, IEnumerable<Transform>
         return GetEnumerator();
     }
 
+    /// <summary>
+    /// When destroyed, this transform removes itself from its parent.
+    /// </summary>
     private void OnDestroy()
     {
         SetParent(null);

@@ -23,6 +23,9 @@ public abstract class GameComponentModel : IGameComponentModel
     /// </summary>
     protected ICollection<IGameComponent> Components => _components.Values;
 
+    /// <summary>
+    /// Clears the components collection.
+    /// </summary>
     protected void ClearComponents()
     {
         _components.Clear();

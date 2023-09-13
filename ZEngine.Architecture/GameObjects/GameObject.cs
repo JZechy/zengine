@@ -19,6 +19,11 @@ public class GameObject : GameComponentModel, IGameObject
     /// </summary>
     private bool _active;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="active"></param>
     public GameObject(string name = "New Game Object", bool active = false)
     {
         _messageHandler = new MessageHandler(this);
