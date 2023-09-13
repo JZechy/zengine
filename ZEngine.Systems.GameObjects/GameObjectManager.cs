@@ -99,6 +99,19 @@ public class GameObjectManager
 
         return FromPrefab(prefab);
     }
+
+    /// <summary>
+    /// Allows to create a game object from a prefab using a fluent API.
+    /// </summary>
+    /// <param name="init">Initialization callback used compose prefab dependencies.</param>
+    /// <returns></returns>
+    public static IGameObject FromPrefab(Action<IPrefab> init)
+    {
+        Prefab prefab = new(Instance._serviceProvider);
+        init.Invoke(prefab);
+
+        return FromPrefab(prefab);
+    }
     
     /// <summary>
     /// Creates a new instance of game object from a prefab.
