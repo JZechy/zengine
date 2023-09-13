@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ZEngine.Architecture.Components.Model;
 
@@ -7,6 +8,7 @@ namespace ZEngine.Architecture.Components.Model;
 /// </summary>
 public abstract class GameComponentModel : IGameComponentModel
 {
+
     /// <inheritdoc />
     public event EventHandler<IGameComponent>? ComponentAdded;
 
@@ -17,6 +19,20 @@ public abstract class GameComponentModel : IGameComponentModel
     /// Dictionary of existing components.
     /// </summary>
     private readonly ConcurrentDictionary<Type, IGameComponent> _components = new();
+    
+    /// <summary>
+    /// Instance of service provider to satisfy component dependencies.
+    /// </summary>
+    private readonly IServiceProvider _serviceProvider;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    protected GameComponentModel(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+    }
 
     /// <summary>
     /// Gets all components attached to this game object.
@@ -44,7 +60,7 @@ public abstract class GameComponentModel : IGameComponentModel
             throw new ArgumentException($"Component of type {componentType.FullName} already exists.");
         }
 
-        IGameComponent? component = (IGameComponent?) Activator.CreateInstance(componentType);
+        IGameComponent? component = (IGameComponent?) ActivatorUtilities.CreateInstance(_serviceProvider, componentType);
         if (component is null)
         {
             throw new ArgumentException($"Component of type {componentType.FullName} could not be created.");

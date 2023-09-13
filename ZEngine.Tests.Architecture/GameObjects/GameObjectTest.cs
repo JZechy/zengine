@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.Components;
@@ -18,7 +19,7 @@ public class GameObjectTest
     [Test]
     public void Test_GameObjectComponent()
     {
-        GameObject gameObject = new("Test", true);
+        GameObject gameObject = new(Mock.Of<IServiceProvider>(), "Test", true);
         
         Transform transform = gameObject.GetRequiredComponent<Transform>();
         transform.GameObject.Should().Be(gameObject);
@@ -36,7 +37,7 @@ public class GameObjectTest
     [Test]
     public void Test_GameObjectComponent_Lifetime()
     {
-        GameObject gameObject = new("Test", true);
+        GameObject gameObject = new(Mock.Of<IServiceProvider>(), "Test", true);
 
         // Initialize the component.
         GameObjectLifetime lifetime = gameObject.AddComponent<GameObjectLifetime>();
@@ -62,7 +63,7 @@ public class GameObjectTest
     [Test]
     public void Test_Activation()
     {
-        GameObject gameObject = new();
+        GameObject gameObject = new(Mock.Of<IServiceProvider>());
         GameObjectLifetime lifetime = gameObject.AddComponent<GameObjectLifetime>();
         lifetime.Awaken.Should().BeFalse();
         lifetime.EnableCalled.Should().BeFalse();

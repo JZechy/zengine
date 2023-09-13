@@ -22,9 +22,10 @@ public class GameObject : GameComponentModel, IGameObject
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="serviceProvider"></param>
     /// <param name="name"></param>
     /// <param name="active"></param>
-    public GameObject(string name = "New Game Object", bool active = false)
+    public GameObject(IServiceProvider serviceProvider, string name = "New Game Object", bool active = false) : base(serviceProvider)
     {
         _messageHandler = new MessageHandler(this);
         Name = name;

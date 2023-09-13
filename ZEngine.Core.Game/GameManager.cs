@@ -71,6 +71,7 @@ public class GameManager : IGameManager
     /// <inheritdoc />
     public void Start()
     {
+        Initialize();
         Task.Run(GameLoop);
     }
 
@@ -94,8 +95,6 @@ public class GameManager : IGameManager
     /// </summary>
     private async void GameLoop()
     {
-        Initialize();
-
         try
         {
             while (!_cancellationTokenSource.IsCancellationRequested)

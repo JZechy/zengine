@@ -19,7 +19,7 @@ public class GameObjectSystemTest
     {
         this.Invoking(x => { _ = GameObjectManager.Instance; }).Should().Throw<InvalidOperationException>();
 
-        GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>());
+        GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>(), Mock.Of<IServiceProvider>());
         system.Initialize();
 
         GameObjectManager.Instance.Should().NotBeNull();
@@ -31,7 +31,7 @@ public class GameObjectSystemTest
     [Test]
     public void Test_SystemLifetime()
     {
-        GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>());
+        GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>(), Mock.Of<IServiceProvider>());
         system.Initialize();
 
         IGameObject gameObject = GameObjectManager.Create();
