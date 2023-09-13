@@ -21,9 +21,8 @@ public interface IGameComponentModel
     /// Adds new component of type <see cref="componentType"/> to the game object.
     /// </summary>
     /// <param name="componentType"></param>
-    /// <param name="configure">Allows configuration of the component after it's added.</param>
     /// <returns></returns>
-    IGameComponent AddComponent(Type componentType, Action<IGameComponent>? configure = null);
+    IGameComponent AddComponent(Type componentType);
     
     /// <summary>
     /// Adds new component of type <see cref="TComponent"/> to the game object.
