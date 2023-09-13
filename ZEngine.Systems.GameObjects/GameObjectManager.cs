@@ -94,8 +94,9 @@ public class GameObjectManager
     /// <returns></returns>
     public static IGameObject FromFactory(IGameObjectFactory gameObjectFactory)
     {
-        IGameObject gameObject = Create(false);
+        GameObject gameObject = new(Instance._serviceProvider);
         gameObjectFactory.Configure(gameObject);
+        Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
     }
@@ -108,8 +109,40 @@ public class GameObjectManager
     /// <returns></returns>
     public static IGameObject FromFactory(IGameObjectFactory gameObjectFactory, IGameObject parent)
     {
-        IGameObject gameObject = Create(parent, false);
+        GameObject gameObject = new(Instance._serviceProvider);
+        gameObject.Transform.SetParent(parent.Transform);
         gameObjectFactory.Configure(gameObject);
+        Instance._gameObjectSystem.Register(gameObject);
+
+        return gameObject;
+    }
+
+    /// <summary>
+    /// Creates a game object from a factory method.
+    /// </summary>
+    /// <param name="factoryMethod"></param>
+    /// <returns></returns>
+    public static IGameObject FromFactory(Action<IGameObject> factoryMethod)
+    {
+        GameObject gameObject = new(Instance._serviceProvider);
+        factoryMethod.Invoke(gameObject);
+        Instance._gameObjectSystem.Register(gameObject);
+
+        return gameObject;
+    }
+
+    /// <summary>
+    /// Creates a game object from a factory method as a child of another game object.
+    /// </summary>
+    /// <param name="factoryMethod"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public static IGameObject FromFactory(Action<IGameObject> factoryMethod, IGameObject parent)
+    {
+        GameObject gameObject = new(Instance._serviceProvider);
+        gameObject.Transform.SetParent(parent.Transform);
+        factoryMethod.Invoke(gameObject);
+        Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
     }
