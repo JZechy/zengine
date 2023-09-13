@@ -1,6 +1,5 @@
 ﻿using ZEngine.Architecture.Components;
 using ZEngine.Architecture.Components.Model;
-using ZEngine.Architecture.GameObjects;
 
 namespace ZEngine.Systems.GameObjects.Prefabs;
 
@@ -9,6 +8,14 @@ namespace ZEngine.Systems.GameObjects.Prefabs;
 /// </summary>
 public class Prefab : GameComponentModel, IPrefab
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="serviceProvider"></param>
+    public Prefab(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
+
     /// <inheritdoc />
     public string Name { get; set; } = "Prefab Clone";
 

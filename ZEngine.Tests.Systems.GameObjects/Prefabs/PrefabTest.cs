@@ -16,10 +16,10 @@ public class PrefabTest
     [Test]
     public void Test_BasicPrefab()
     {
-        GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>());
+        GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>(), Mock.Of<IServiceProvider>());
         system.Initialize();
         
-        Prefab prefab = new()
+        Prefab prefab = new(Mock.Of<IServiceProvider>())
         {
             Name = "Testing Prefab"
         };

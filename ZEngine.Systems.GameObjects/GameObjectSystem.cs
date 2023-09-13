@@ -47,10 +47,16 @@ public class GameObjectSystem : IGameSystem
     /// </summary>
     private readonly ILogger<GameObjectSystem> _logger;
 
-    public GameObjectSystem(IEventMediator eventMediator, ILogger<GameObjectSystem> logger)
+    /// <summary>
+    /// Used to satisfy game objects component dependencies.
+    /// </summary>
+    private readonly IServiceProvider _serviceProvider;
+
+    public GameObjectSystem(IEventMediator eventMediator, ILogger<GameObjectSystem> logger, IServiceProvider serviceProvider)
     {
         _eventMediator = eventMediator;
         _logger = logger;
+        _serviceProvider = serviceProvider;
     }
 
     /// <summary>
@@ -69,7 +75,7 @@ public class GameObjectSystem : IGameSystem
     /// <inheritdoc />
     public void Initialize()
     {
-        GameObjectManager.CreateInstance(this);
+        GameObjectManager.CreateInstance(this, _serviceProvider);
     }
 
     /// <inheritdoc />

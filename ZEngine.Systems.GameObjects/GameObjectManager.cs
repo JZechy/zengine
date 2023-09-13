@@ -19,9 +19,15 @@ public class GameObjectManager
     /// </summary>
     private readonly GameObjectSystem _gameObjectSystem;
 
-    private GameObjectManager(GameObjectSystem gameObjectSystem)
+    /// <summary>
+    /// Service provider is used to be passed to game objects, to satisfy game component dependencies.
+    /// </summary>
+    private readonly IServiceProvider _serviceProvider;
+
+    private GameObjectManager(GameObjectSystem gameObjectSystem, IServiceProvider serviceProvider)
     {
         _gameObjectSystem = gameObjectSystem;
+        _serviceProvider = serviceProvider;
     }
 
     /// <summary>
@@ -40,7 +46,7 @@ public class GameObjectManager
         }
         private set => _objectManager = value;
     }
-    
+
     /// <summary>
     /// Factory method for creating a new instance of <see cref="GameObjectManager"/>.
     /// </summary>
@@ -48,9 +54,10 @@ public class GameObjectManager
     /// Object manager is instantiated by <see cref="GameObjectSystem"/> during its initialization.
     /// </remarks>
     /// <param name="gameObjectSystem"></param>
-    internal static void CreateInstance(GameObjectSystem gameObjectSystem)
+    /// <param name="serviceProvider"></param>
+    internal static void CreateInstance(GameObjectSystem gameObjectSystem, IServiceProvider serviceProvider)
     {
-        Instance = new GameObjectManager(gameObjectSystem);
+        Instance = new GameObjectManager(gameObjectSystem, serviceProvider);
     }
     
     /// <summary>
@@ -59,7 +66,7 @@ public class GameObjectManager
     /// <returns></returns>
     public static IGameObject Create()
     {
-        GameObject gameObject = new("New Game Object", true);
+        GameObject gameObject = new(Instance._serviceProvider, "New Game Object", true);
         Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
@@ -72,7 +79,7 @@ public class GameObjectManager
     /// <returns></returns>
     public static IGameObject Create(IGameObject parent)
     {
-        GameObject gameObject = new("New Game Object", true);
+        GameObject gameObject = new(Instance._serviceProvider, "New Game Object", true);
         gameObject.Transform.SetParent(parent.Transform);
         Instance._gameObjectSystem.Register(gameObject);
 
@@ -86,7 +93,7 @@ public class GameObjectManager
     /// <returns></returns>
     public static IGameObject FromPrefab(IPrefab prefab)
     {
-        GameObject gameObject = new()
+        GameObject gameObject = new(Instance._serviceProvider)
         {
             Name = prefab.Name
         };
