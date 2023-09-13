@@ -8,6 +8,7 @@
         <Authors>Jan "Zechy" Zechovský</Authors>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>ZEngine.Testing</PackageId>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
