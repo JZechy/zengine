@@ -101,6 +101,20 @@ public class GameObjectManager
     }
 
     /// <summary>
+    /// Creates a game object from a prefab factory as a child of another game object.
+    /// </summary>
+    /// <param name="prefabFactory"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public static IGameObject FromFactory(IPrefabFactory prefabFactory, IGameObject parent)
+    {
+        Prefab prefab = new(Instance._serviceProvider);
+        prefabFactory.Configure(prefab);
+
+        return FromPrefab(prefab, parent);
+    }
+
+    /// <summary>
     /// Allows to create a game object from a prefab using a fluent API.
     /// </summary>
     /// <param name="init">Initialization callback used compose prefab dependencies.</param>
@@ -111,6 +125,20 @@ public class GameObjectManager
         init.Invoke(prefab);
 
         return FromPrefab(prefab);
+    }
+
+    /// <summary>
+    /// Creates a game object from a prefab using a fluent API as a child of another game object.
+    /// </summary>
+    /// <param name="init"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public static IGameObject FromPrefab(Action<IPrefab> init, IGameObject parent)
+    {
+        Prefab prefab = new(Instance._serviceProvider);
+        init.Invoke(prefab);
+
+        return FromPrefab(prefab, parent);
     }
     
     /// <summary>
