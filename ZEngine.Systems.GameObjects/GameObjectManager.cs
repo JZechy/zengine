@@ -1,6 +1,7 @@
 ﻿using ZEngine.Architecture.Components;
 using ZEngine.Architecture.GameObjects;
 using ZEngine.Systems.GameObjects.Prefabs;
+using ZEngine.Systems.GameObjects.Prefabs.Factory;
 
 namespace ZEngine.Systems.GameObjects;
 
@@ -86,6 +87,19 @@ public class GameObjectManager
         return gameObject;
     }
 
+    /// <summary>
+    /// Creates a game object from a prefab factory.
+    /// </summary>
+    /// <param name="prefabFactory"></param>
+    /// <returns></returns>
+    public static IGameObject FromFactory(IPrefabFactory prefabFactory)
+    {
+        Prefab prefab = new(Instance._serviceProvider);
+        prefabFactory.Configure(prefab);
+
+        return FromPrefab(prefab);
+    }
+    
     /// <summary>
     /// Creates a new instance of game object from a prefab.
     /// </summary>
