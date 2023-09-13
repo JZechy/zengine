@@ -4,6 +4,10 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Title>ZEngine Testing Framework</Title>
+        <Authors>Jan "Zechy" Zechovský</Authors>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageId>ZEngine.Testing</PackageId>
     </PropertyGroup>
 
     <ItemGroup>
