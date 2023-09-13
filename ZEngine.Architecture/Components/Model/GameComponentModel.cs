@@ -47,7 +47,7 @@ public abstract class GameComponentModel : IGameComponentModel
     }
 
     /// <inheritdoc />
-    public IGameComponent AddComponent(Type componentType, Action<IGameComponent>? configure = null)
+    public IGameComponent AddComponent(Type componentType)
     {
         if (!componentType.IsAssignableTo(typeof(IGameComponent)))
         {
@@ -66,8 +66,6 @@ public abstract class GameComponentModel : IGameComponentModel
         }
 
         _components.TryAdd(componentType, component);
-        
-        configure?.Invoke(component);
         ComponentAdded?.Invoke(this, component);
 
         return component;
@@ -82,7 +80,8 @@ public abstract class GameComponentModel : IGameComponentModel
     /// <inheritdoc />
     public TComponent AddComponent<TComponent>(Action<TComponent> configure) where TComponent : IGameComponent
     {
-        TComponent component = (TComponent) AddComponent(typeof(TComponent), configure as Action<IGameComponent>);
+        TComponent component = (TComponent) AddComponent(typeof(TComponent));
+        configure.Invoke(component);
 
         return component;
     }

@@ -24,9 +24,14 @@ public class GameObjectFactoryTest
 
         Vector3 position = new(10, 15, 20);
         IGameObject gameObject = GameObjectManager.FromFactory(new TestingGameObjectFactory(position));
-        Transform transform = gameObject.GetRequiredComponent<Transform>();
+        MyComponent requiredComponent = gameObject.GetRequiredComponent<MyComponent>();
 
-        transform.Position.Should().Be(position);
+        requiredComponent.Position.Should().Be(position);
+    }
+
+    public class MyComponent : GameComponent
+    {
+        public Vector3 Position { get; set; }
     }
 
     /// <summary>
@@ -47,7 +52,7 @@ public class GameObjectFactoryTest
         /// <inheritdoc />
         public void Configure(IGameObject gameObject)
         {
-            gameObject.AddComponent<Transform>(x => x.Position = _position);
+            gameObject.AddComponent<MyComponent>(x => x.Position = _position);
         }
     }
 }
