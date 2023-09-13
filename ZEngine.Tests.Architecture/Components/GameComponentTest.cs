@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using ZEngine.Architecture.Components;
 using ZEngine.Tests.Architecture.Components.Cases;
@@ -27,41 +26,5 @@ public class GameComponentTest
 
         component.Enabled = false;
         component.OnDisableCalled.Should().BeTrue();
-    }
-
-    [Test]
-    public void Test_Clone()
-    {
-        Transform transform = new()
-        {
-            Position = new Vector3(10, 10, 10)
-        };
-
-        Transform clone = (Transform) transform.Clone();
-        clone.Position.Should().Be(transform.Position);
-
-        clone.Position = new Vector3(15, 15, 15);
-        clone.Position.Should().NotBe(transform.Position);
-    }
-
-    [Test]
-    public void Test_TransformWithChildren()
-    {
-        Transform parent = new()
-        {
-            Position = new Vector3(10, 10, 10)
-        };
-
-        Transform child1 = new();
-        child1.SetParent(parent);
-        Transform child2 = new()
-        {
-            Position = new Vector3(25, 50, 25)
-        };
-        child2.SetParent(parent);
-
-        Transform clone = (Transform) parent.Clone();
-        clone.Should().HaveCount(2);
-        clone.Last().Position.Should().Be(child2.Position);
     }
 }

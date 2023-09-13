@@ -1,7 +1,5 @@
-﻿using ZEngine.Architecture.Components;
-using ZEngine.Architecture.GameObjects;
-using ZEngine.Systems.GameObjects.Prefabs;
-using ZEngine.Systems.GameObjects.Prefabs.Factory;
+﻿using ZEngine.Architecture.GameObjects;
+using ZEngine.Systems.GameObjects.Factory;
 
 namespace ZEngine.Systems.GameObjects;
 
@@ -14,7 +12,7 @@ public class GameObjectManager
     /// Current instance of <see cref="GameObjectManager"/>.
     /// </summary>
     private static GameObjectManager? _objectManager;
-    
+
     /// <summary>
     /// Reference to the <see cref="GameObjectSystem"/> instance.
     /// </summary>
@@ -60,27 +58,29 @@ public class GameObjectManager
     {
         Instance = new GameObjectManager(gameObjectSystem, serviceProvider);
     }
-    
+
     /// <summary>
     /// Creates a new instance of game object.
     /// </summary>
+    /// <param name="active">Controls whether the created game object will be active.</param>
     /// <returns></returns>
-    public static IGameObject Create()
+    public static IGameObject Create(bool active = true)
     {
-        GameObject gameObject = new(Instance._serviceProvider, "New Game Object", true);
+        GameObject gameObject = new(Instance._serviceProvider, "New Game Object", active);
         Instance._gameObjectSystem.Register(gameObject);
 
         return gameObject;
     }
-    
+
     /// <summary>
     /// Creates a new instance of game object as a child of another game object.
     /// </summary>
     /// <param name="parent">Parent game object.</param>
+    /// <param name="active">Controls whether the created game object will be active.</param>
     /// <returns></returns>
-    public static IGameObject Create(IGameObject parent)
+    public static IGameObject Create(IGameObject parent, bool active = true)
     {
-        GameObject gameObject = new(Instance._serviceProvider, "New Game Object", true);
+        GameObject gameObject = new(Instance._serviceProvider, "New Game Object", active);
         gameObject.Transform.SetParent(parent.Transform);
         Instance._gameObjectSystem.Register(gameObject);
 
@@ -90,89 +90,26 @@ public class GameObjectManager
     /// <summary>
     /// Creates a game object from a prefab factory.
     /// </summary>
-    /// <param name="prefabFactory"></param>
+    /// <param name="gameObjectFactory"></param>
     /// <returns></returns>
-    public static IGameObject FromFactory(IPrefabFactory prefabFactory)
+    public static IGameObject FromFactory(IGameObjectFactory gameObjectFactory)
     {
-        Prefab prefab = new(Instance._serviceProvider);
-        prefabFactory.Configure(prefab);
-
-        return FromPrefab(prefab);
-    }
-
-    /// <summary>
-    /// Creates a game object from a prefab factory as a child of another game object.
-    /// </summary>
-    /// <param name="prefabFactory"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public static IGameObject FromFactory(IPrefabFactory prefabFactory, IGameObject parent)
-    {
-        Prefab prefab = new(Instance._serviceProvider);
-        prefabFactory.Configure(prefab);
-
-        return FromPrefab(prefab, parent);
-    }
-
-    /// <summary>
-    /// Allows to create a game object from a prefab using a fluent API.
-    /// </summary>
-    /// <param name="init">Initialization callback used compose prefab dependencies.</param>
-    /// <returns></returns>
-    public static IGameObject FromPrefab(Action<IPrefab> init)
-    {
-        Prefab prefab = new(Instance._serviceProvider);
-        init.Invoke(prefab);
-
-        return FromPrefab(prefab);
-    }
-
-    /// <summary>
-    /// Creates a game object from a prefab using a fluent API as a child of another game object.
-    /// </summary>
-    /// <param name="init"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public static IGameObject FromPrefab(Action<IPrefab> init, IGameObject parent)
-    {
-        Prefab prefab = new(Instance._serviceProvider);
-        init.Invoke(prefab);
-
-        return FromPrefab(prefab, parent);
-    }
-    
-    /// <summary>
-    /// Creates a new instance of game object from a prefab.
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <returns></returns>
-    public static IGameObject FromPrefab(IPrefab prefab)
-    {
-        GameObject gameObject = new(Instance._serviceProvider)
-        {
-            Name = prefab.Name
-        };
-        
-        foreach (IGameComponent component in prefab.PrefabComponents)
-        {
-            gameObject.SetComponent(component.Clone());
-        }
-        
-        Instance._gameObjectSystem.Register(gameObject);
+        IGameObject gameObject = Create(false);
+        gameObjectFactory.Configure(gameObject);
 
         return gameObject;
     }
 
     /// <summary>
-    /// Creates a new instance of game object from a prefab as a child of another game object.
+    /// Creates a game object from a prefab factory as a child of another game object.
     /// </summary>
-    /// <param name="prefab"></param>
+    /// <param name="gameObjectFactory"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    public static IGameObject FromPrefab(IPrefab prefab, IGameObject parent)
+    public static IGameObject FromFactory(IGameObjectFactory gameObjectFactory, IGameObject parent)
     {
-        IGameObject gameObject = FromPrefab(prefab);
-        gameObject.Transform.SetParent(parent.Transform);
+        IGameObject gameObject = Create(parent, false);
+        gameObjectFactory.Configure(gameObject);
 
         return gameObject;
     }

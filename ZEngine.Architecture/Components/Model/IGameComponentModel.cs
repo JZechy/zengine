@@ -16,13 +16,14 @@ public interface IGameComponentModel
     event EventHandler<IGameComponent>? ComponentRemoved;
     
     #region Add components
-    
+
     /// <summary>
     /// Adds new component of type <see cref="componentType"/> to the game object.
     /// </summary>
     /// <param name="componentType"></param>
+    /// <param name="configure">Allows configuration of the component after it's added.</param>
     /// <returns></returns>
-    IGameComponent AddComponent(Type componentType);
+    IGameComponent AddComponent(Type componentType, Action<IGameComponent>? configure = null);
     
     /// <summary>
     /// Adds new component of type <see cref="TComponent"/> to the game object.
@@ -32,10 +33,12 @@ public interface IGameComponentModel
     TComponent AddComponent<TComponent>() where TComponent : IGameComponent;
 
     /// <summary>
-    /// Adds or replaces existing component of type <see cref="component"/> to the game object.
+    /// Adds new component of type <see cref="TComponent"/> to the game object and configures it.
     /// </summary>
-    /// <param name="component"></param>
-    void SetComponent(IGameComponent component);
+    /// <param name="configure"></param>
+    /// <typeparam name="TComponent"></typeparam>
+    /// <returns></returns>
+    TComponent AddComponent<TComponent>(Action<TComponent> configure) where TComponent : IGameComponent;
     
     #endregion
 
