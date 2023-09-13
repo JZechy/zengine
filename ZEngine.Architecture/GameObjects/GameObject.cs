@@ -30,11 +30,11 @@ public class GameObject : GameComponentModel, IGameObject
         _messageHandler = new MessageHandler(this);
         Name = name;
         _active = active;
-        
+
         // Register callbacks
         ComponentAdded += OnComponentAdded;
         ComponentRemoved += OnComponentRemoved;
-        
+
         // Add basic components
         AddComponent<Transform>();
     }
@@ -48,8 +48,13 @@ public class GameObject : GameComponentModel, IGameObject
         get => _active;
         set
         {
+            bool previousState = _active;
             _active = value;
-            SendMessage(_active ? SystemMethod.OnEnable : SystemMethod.OnDisable);
+
+            if (previousState != _active)
+            {
+                SendMessage(_active ? SystemMethod.OnEnable : SystemMethod.OnDisable);
+            }
         }
     }
 
@@ -60,7 +65,7 @@ public class GameObject : GameComponentModel, IGameObject
     /// For the update of children, we want only active game objects.
     /// </summary>
     private IEnumerable<IGameObject> ActiveChildren => Transform.Select(x => x.GameObject).Where(x => x.Active);
-    
+
     /// <summary>
     /// For the update of components, we want only enabled components.
     /// </summary>
@@ -77,7 +82,7 @@ public class GameObject : GameComponentModel, IGameObject
     {
         _messageHandler.Handle(systemTarget);
     }
-    
+
     private void OnComponentRemoved(object? sender, IGameComponent component)
     {
         component.SendMessage(SystemMethod.OnDestroy);
@@ -97,7 +102,7 @@ public class GameObject : GameComponentModel, IGameObject
         {
             return;
         }
-        
+
         component.SendMessage(SystemMethod.Awake);
         component.SendMessage(SystemMethod.OnEnable);
     }
@@ -165,7 +170,7 @@ public class GameObject : GameComponentModel, IGameObject
         {
             gameComponent.SendMessage(SystemMethod.OnDestroy);
         }
-        
+
         ClearComponents();
     }
 }

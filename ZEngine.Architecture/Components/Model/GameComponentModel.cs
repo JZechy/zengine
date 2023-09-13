@@ -8,7 +8,6 @@ namespace ZEngine.Architecture.Components.Model;
 /// </summary>
 public abstract class GameComponentModel : IGameComponentModel
 {
-
     /// <inheritdoc />
     public event EventHandler<IGameComponent>? ComponentAdded;
 
@@ -19,7 +18,7 @@ public abstract class GameComponentModel : IGameComponentModel
     /// Dictionary of existing components.
     /// </summary>
     private readonly ConcurrentDictionary<Type, IGameComponent> _components = new();
-    
+
     /// <summary>
     /// Instance of service provider to satisfy component dependencies.
     /// </summary>
@@ -48,7 +47,7 @@ public abstract class GameComponentModel : IGameComponentModel
     }
 
     /// <inheritdoc />
-    public IGameComponent AddComponent(Type componentType)
+    public IGameComponent AddComponent(Type componentType, Action<IGameComponent>? configure = null)
     {
         if (!componentType.IsAssignableTo(typeof(IGameComponent)))
         {
@@ -67,6 +66,8 @@ public abstract class GameComponentModel : IGameComponentModel
         }
 
         _components.TryAdd(componentType, component);
+        
+        configure?.Invoke(component);
         ComponentAdded?.Invoke(this, component);
 
         return component;
@@ -79,16 +80,11 @@ public abstract class GameComponentModel : IGameComponentModel
     }
 
     /// <inheritdoc />
-    public void SetComponent(IGameComponent component)
+    public TComponent AddComponent<TComponent>(Action<TComponent> configure) where TComponent : IGameComponent
     {
-        Type componentType = component.GetType();
-        if (HasComponent(componentType))
-        {
-            RemoveComponent(componentType);
-        }
+        TComponent component = (TComponent) AddComponent(typeof(TComponent), configure as Action<IGameComponent>);
 
-        _components.TryAdd(componentType, component);
-        ComponentAdded?.Invoke(this, component);
+        return component;
     }
 
     /// <inheritdoc />
