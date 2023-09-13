@@ -8,6 +8,10 @@
         <Authors>Jan "Zechy" Zechovský</Authors>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>ZEngine.Player.Server</PackageId>
+        <Version>0.1.0</Version>
+        <PackageProjectUrl>https://github.com/JZechy/zengine</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/JZechy/zengine/blob/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/JZechy/zengine</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
