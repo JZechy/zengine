@@ -24,9 +24,14 @@ public abstract class GameComponentFixture<TFixtureFactory, TGameComponent> : ZE
     }
 
     /// <summary>
+    /// Instance of the game object to which the component is attached.
+    /// </summary>
+    protected IGameObject GameObject { get; private set; } = default!;
+
+    /// <summary>
     /// Initialized instance of the component.
     /// </summary>
-    protected TGameComponent Component { get; set; } = default!;
+    protected TGameComponent Component { get; private set; } = default!;
 
     /// <summary>
     /// 
@@ -35,16 +40,18 @@ public abstract class GameComponentFixture<TFixtureFactory, TGameComponent> : ZE
     {
         await base.InitializeAsync();
 
-        IGameObject go = GameObjectManager.Create();
-        Component = go.AddComponent<TGameComponent>();
+        GameObject = GameObjectManager.Create(false); // Create the component in-active so it can be set up before it's awakened.
+        Component = GameObject.AddComponent<TGameComponent>();
         SetUpComponent(Component);
+        
+        GameObject.Active = true; // Activate the game object after set-up.
     }
 
     /// <summary>
     /// Initial component set-up before it's awaken.
     /// </summary>
     /// <param name="component"></param>
-    public virtual void SetUpComponent(TGameComponent component)
+    protected virtual void SetUpComponent(TGameComponent component)
     {
     }
 }
