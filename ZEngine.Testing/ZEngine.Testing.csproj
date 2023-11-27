@@ -9,7 +9,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>ZEngine.Testing</PackageId>
         <IsPackable>true</IsPackable>
-        <Version>0.1.8</Version>
+        <Version>0.1.9</Version>
         <PackageProjectUrl>https://github.com/JZechy/zengine</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/JZechy/zengine/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/JZechy/zengine</RepositoryUrl>

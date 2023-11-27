@@ -1,4 +1,5 @@
 ﻿using Xunit.Abstractions;
+using ZEngine.Architecture.Communication.Messages;
 using ZEngine.Architecture.Components;
 using ZEngine.Architecture.GameObjects;
 using ZEngine.Systems.GameObjects;
@@ -44,6 +45,7 @@ public abstract class GameComponentFixture<TFixtureFactory, TGameComponent> : ZE
         Component = GameObject.AddComponent<TGameComponent>();
         SetUpComponent(Component);
         
+        GameObject.SendMessage(SystemMethod.Awake); // Awake is not called when the component is activated later. So we need to call it.
         GameObject.Active = true; // Activate the game object after set-up.
     }
 
