@@ -37,5 +37,14 @@ public abstract class GameComponentFixture<TFixtureFactory, TGameComponent> : ZE
 
         IGameObject go = GameObjectManager.Create();
         Component = go.AddComponent<TGameComponent>();
+        SetUpComponent(Component);
+    }
+
+    /// <summary>
+    /// Initial component set-up before it's awaken.
+    /// </summary>
+    /// <param name="component"></param>
+    public virtual void SetUpComponent(TGameComponent component)
+    {
     }
 }
