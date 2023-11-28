@@ -8,11 +8,21 @@ namespace ZEngine.Architecture.Components.Model;
 /// </summary>
 public abstract class GameComponentModel : IGameComponentModel
 {
+    /// <summary>
+    /// Lock for the ordered list of types.
+    /// </summary>
+    private readonly object _listLock = new();
+
     /// <inheritdoc />
     public event EventHandler<IGameComponent>? ComponentAdded;
 
     /// <inheritdoc />
     public event EventHandler<IGameComponent>? ComponentRemoved;
+
+    /// <summary>
+    /// Order of types as they were added to the dictionary.
+    /// </summary>
+    private readonly List<Type> _typesOrder = new();
 
     /// <summary>
     /// Dictionary of existing components.
@@ -36,7 +46,16 @@ public abstract class GameComponentModel : IGameComponentModel
     /// <summary>
     /// Gets all components attached to this game object.
     /// </summary>
-    protected ICollection<IGameComponent> Components => _components.Values;
+    protected ICollection<IGameComponent> Components
+    {
+        get
+        {
+            lock (_listLock)
+            {
+                return _typesOrder.Select(x => _components[x]).ToList();
+            }
+        }
+    }
 
     /// <summary>
     /// Clears the components collection.
@@ -59,13 +78,18 @@ public abstract class GameComponentModel : IGameComponentModel
             throw new ArgumentException($"Component of type {componentType.FullName} already exists.");
         }
 
-        IGameComponent? component = (IGameComponent?) ActivatorUtilities.CreateInstance(_serviceProvider, componentType);
+        IGameComponent? component = (IGameComponent?)ActivatorUtilities.CreateInstance(_serviceProvider, componentType);
         if (component is null)
         {
             throw new ArgumentException($"Component of type {componentType.FullName} could not be created.");
         }
 
         _components.TryAdd(componentType, component);
+        lock (_listLock)
+        {
+            _typesOrder.Add(componentType);
+        }
+
         ComponentAdded?.Invoke(this, component);
 
         return component;
@@ -74,13 +98,13 @@ public abstract class GameComponentModel : IGameComponentModel
     /// <inheritdoc />
     public TComponent AddComponent<TComponent>() where TComponent : IGameComponent
     {
-        return (TComponent) AddComponent(typeof(TComponent));
+        return (TComponent)AddComponent(typeof(TComponent));
     }
 
     /// <inheritdoc />
     public TComponent AddComponent<TComponent>(Action<TComponent> configure) where TComponent : IGameComponent
     {
-        TComponent component = (TComponent) AddComponent(typeof(TComponent));
+        TComponent component = (TComponent)AddComponent(typeof(TComponent));
         configure.Invoke(component);
 
         return component;
@@ -107,13 +131,13 @@ public abstract class GameComponentModel : IGameComponentModel
     /// <inheritdoc />
     public TComponent? GetComponent<TComponent>() where TComponent : IGameComponent
     {
-        return (TComponent?) GetComponent(typeof(TComponent));
+        return (TComponent?)GetComponent(typeof(TComponent));
     }
 
     /// <inheritdoc />
     public TComponent GetRequiredComponent<TComponent>() where TComponent : IGameComponent
     {
-        return (TComponent) GetRequiredComponent(typeof(TComponent));
+        return (TComponent)GetRequiredComponent(typeof(TComponent));
     }
 
     /// <inheritdoc />
@@ -135,6 +159,11 @@ public abstract class GameComponentModel : IGameComponentModel
         if (!removed)
         {
             return false;
+        }
+
+        lock (_listLock)
+        {
+            _typesOrder.Remove(type);
         }
 
         if (component is not null)
