@@ -65,7 +65,7 @@ public class GameObjectSystem : IGameSystem
     public int Priority => 1;
 
     /// <summary>
-    /// Every update, we wnat to iterate over active game objects and those, who are not children of any other game object.
+    /// Every update, we want to iterate over active game objects and those, who are not children of any other game object.
     /// </summary>
     /// <remarks>
     /// Children should be updated by their parents.
@@ -173,17 +173,20 @@ public class GameObjectSystem : IGameSystem
     }
 
     /// <summary>
-    /// Destroyes game objects, that were marked as destroyed.
+    /// Destroys game objects, that were marked as destroyed.
     /// </summary>
     private void DestroyObjects()
     {
         lock (RemovingLock)
         {
-            foreach (IGameObject gameObject in _destroyedGameObjects)
+            // We need to copy the collection, if there is any object destroyed under this frame, it will be added to the collection
+            HashSet<IGameObject> toDestroy = _destroyedGameObjects.ToHashSet();
+            foreach (IGameObject gameObject in toDestroy)
             {
                 try
                 {
                     gameObject.SendMessage(SystemMethod.OnDestroy);
+                    _destroyedGameObjects.Remove(gameObject);
                 }
                 catch (Exception e)
                 {
@@ -193,8 +196,6 @@ public class GameObjectSystem : IGameSystem
                 _eventMediator.Notify(new GameObjectRemoved(gameObject));
                 _gameObjects.Remove(gameObject);
             }
-
-            _destroyedGameObjects.Clear();
         }
     }
 }

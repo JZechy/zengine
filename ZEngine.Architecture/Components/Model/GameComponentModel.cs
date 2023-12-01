@@ -63,6 +63,10 @@ public abstract class GameComponentModel : IGameComponentModel
     protected void ClearComponents()
     {
         _components.Clear();
+        lock (_listLock)
+        {
+            _typesOrder.Clear();
+        }
     }
 
     /// <inheritdoc />

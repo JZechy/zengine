@@ -7,7 +7,7 @@
         <Authors>Jan "Zechy" Zechovský</Authors>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>ZEngine.Architecture</PackageId>
-        <Version>0.1.4</Version>
+        <Version>0.1.5</Version>
         <PackageProjectUrl>https://github.com/JZechy/zengine</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/JZechy/zengine/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/JZechy/zengine</RepositoryUrl>
