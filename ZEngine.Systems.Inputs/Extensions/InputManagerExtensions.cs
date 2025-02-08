@@ -6,7 +6,7 @@ namespace ZEngine.Systems.Inputs.Extensions;
 public static class InputManagerExtensions
 {
     /// <summary>
-    /// Register keyboard input for given path.
+    ///     Register keyboard input for given path.
     /// </summary>
     /// <param name="inputManager"></param>
     /// <param name="path"></param>
@@ -17,7 +17,7 @@ public static class InputManagerExtensions
     }
 
     /// <summary>
-    /// Removes keyboard input for given path.
+    ///     Removes keyboard input for given path.
     /// </summary>
     /// <param name="inputManager"></param>
     /// <param name="path"></param>
@@ -28,7 +28,7 @@ public static class InputManagerExtensions
     }
 
     /// <summary>
-    /// Registers mouse button input for given path.
+    ///     Registers mouse button input for given path.
     /// </summary>
     /// <param name="inputManager"></param>
     /// <param name="path"></param>
@@ -39,7 +39,7 @@ public static class InputManagerExtensions
     }
 
     /// <summary>
-    /// Removes mouse button input for given path.
+    ///     Removes mouse button input for given path.
     /// </summary>
     /// <param name="inputManager"></param>
     /// <param name="path"></param>
@@ -50,7 +50,7 @@ public static class InputManagerExtensions
     }
 
     /// <summary>
-    /// Register mouse position input.
+    ///     Register mouse position input.
     /// </summary>
     /// <param name="inputManager"></param>
     /// <param name="context"></param>
@@ -58,9 +58,9 @@ public static class InputManagerExtensions
     {
         inputManager.Register(new MousePositionPath(), context);
     }
-    
+
     /// <summary>
-    /// Removes mouse position input.
+    ///     Removes mouse position input.
     /// </summary>
     /// <param name="inputManager"></param>
     /// <param name="context"></param>

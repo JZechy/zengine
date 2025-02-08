@@ -4,7 +4,7 @@ using ZEngine.Architecture.GameObjects;
 namespace ZEngine.Systems.GameObjects.Events;
 
 /// <summary>
-/// Event message notifying about adding a new game object to the game.
+///     Event message notifying about adding a new game object to the game.
 /// </summary>
 public class GameObjectAdded : IEventMessage
 {
@@ -12,9 +12,9 @@ public class GameObjectAdded : IEventMessage
     {
         GameObject = gameObject;
     }
-    
+
     /// <summary>
-    /// Instance of added game object.
+    ///     Instance of added game object.
     /// </summary>
     public IGameObject GameObject { get; }
 }

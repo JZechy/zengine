@@ -8,7 +8,7 @@ public class SystemTestComponent : GameComponent
     public bool OnEnableCalled { get; private set; }
     public bool OnDestroyCalled { get; private set; }
     public bool UpdateCalled { get; private set; }
-    
+
     private void Awake()
     {
         AwakeCalled = true;
@@ -18,7 +18,7 @@ public class SystemTestComponent : GameComponent
     {
         OnEnableCalled = true;
     }
-    
+
     private void Update()
     {
         UpdateCalled = true;

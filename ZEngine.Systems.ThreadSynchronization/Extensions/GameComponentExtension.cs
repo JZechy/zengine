@@ -1,12 +1,12 @@
 ﻿namespace ZEngine.Systems.ThreadSynchronization.Extensions;
 
 /// <summary>
-/// Offers extensions methods on game components to be able to synchronize the calls to the main thread.
+///     Offers extensions methods on game components to be able to synchronize the calls to the main thread.
 /// </summary>
 public static class GameComponentExtension
 {
     /// <summary>
-    /// Synchronizes the call to the main thread.
+    ///     Synchronizes the call to the main thread.
     /// </summary>
     /// <param name="component"></param>
     /// <param name="action"></param>
@@ -18,7 +18,7 @@ public static class GameComponentExtension
     }
 
     /// <summary>
-    /// Synchronizes the call to the main thread.
+    ///     Synchronizes the call to the main thread.
     /// </summary>
     /// <param name="component"></param>
     /// <param name="func"></param>

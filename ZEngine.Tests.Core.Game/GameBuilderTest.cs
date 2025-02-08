@@ -10,7 +10,7 @@ using ZEngine.Tests.Core.Game.TestSystems;
 namespace ZEngine.Tests.Core.Game;
 
 /// <summary>
-/// Tests behaviour of game builder.
+///     Tests behaviour of game builder.
 /// </summary>
 public class GameBuilderTest
 {
@@ -20,12 +20,12 @@ public class GameBuilderTest
         GameBuilder builder = GameBuilder.Create();
         builder.Services.AddSingleton<ILogger<GameManager>>(_ => new NullLogger<GameManager>());
         builder.Services.AddSingleton<IGameSystem, BasicSystem>();
-        
+
         IGameManager gameManager = builder.Build();
         BasicSystem basicSystem = gameManager.ServiceProvider.GetServices<IGameSystem>()
             .OfType<BasicSystem>()
             .First();
-        
+
         gameManager.Start();
         await gameManager.GameTask;
 

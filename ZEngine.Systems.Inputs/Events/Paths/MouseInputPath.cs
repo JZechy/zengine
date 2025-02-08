@@ -4,7 +4,7 @@ using ZEngine.Systems.Inputs.Devices.Pointers;
 namespace ZEngine.Systems.Inputs.Events.Paths;
 
 /// <summary>
-/// Marks a path as a mouse input path.
+///     Marks a path as a mouse input path.
 /// </summary>
 public class MouseInputPath : InputPath
 {
@@ -16,12 +16,12 @@ public class MouseInputPath : InputPath
     {
         MouseButton = mouseButton;
     }
-    
+
     /// <inheritdoc />
     public override DeviceType Device => DeviceType.Mouse;
-    
+
     /// <summary>
-    /// The mouse button which this path is for.
+    ///     The mouse button which this path is for.
     /// </summary>
     public MouseButton MouseButton { get; set; }
 

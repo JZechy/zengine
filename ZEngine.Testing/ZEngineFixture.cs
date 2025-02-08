@@ -5,17 +5,16 @@ using ZEngine.Core.Game;
 namespace ZEngine.Testing;
 
 /// <summary>
-/// Defines an abstract class that is used to construct the unit test class for the game engine components & objects.
+///     Defines an abstract class that is used to construct the unit test class for the game engine components & objects.
 /// </summary>
 /// <remarks>
-/// Class is used to initialize complete engine environment for testing.
+///     Class is used to initialize complete engine environment for testing.
 /// </remarks>
 /// <typeparam name="TFixtureFactory"></typeparam>
 public abstract class ZEngineFixture<TFixtureFactory> : IClassFixture<TFixtureFactory>, IAsyncLifetime
     where TFixtureFactory : class, ITestFactory
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="factory"></param>
     /// <param name="testOutputHelper"></param>
@@ -25,24 +24,24 @@ public abstract class ZEngineFixture<TFixtureFactory> : IClassFixture<TFixtureFa
         TestOutputHelper = testOutputHelper;
         GameManager = factory.Build();
     }
-    
+
     /// <summary>
-    /// Instance of factory used to create the test.
+    ///     Instance of factory used to create the test.
     /// </summary>
     public TFixtureFactory Factory { get; }
-    
+
     /// <summary>
-    /// Output helper allowing more debugging options in tests.
+    ///     Output helper allowing more debugging options in tests.
     /// </summary>
     public ITestOutputHelper TestOutputHelper { get; }
-    
+
     /// <summary>
-    /// Instance of build game engine manager.
+    ///     Instance of build game engine manager.
     /// </summary>
     public IGameManager GameManager { get; }
 
     /// <summary>
-    /// Access the game environment service provider.
+    ///     Access the game environment service provider.
     /// </summary>
     public IServiceProvider ServiceProvider => GameManager.ServiceProvider;
 

@@ -8,7 +8,7 @@ namespace ZEngine.Tests.Architecture.Communication.Messages;
 public class MessageHandlerTest
 {
     /// <summary>
-    /// Tests receiving messages by system method.
+    ///     Tests receiving messages by system method.
     /// </summary>
     [Test]
     public void Test_SystemMethod()
@@ -19,7 +19,7 @@ public class MessageHandlerTest
     }
 
     /// <summary>
-    /// Tests receiving messages by method with <see cref="MessageTargetAttribute"/>.
+    ///     Tests receiving messages by method with <see cref="MessageTargetAttribute" />.
     /// </summary>
     [Test]
     public void Test_AttributeMethod()
@@ -30,10 +30,10 @@ public class MessageHandlerTest
     }
 
     /// <summary>
-    /// Tests receiving messages by system target.
+    ///     Tests receiving messages by system target.
     /// </summary>
     /// <remarks>
-    /// This also tests private method access.
+    ///     This also tests private method access.
     /// </remarks>
     [Test]
     public void Test_SystemTarget()
@@ -44,7 +44,7 @@ public class MessageHandlerTest
     }
 
     /// <summary>
-    /// Tests extension access.
+    ///     Tests extension access.
     /// </summary>
     [Test]
     public void Test_Extending()
@@ -58,7 +58,7 @@ public class MessageHandlerTest
     }
 
     /// <summary>
-    /// Test using message handler with class, that is no implementing the interface.
+    ///     Test using message handler with class, that is no implementing the interface.
     /// </summary>
     [Test]
     public void Test_WithoutInterface()
@@ -71,7 +71,7 @@ public class MessageHandlerTest
     }
 
     /// <summary>
-    /// Invoking the message handler with a non-existing method should not throw an exception.
+    ///     Invoking the message handler with a non-existing method should not throw an exception.
     /// </summary>
     [Test]
     public void Test_NonExistingMethod()

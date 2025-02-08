@@ -7,27 +7,27 @@ using ZEngine.Systems.Inputs.Events.Paths;
 namespace ZEngine.Systems.Inputs;
 
 /// <summary>
-/// Input Manager is a exposed public API that can be used to bind input events to actions.
+///     Input Manager is a exposed public API that can be used to bind input events to actions.
 /// </summary>
 public class InputManager
 {
-    private readonly ILogger<InputManager> _logger;
-
     /// <summary>
-    /// Actual instance of the input manager.
+    ///     Actual instance of the input manager.
     /// </summary>
     private static InputManager? _instance;
 
     /// <summary>
-    /// Collection of callback managers.
+    ///     Collection of callback managers.
     /// </summary>
     private readonly ConcurrentBag<IDeviceCallbackManager> _callbackManagers;
+
+    private readonly ILogger<InputManager> _logger;
 
     private InputManager(ILoggerFactory loggerFactory)
     {
         _logger = loggerFactory.CreateLogger<InputManager>();
-        
-        _callbackManagers = new ConcurrentBag<IDeviceCallbackManager>()
+
+        _callbackManagers = new ConcurrentBag<IDeviceCallbackManager>
         {
             new KeyboardInputCallbackManager(loggerFactory),
             new MouseButtonCallbackManager(loggerFactory),
@@ -36,24 +36,21 @@ public class InputManager
     }
 
     /// <summary>
-    /// Gets current instance of input manager.
+    ///     Gets current instance of input manager.
     /// </summary>
     /// <exception cref="InvalidOperationException">Input manager was not initialized.</exception>
     public static InputManager Instance
     {
         get
         {
-            if (_instance is null)
-            {
-                throw new InvalidOperationException("Input Manager is not initialized.");
-            }
+            if (_instance is null) throw new InvalidOperationException("Input Manager is not initialized.");
 
             return _instance;
         }
     }
 
     /// <summary>
-    /// Factory method to create a new instance of the input manager.
+    ///     Factory method to create a new instance of the input manager.
     /// </summary>
     internal static InputManager CreateInstance(ILoggerFactory loggerFactory)
     {
@@ -62,7 +59,7 @@ public class InputManager
     }
 
     /// <summary>
-    /// Pass the input context to all registered callbacks.
+    ///     Pass the input context to all registered callbacks.
     /// </summary>
     /// <param name="inputContext"></param>
     internal void ProcessInput(InputContext inputContext)
@@ -72,7 +69,7 @@ public class InputManager
     }
 
     /// <summary>
-    /// Registers new input callback for given device path.
+    ///     Registers new input callback for given device path.
     /// </summary>
     /// <param name="devicePath"></param>
     /// <param name="callback"></param>
@@ -85,7 +82,7 @@ public class InputManager
     }
 
     /// <summary>
-    /// Removes input callback for given device path.
+    ///     Removes input callback for given device path.
     /// </summary>
     /// <param name="devicePath"></param>
     /// <param name="callback"></param>
@@ -96,9 +93,9 @@ public class InputManager
         IDeviceCallbackManager callbackManager = GetCallbackManager(typeof(InputContext<TContext>));
         callbackManager.Unregister(devicePath.Path, callback);
     }
-    
+
     /// <summary>
-    /// Finds a suitable manager by given input contex type.
+    ///     Finds a suitable manager by given input contex type.
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
@@ -108,9 +105,9 @@ public class InputManager
 
         return GetCallbackManager(contextType);
     }
-    
+
     /// <summary>
-    /// Finds a suitable manager by given input contex type.
+    ///     Finds a suitable manager by given input contex type.
     /// </summary>
     /// <param name="contextType"></param>
     /// <returns></returns>

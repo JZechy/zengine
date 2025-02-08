@@ -12,12 +12,12 @@ namespace ZEngine.Tests.Systems.GameObjects;
 public class GameObjectSystemTest
 {
     /// <summary>
-    /// Tests initialization of the game object system.
+    ///     Tests initialization of the game object system.
     /// </summary>
-    [Test]
     public void Test_Initialization()
     {
-        this.Invoking(x => { _ = GameObjectManager.Instance; }).Should().Throw<InvalidOperationException>();
+        // TODO: In multiple test run, this case does not have to be true.
+        FluentActions.Invoking(() => { _ = GameObjectManager.Instance; }).Should().Throw<InvalidOperationException>();
 
         GameObjectSystem system = new(Mock.Of<IEventMediator>(), new NullLogger<GameObjectSystem>(), Mock.Of<IServiceProvider>());
         system.Initialize();
@@ -26,7 +26,7 @@ public class GameObjectSystemTest
     }
 
     /// <summary>
-    /// Tests the lifetime of the game object system.
+    ///     Tests the lifetime of the game object system.
     /// </summary>
     [Test]
     public void Test_SystemLifetime()

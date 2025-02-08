@@ -3,7 +3,7 @@
 namespace ZEngine.Tests.Architecture.Communication.Messages.Cases;
 
 /// <summary>
-/// Implementation of <see cref="TestReceiver"/> for testing extending functionality.
+///     Implementation of <see cref="TestReceiver" /> for testing extending functionality.
 /// </summary>
 internal class ExtendingReceiver : TestReceiver
 {

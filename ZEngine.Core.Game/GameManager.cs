@@ -3,27 +3,27 @@
 namespace ZEngine.Core.Game;
 
 /// <summary>
-/// Main manager responsible for game loop and systems management.
+///     Main manager responsible for game loop and systems management.
 /// </summary>
 public class GameManager : IGameManager
 {
     /// <summary>
-    /// Main game logger.
-    /// </summary>
-    private readonly ILogger<GameManager> _logger;
-
-    /// <summary>
-    /// Cancellation token source used to stop the game loop.
+    ///     Cancellation token source used to stop the game loop.
     /// </summary>
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     /// <summary>
-    /// Task completion source used to wait for the game loop to finish.
+    ///     Task completion source used to wait for the game loop to finish.
     /// </summary>
     private readonly TaskCompletionSource _gameLoopCompletion = new();
 
     /// <summary>
-    /// List of all registered systems for the game.
+    ///     Main game logger.
+    /// </summary>
+    private readonly ILogger<GameManager> _logger;
+
+    /// <summary>
+    ///     List of all registered systems for the game.
     /// </summary>
     private List<IGameSystem> _systems;
 
@@ -34,6 +34,25 @@ public class GameManager : IGameManager
         _systems = gameSystems.ToList();
     }
 
+    /// <summary>
+    ///     Orders game to exit.
+    /// </summary>
+    private bool ShouldExit { get; set; }
+
+    /// <summary>
+    ///     The sleep time in ms before the next update.
+    /// </summary>
+    private int SleepTime
+    {
+        get
+        {
+            int targetFrameTime = 1000 / UpdateFrequency;
+            int sleep = targetFrameTime - (int)GameTime.DeltaTimeMs;
+
+            return Math.Max(sleep, 0);
+        }
+    }
+
     /// <inheritdoc />
     public IServiceProvider ServiceProvider { get; }
 
@@ -42,25 +61,6 @@ public class GameManager : IGameManager
 
     /// <inheritdoc />
     public Task GameTask => _gameLoopCompletion.Task;
-
-    /// <summary>
-    /// Orders game to exit.
-    /// </summary>
-    private bool ShouldExit { get; set; }
-
-    /// <summary>
-    /// The sleep time in ms before the next update.
-    /// </summary>
-    private int SleepTime
-    {
-        get
-        {
-            int targetFrameTime = 1000 / UpdateFrequency;
-            int sleep = targetFrameTime - (int) GameTime.DeltaTimeMs;
-
-            return Math.Max(sleep, 0);
-        }
-    }
 
     /// <inheritdoc />
     public void AddSystem(IGameSystem gameSystem)
@@ -91,7 +91,7 @@ public class GameManager : IGameManager
     }
 
     /// <summary>
-    /// Method processing the actual game loop.
+    ///     Method processing the actual game loop.
     /// </summary>
     private async void GameLoop()
     {
@@ -119,7 +119,7 @@ public class GameManager : IGameManager
     }
 
     /// <summary>
-    /// Initialize the game.
+    ///     Initialize the game.
     /// </summary>
     private void Initialize()
     {
@@ -128,7 +128,6 @@ public class GameManager : IGameManager
         List<IGameSystem> failedSystems = new();
 
         foreach (IGameSystem gameSystem in _systems)
-        {
             try
             {
                 gameSystem.Initialize();
@@ -138,21 +137,16 @@ public class GameManager : IGameManager
                 failedSystems.Add(gameSystem);
                 _logger.LogCritical(e, "An unhandled exception occurred while initializing game system {SystemName}. Failing systems are removed.", gameSystem.GetType().Name);
             }
-        }
 
-        foreach (IGameSystem gameSystem in failedSystems)
-        {
-            _systems.Remove(gameSystem);
-        }
+        foreach (IGameSystem gameSystem in failedSystems) _systems.Remove(gameSystem);
     }
 
     /// <summary>
-    /// Updates all systems.
+    ///     Updates all systems.
     /// </summary>
     private void UpdateSystems()
     {
         foreach (IGameSystem gameSystem in _systems)
-        {
             try
             {
                 gameSystem.Update();
@@ -166,16 +160,14 @@ public class GameManager : IGameManager
             {
                 _logger.LogCritical(e, "An unhandled exception occurred while updating game system {SystemName}.", gameSystem.GetType().Name);
             }
-        }
     }
 
     /// <summary>
-    /// Initiate cleaning after the game loop is finished.
+    ///     Initiate cleaning after the game loop is finished.
     /// </summary>
     private void CleanUp()
     {
         foreach (IGameSystem gameSystem in _systems)
-        {
             try
             {
                 gameSystem.CleanUp();
@@ -184,17 +176,13 @@ public class GameManager : IGameManager
             {
                 _logger.LogCritical(e, "An unhandled exception occurred while cleaning up game system {SystemName}.", gameSystem.GetType().Name);
             }
-        }
     }
 
     /// <summary>
-    /// Checks for conditions to exit the game.
+    ///     Checks for conditions to exit the game.
     /// </summary>
     private void CheckGameExit()
     {
-        if (ShouldExit)
-        {
-            _cancellationTokenSource.Cancel();
-        }
+        if (ShouldExit) _cancellationTokenSource.Cancel();
     }
 }

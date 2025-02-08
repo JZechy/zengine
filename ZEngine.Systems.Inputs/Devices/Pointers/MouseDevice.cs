@@ -6,58 +6,36 @@ using ZEngine.Systems.Inputs.Devices.Pointers.Events;
 namespace ZEngine.Systems.Inputs.Devices.Pointers;
 
 /// <summary>
-/// Reads mouse state.
+///     Reads mouse state.
 /// </summary>
 public class MouseDevice : IDevice
 {
     /// <summary>
-    /// Event that is invoked when a mouse event occurs.
-    /// </summary>
-    public event EventHandler<DeviceStateChanged>? StateChanged;
-
-    /// <summary>
-    /// Previous keyboard state - This is also containing mouse buttons.
-    /// </summary>
-    private readonly byte[] _previousState = new byte[256];
-
-    /// <summary>
-    /// Current keyboard state - This is also containig mouse button.
+    ///     Current keyboard state - This is also containig mouse button.
     /// </summary>
     private readonly byte[] _currentState = new byte[256];
 
     /// <summary>
-    /// Supported mouse buttons.
+    ///     Previous keyboard state - This is also containing mouse buttons.
+    /// </summary>
+    private readonly byte[] _previousState = new byte[256];
+
+    /// <summary>
+    ///     Supported mouse buttons.
     /// </summary>
     private readonly byte[] _supportedKeys = Enum.GetValues<MouseButton>()
-        .Select(x => (byte) x)
+        .Select(x => (byte)x)
         .ToArray();
 
     /// <summary>
-    /// The previous position of the mouse.
+    ///     The previous position of the mouse.
     /// </summary>
     private MousePosition _previousPositon;
 
     /// <summary>
-    /// Win32 API call to get keyboard state.
+    ///     Event that is invoked when a mouse event occurs.
     /// </summary>
-    /// <remarks>
-    /// This method is returning a byte array of 256 bytes, where each byte represents current state of a key. For the scan codes,
-    /// refers to the <see cref="KeyScanCode"/>. For the key codes, refers to the <see cref="Key"/>.
-    ///
-    /// Mouse buttons are part of the keyboard state, and they are represented by the <see cref="MouseButton"/> enum.
-    /// </remarks>
-    /// <param name="lpKeyState"></param>
-    /// <returns></returns>
-    [DllImport("user32.dll")]
-    private static extern bool GetKeyboardState(byte[] lpKeyState);
-
-    /// <summary>
-    /// This method is used to read the current mouse position.
-    /// </summary>
-    /// <param name="lpPoint"></param>
-    /// <returns></returns>
-    [DllImport("user32.dll")]
-    private static extern bool GetCursorPos(out MousePosition lpPoint);
+    public event EventHandler<DeviceStateChanged>? StateChanged;
 
     /// <inheritdoc />
     public void Initialize()
@@ -77,47 +55,59 @@ public class MouseDevice : IDevice
     }
 
     /// <summary>
-    /// Reads current mouse position, if the position changes, it will invoke the <see cref="StateChanged"/> with the new position.
+    ///     Win32 API call to get keyboard state.
+    /// </summary>
+    /// <remarks>
+    ///     This method is returning a byte array of 256 bytes, where each byte represents current state of a key. For the scan codes,
+    ///     refers to the <see cref="KeyScanCode" />. For the key codes, refers to the <see cref="Key" />.
+    ///     Mouse buttons are part of the keyboard state, and they are represented by the <see cref="MouseButton" /> enum.
+    /// </remarks>
+    /// <param name="lpKeyState"></param>
+    /// <returns></returns>
+    [DllImport("user32.dll")]
+    private static extern bool GetKeyboardState(byte[] lpKeyState);
+
+    /// <summary>
+    ///     This method is used to read the current mouse position.
+    /// </summary>
+    /// <param name="lpPoint"></param>
+    /// <returns></returns>
+    [DllImport("user32.dll")]
+    private static extern bool GetCursorPos(out MousePosition lpPoint);
+
+    /// <summary>
+    ///     Reads current mouse position, if the position changes, it will invoke the <see cref="StateChanged" /> with the new position.
     /// </summary>
     private void ReadMousePosition()
     {
-        if (!GetCursorPos(out MousePosition position))
-        {
-            return;
-        }
+        if (!GetCursorPos(out MousePosition position)) return;
 
-        if (_previousPositon.Equals(position))
-        {
-            return;
-        }
+        if (_previousPositon.Equals(position)) return;
 
         StateChanged?.Invoke(this, new MousePositionStateChanged(position));
         _previousPositon = position;
     }
 
     /// <summary>
-    /// Reads the pressed mouse buttons, and invokes the <see cref="StateChanged"/> with the appropriate event.
+    ///     Reads the pressed mouse buttons, and invokes the <see cref="StateChanged" /> with the appropriate event.
     /// </summary>
     private void ReadMouseButtons()
     {
-        if (!GetKeyboardState(_currentState))
-        {
-            return;
-        }
+        if (!GetKeyboardState(_currentState)) return;
 
         foreach (byte key in _supportedKeys)
         {
-            bool wasDown = ((KeyScanCode) _previousState[key]).HasFlag(KeyScanCode.Pressed);
-            bool isDown = ((KeyScanCode) _currentState[key]).HasFlag(KeyScanCode.Pressed);
+            bool wasDown = ((KeyScanCode)_previousState[key]).HasFlag(KeyScanCode.Pressed);
+            bool isDown = ((KeyScanCode)_currentState[key]).HasFlag(KeyScanCode.Pressed);
 
             switch (wasDown)
             {
                 case true when !isDown:
-                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton) key, KeyState.Released));
+                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton)key, KeyState.Released));
                     break;
                 case false when isDown:
-                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton) key, KeyState.Down));
-                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton) key, KeyState.Pressed)); // TODO: Pressed requires more logic. And magic :P
+                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton)key, KeyState.Down));
+                    StateChanged?.Invoke(this, new MouseButtonStateChanged((MouseButton)key, KeyState.Pressed)); // TODO: Pressed requires more logic. And magic :P
                     break;
             }
         }

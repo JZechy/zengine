@@ -4,19 +4,26 @@ using ZEngine.Architecture.GameObjects;
 namespace ZEngine.Architecture.Components;
 
 /// <summary>
-/// Abstract class describing basic component attached to game object.
+///     Abstract class describing basic component attached to game object.
 /// </summary>
 public abstract class GameComponent : IGameComponent
 {
     /// <summary>
-    /// Message handler for this component.
+    ///     Message handler for this component.
     /// </summary>
     private readonly MessageHandler _messageHandler;
 
     /// <summary>
-    /// Backing field.
+    ///     Backing field.
     /// </summary>
     private bool _enabled = true;
+
+    /// <summary>
+    /// </summary>
+    protected GameComponent()
+    {
+        _messageHandler = new MessageHandler(this);
+    }
 
     /// <inheritdoc />
     public bool Enabled
@@ -32,14 +39,6 @@ public abstract class GameComponent : IGameComponent
     /// <inheritdoc />
     public IGameObject GameObject { get; set; } = null!;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    protected GameComponent()
-    {
-        _messageHandler = new MessageHandler(this);
-    }
-    
     /// <inheritdoc />
     public void SendMessage(string target)
     {

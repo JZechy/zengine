@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Version>0.1.0</Version>
         <PackageProjectUrl>https://github.com/JZechy/zengine</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/JZechy/zengine/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/JZechy/zengine</RepositoryUrl>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
 </Project>

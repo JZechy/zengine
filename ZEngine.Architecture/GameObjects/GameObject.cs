@@ -5,22 +5,21 @@ using ZEngine.Architecture.Components.Model;
 namespace ZEngine.Architecture.GameObjects;
 
 /// <summary>
-/// Implementation of standard game object.
+///     Implementation of standard game object.
 /// </summary>
 public class GameObject : GameComponentModel, IGameObject
 {
     /// <summary>
-    /// Internal message handler.
+    ///     Internal message handler.
     /// </summary>
     private readonly MessageHandler _messageHandler;
 
     /// <summary>
-    /// Current state of game object.
+    ///     Current state of game object.
     /// </summary>
     private bool _active;
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="serviceProvider"></param>
     /// <param name="name"></param>
@@ -39,6 +38,16 @@ public class GameObject : GameComponentModel, IGameObject
         AddComponent<Transform>();
     }
 
+    /// <summary>
+    ///     For the update of children, we want only active game objects.
+    /// </summary>
+    private IEnumerable<IGameObject> ActiveChildren => Transform.Select(x => x.GameObject).Where(x => x.Active);
+
+    /// <summary>
+    ///     For the update of components, we want only enabled components.
+    /// </summary>
+    private IEnumerable<IGameComponent> EnabledComponents => Components.Where(x => x.Enabled);
+
     /// <inheritdoc />
     public string Name { get; set; }
 
@@ -51,25 +60,12 @@ public class GameObject : GameComponentModel, IGameObject
             bool previousState = _active;
             _active = value;
 
-            if (previousState != _active)
-            {
-                SendMessage(_active ? SystemMethod.OnEnable : SystemMethod.OnDisable);
-            }
+            if (previousState != _active) SendMessage(_active ? SystemMethod.OnEnable : SystemMethod.OnDisable);
         }
     }
 
     /// <inheritdoc />
     public Transform Transform { get; private set; } = null!;
-
-    /// <summary>
-    /// For the update of children, we want only active game objects.
-    /// </summary>
-    private IEnumerable<IGameObject> ActiveChildren => Transform.Select(x => x.GameObject).Where(x => x.Active);
-
-    /// <summary>
-    /// For the update of components, we want only enabled components.
-    /// </summary>
-    private IEnumerable<IGameComponent> EnabledComponents => Components.Where(x => x.Enabled);
 
     /// <inheritdoc />
     public void SendMessage(string target)
@@ -93,83 +89,56 @@ public class GameObject : GameComponentModel, IGameObject
         component.GameObject = this;
 
         // If we are overriding (or adding during init) transform, we need to update it.
-        if (component is Transform transform)
-        {
-            Transform = transform;
-        }
+        if (component is Transform transform) Transform = transform;
 
-        if (!Active)
-        {
-            return;
-        }
+        if (!Active) return;
 
         component.SendMessage(SystemMethod.Awake);
         component.SendMessage(SystemMethod.OnEnable);
     }
 
     /// <summary>
-    /// If the game object was created with existing components, we need to call Awake on them.
+    ///     If the game object was created with existing components, we need to call Awake on them.
     /// </summary>
     private void Awake()
     {
-        foreach (IGameComponent component in Components)
-        {
-            component.SendMessage(SystemMethod.Awake);
-        }
+        foreach (IGameComponent component in Components) component.SendMessage(SystemMethod.Awake);
     }
 
     /// <summary>
-    /// Enables all registered components.
+    ///     Enables all registered components.
     /// </summary>
     private void OnEnable()
     {
-        foreach (IGameComponent component in Components)
-        {
-            component.Enabled = true;
-        }
+        foreach (IGameComponent component in Components) component.Enabled = true;
     }
 
     /// <summary>
-    /// Disables all registered components.
+    ///     Disables all registered components.
     /// </summary>
     private void OnDisable()
     {
-        foreach (IGameComponent component in Components)
-        {
-            component.Enabled = false;
-        }
+        foreach (IGameComponent component in Components) component.Enabled = false;
     }
 
     /// <summary>
-    /// Updates all child game objects and components.
+    ///     Updates all child game objects and components.
     /// </summary>
     private void Update()
     {
-        foreach (IGameObject gameObject in ActiveChildren)
-        {
-            gameObject.SendMessage(SystemMethod.Update);
-        }
+        foreach (IGameObject gameObject in ActiveChildren) gameObject.SendMessage(SystemMethod.Update);
 
-        foreach (IGameComponent gameComponent in EnabledComponents)
-        {
-            gameComponent.SendMessage(SystemMethod.Update);
-        }
+        foreach (IGameComponent gameComponent in EnabledComponents) gameComponent.SendMessage(SystemMethod.Update);
     }
 
     /// <summary>
-    /// Detroys all child game objects and components.
+    ///     Detroys all child game objects and components.
     /// </summary>
     private void OnDestroy()
     {
-        foreach (IGameObject gameObject in Transform.Select(x => x.GameObject))
-        {
-            gameObject.SendMessage(SystemMethod.OnDestroy);
-        }
+        foreach (IGameObject gameObject in Transform.Select(x => x.GameObject)) gameObject.SendMessage(SystemMethod.OnDestroy);
 
-        foreach (IGameComponent gameComponent in Components)
-        {
-            gameComponent.SendMessage(SystemMethod.OnDestroy);
-        }
+        foreach (IGameComponent gameComponent in Components) gameComponent.SendMessage(SystemMethod.OnDestroy);
 
         ClearComponents();
     }

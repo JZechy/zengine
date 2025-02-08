@@ -2,15 +2,16 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <IsPackable>false</IsPackable>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj" />
+        <ProjectReference Include="..\ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj"/>
     </ItemGroup>
 
 </Project>

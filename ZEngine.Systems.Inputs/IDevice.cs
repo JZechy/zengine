@@ -3,22 +3,22 @@
 namespace ZEngine.Systems.Inputs;
 
 /// <summary>
-/// Define common interface for all input devices.
+///     Define common interface for all input devices.
 /// </summary>
 public interface IDevice : IDisposable
 {
     /// <summary>
-    /// Event raised when device state changes.
+    ///     Event raised when device state changes.
     /// </summary>
-    event EventHandler<DeviceStateChanged> StateChanged; 
-    
+    event EventHandler<DeviceStateChanged> StateChanged;
+
     /// <summary>
-    /// Initializes the device.
+    ///     Initializes the device.
     /// </summary>
     void Initialize();
 
     /// <summary>
-    /// Scan the device for changes.
+    ///     Scan the device for changes.
     /// </summary>
     void Scan();
 }

@@ -6,7 +6,7 @@ namespace ZEngine.Systems.Inputs.Extensions;
 public static class GameBuilderExtension
 {
     /// <summary>
-    /// Registers the input system and adds it to the game manager.
+    ///     Registers the input system and adds it to the game manager.
     /// </summary>
     /// <param name="gameBuilder"></param>
     public static void AddInputSystem(this GameBuilder gameBuilder)
@@ -14,9 +14,9 @@ public static class GameBuilderExtension
         gameBuilder.Services.AddSingleton<IInputSystem, InputSystem>();
         gameBuilder.AddSystem(x => x.GetRequiredService<IInputSystem>());
     }
-    
+
     /// <summary>
-    /// Registers a device for the input system.
+    ///     Registers a device for the input system.
     /// </summary>
     /// <param name="gameBuilder"></param>
     /// <typeparam name="TDevice"></typeparam>

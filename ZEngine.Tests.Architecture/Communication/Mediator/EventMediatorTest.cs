@@ -8,7 +8,7 @@ namespace ZEngine.Tests.Architecture.Communication.Mediator;
 public class EventMediatorTest
 {
     /// <summary>
-    /// Test basic event mediator flow.
+    ///     Test basic event mediator flow.
     /// </summary>
     [Test]
     public void Test_Subscribing()
@@ -18,7 +18,7 @@ public class EventMediatorTest
         mediator.Subscribe<TestMessage>(Receiver);
         mediator.Notify(new TestMessage());
         wasCalled.Should().BeTrue();
-        
+
         wasCalled = false;
         mediator.Unsubscribe<TestMessage>(Receiver);
         mediator.Notify(new TestMessage());
@@ -30,9 +30,8 @@ public class EventMediatorTest
             wasCalled = true;
         }
     }
-    
+
     private class TestMessage : IEventMessage
     {
-        
     }
 }

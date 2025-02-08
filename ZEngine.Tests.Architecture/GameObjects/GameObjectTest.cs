@@ -9,18 +9,18 @@ using ZEngine.Tests.Architecture.GameObjects.Cases;
 namespace ZEngine.Tests.Architecture.GameObjects;
 
 /// <summary>
-/// Tests game object implementation.
+///     Tests game object implementation.
 /// </summary>
 public class GameObjectTest
 {
     /// <summary>
-    /// Tests basic component management.
+    ///     Tests basic component management.
     /// </summary>
     [Test]
     public void Test_GameObjectComponent()
     {
         GameObject gameObject = new(Mock.Of<IServiceProvider>(), "Test", true);
-        
+
         Transform transform = gameObject.GetRequiredComponent<Transform>();
         transform.GameObject.Should().Be(gameObject);
 
@@ -45,16 +45,16 @@ public class GameObjectTest
         lifetime.EnableCalled.Should().BeTrue();
         lifetime.DisbleCalled.Should().BeFalse();
         lifetime.Destroyed.Should().BeFalse();
-        
+
         // Disable game object
         gameObject.Active = false;
         lifetime.DisbleCalled.Should().BeTrue();
         lifetime.EnableCalled.Should().BeFalse();
-        
+
         // Activate game object
         gameObject.Active = true;
         lifetime.EnableCalled.Should().BeTrue();
-        
+
         // Destroy component
         gameObject.RemoveComponent<GameObjectLifetime>();
         lifetime.Destroyed.Should().BeTrue();

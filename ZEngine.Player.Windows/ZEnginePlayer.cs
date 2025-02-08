@@ -7,27 +7,27 @@ using Timer = System.Windows.Forms.Timer;
 namespace ZEngine.Player.Windows;
 
 /// <summary>
-/// Form class responsible for rendering the engine's graphics and processing input.
+///     Form class responsible for rendering the engine's graphics and processing input.
 /// </summary>
 public partial class ZEnginePlayer : Form
 {
     /// <summary>
-    /// Instance of engine's input system to process device scaning.
-    /// </summary>
-    /// <remarks>
-    /// Device scanning must be done on the UI thread. Callbacks from the scanning are handled on the engine's thread.
-    /// </remarks>
-    private readonly IInputSystem _inputSystem;
-    
-    /// <summary>
-    /// Control used to render OpenGL graphics.
-    /// </summary>
-    private readonly GLControl _glControl;
-    
-    /// <summary>
-    /// Timer used to contiously check device state.
+    ///     Timer used to contiously check device state.
     /// </summary>
     private readonly Timer _engineTimer = new();
+
+    /// <summary>
+    ///     Control used to render OpenGL graphics.
+    /// </summary>
+    private readonly GLControl _glControl;
+
+    /// <summary>
+    ///     Instance of engine's input system to process device scaning.
+    /// </summary>
+    /// <remarks>
+    ///     Device scanning must be done on the UI thread. Callbacks from the scanning are handled on the engine's thread.
+    /// </remarks>
+    private readonly IInputSystem _inputSystem;
 
     public ZEnginePlayer(IInputSystem inputSystem)
     {
@@ -36,12 +36,12 @@ public partial class ZEnginePlayer : Form
         _engineTimer.Interval = 1000 / 60;
         _engineTimer.Tick += EngineTimerOnTick;
         _engineTimer.Start();
-        
+
         InitializeComponent();
     }
 
     /// <summary>
-    /// Initializes the OpenGL control.
+    ///     Initializes the OpenGL control.
     /// </summary>
     /// <returns></returns>
     private GLControl InitializeOpenGl()
@@ -58,7 +58,7 @@ public partial class ZEnginePlayer : Form
     }
 
     /// <summary>
-    /// Process callbacks for the engine, that must be done on the form thread.
+    ///     Process callbacks for the engine, that must be done on the form thread.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -68,7 +68,7 @@ public partial class ZEnginePlayer : Form
     }
 
     /// <summary>
-    /// Operation to perform when the control is loaded.
+    ///     Operation to perform when the control is loaded.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -78,7 +78,7 @@ public partial class ZEnginePlayer : Form
     }
 
     /// <summary>
-    /// Process rendering of the control.
+    ///     Process rendering of the control.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -91,7 +91,7 @@ public partial class ZEnginePlayer : Form
     }
 
     /// <summary>
-    /// Proces resizing of the control.
+    ///     Proces resizing of the control.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

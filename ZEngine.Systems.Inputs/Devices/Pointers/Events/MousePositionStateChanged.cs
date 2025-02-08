@@ -6,6 +6,6 @@ public class MousePositionStateChanged : MouseStateChanged
     {
         MousePosition = mousePosition;
     }
-    
+
     public MousePosition MousePosition { get; }
 }

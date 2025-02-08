@@ -14,7 +14,7 @@ namespace ZEngine.Tests.Systems.GameObjects.Factory;
 public class GameObjectFactoryTest
 {
     /// <summary>
-    /// Tests creation of a prefab from a factory.
+    ///     Tests creation of a prefab from a factory.
     /// </summary>
     [Test]
     public void Test_PrefabFactory()
@@ -35,12 +35,12 @@ public class GameObjectFactoryTest
     }
 
     /// <summary>
-    /// Implementation of <see cref="IGameObjectFactory"/> to test it's capabilities.
+    ///     Implementation of <see cref="IGameObjectFactory" /> to test it's capabilities.
     /// </summary>
     private class TestingGameObjectFactory : IGameObjectFactory
     {
         /// <summary>
-        /// Predefines position for the factory.
+        ///     Predefines position for the factory.
         /// </summary>
         private readonly Vector3 _position;
 
