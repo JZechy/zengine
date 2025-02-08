@@ -2,16 +2,17 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
         <IsPackable>false</IsPackable>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="OpenTK" Version="4.8.0" />
+      <PackageReference Include="OpenTK" Version="4.9.3" />
       <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.6" />
     </ItemGroup>
 

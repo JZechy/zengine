@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Title>ZEngine Testing Framework</Title>
@@ -13,10 +13,11 @@
         <PackageProjectUrl>https://github.com/JZechy/zengine</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/JZechy/zengine/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/JZechy/zengine</RepositoryUrl>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="xunit" Version="2.5.0" />
+      <PackageReference Include="xunit" Version="2.9.3" />
     </ItemGroup>
 
     <ItemGroup>
