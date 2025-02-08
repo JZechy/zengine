@@ -3,7 +3,7 @@
 namespace ZEngine.Systems.Inputs.Devices.Pointers.Events;
 
 /// <summary>
-/// Event raised when the state of a mouse button changes.
+///     Event raised when the state of a mouse button changes.
 /// </summary>
 public class MouseButtonStateChanged : MouseStateChanged
 {
@@ -12,14 +12,14 @@ public class MouseButtonStateChanged : MouseStateChanged
         MouseButton = mouseButton;
         KeyState = keyState;
     }
-    
+
     /// <summary>
-    /// Which mouse button changed its state.
+    ///     Which mouse button changed its state.
     /// </summary>
     public MouseButton MouseButton { get; }
-    
+
     /// <summary>
-    /// Current state of the mouse button.
+    ///     Current state of the mouse button.
     /// </summary>
     public KeyState KeyState { get; }
 }

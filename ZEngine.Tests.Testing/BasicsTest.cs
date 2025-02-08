@@ -9,7 +9,7 @@ using ZEngine.Tests.Testing.SetUp;
 namespace ZEngine.Tests.Testing;
 
 /// <summary>
-/// Tests the basic abilities of the test framework.
+///     Tests the basic abilities of the test framework.
 /// </summary>
 public class BasicsTest : GameComponentTest<BasicsTest.TestingComponent>
 {
@@ -18,7 +18,7 @@ public class BasicsTest : GameComponentTest<BasicsTest.TestingComponent>
     }
 
     /// <summary>
-    /// Tests the ability to interract with the engine environment inside the test.
+    ///     Tests the ability to interract with the engine environment inside the test.
     /// </summary>
     [Fact]
     public void Test_BasicTest()
@@ -27,7 +27,7 @@ public class BasicsTest : GameComponentTest<BasicsTest.TestingComponent>
     }
 
     /// <summary>
-    /// Tests awaiting when until thje component's member doesn't reach a specific value.
+    ///     Tests awaiting when until thje component's member doesn't reach a specific value.
     /// </summary>
     [Fact]
     public async Task Test_AwaitPredicate()
@@ -36,10 +36,10 @@ public class BasicsTest : GameComponentTest<BasicsTest.TestingComponent>
     }
 
     /// <summary>
-    /// The predicate should be cancelled after the default timeout (1000 ms).
+    ///     The predicate should be cancelled after the default timeout (1000 ms).
     /// </summary>
     /// <remarks>
-    /// Default timeout is after 1s, so it never reach the value of 5 and it will be cancelled.
+    ///     Default timeout is after 1s, so it never reach the value of 5 and it will be cancelled.
     /// </remarks>
     [Fact]
     public async Task Test_PredicateTimeout()
@@ -50,15 +50,15 @@ public class BasicsTest : GameComponentTest<BasicsTest.TestingComponent>
     }
 
     /// <summary>
-    /// Component used for testing.
+    ///     Component used for testing.
     /// </summary>
     public class TestingComponent : GameComponent
     {
         /// <summary>
-        /// Elapsed time in seconds.
+        ///     Elapsed time in seconds.
         /// </summary>
         public double ElapsedTime { get; private set; }
-        
+
         private void Update()
         {
             ElapsedTime += GameTime.DeltaTime;

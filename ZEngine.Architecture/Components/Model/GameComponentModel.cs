@@ -4,38 +4,31 @@ using Microsoft.Extensions.DependencyInjection;
 namespace ZEngine.Architecture.Components.Model;
 
 /// <summary>
-/// Implementation of the game component model.
+///     Implementation of the game component model.
 /// </summary>
 public abstract class GameComponentModel : IGameComponentModel
 {
     /// <summary>
-    /// Lock for the ordered list of types.
-    /// </summary>
-    private readonly object _listLock = new();
-
-    /// <inheritdoc />
-    public event EventHandler<IGameComponent>? ComponentAdded;
-
-    /// <inheritdoc />
-    public event EventHandler<IGameComponent>? ComponentRemoved;
-
-    /// <summary>
-    /// Order of types as they were added to the dictionary.
-    /// </summary>
-    private readonly List<Type> _typesOrder = new();
-
-    /// <summary>
-    /// Dictionary of existing components.
+    ///     Dictionary of existing components.
     /// </summary>
     private readonly ConcurrentDictionary<Type, IGameComponent> _components = new();
 
     /// <summary>
-    /// Instance of service provider to satisfy component dependencies.
+    ///     Lock for the ordered list of types.
+    /// </summary>
+    private readonly object _listLock = new();
+
+    /// <summary>
+    ///     Instance of service provider to satisfy component dependencies.
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// 
+    ///     Order of types as they were added to the dictionary.
+    /// </summary>
+    private readonly List<Type> _typesOrder = new();
+
+    /// <summary>
     /// </summary>
     /// <param name="serviceProvider"></param>
     protected GameComponentModel(IServiceProvider serviceProvider)
@@ -44,7 +37,7 @@ public abstract class GameComponentModel : IGameComponentModel
     }
 
     /// <summary>
-    /// Gets all components attached to this game object.
+    ///     Gets all components attached to this game object.
     /// </summary>
     protected ICollection<IGameComponent> Components
     {
@@ -57,36 +50,21 @@ public abstract class GameComponentModel : IGameComponentModel
         }
     }
 
-    /// <summary>
-    /// Clears the components collection.
-    /// </summary>
-    protected void ClearComponents()
-    {
-        _components.Clear();
-        lock (_listLock)
-        {
-            _typesOrder.Clear();
-        }
-    }
+    /// <inheritdoc />
+    public event EventHandler<IGameComponent>? ComponentAdded;
+
+    /// <inheritdoc />
+    public event EventHandler<IGameComponent>? ComponentRemoved;
 
     /// <inheritdoc />
     public IGameComponent AddComponent(Type componentType)
     {
-        if (!componentType.IsAssignableTo(typeof(IGameComponent)))
-        {
-            throw new ArgumentException($"Component of type {componentType.FullName} must be assignable to IGameComponent.");
-        }
+        if (!componentType.IsAssignableTo(typeof(IGameComponent))) throw new ArgumentException($"Component of type {componentType.FullName} must be assignable to IGameComponent.");
 
-        if (_components.ContainsKey(componentType))
-        {
-            throw new ArgumentException($"Component of type {componentType.FullName} already exists.");
-        }
+        if (_components.ContainsKey(componentType)) throw new ArgumentException($"Component of type {componentType.FullName} already exists.");
 
         IGameComponent? component = (IGameComponent?)ActivatorUtilities.CreateInstance(_serviceProvider, componentType);
-        if (component is null)
-        {
-            throw new ArgumentException($"Component of type {componentType.FullName} could not be created.");
-        }
+        if (component is null) throw new ArgumentException($"Component of type {componentType.FullName} could not be created.");
 
         _components.TryAdd(componentType, component);
         lock (_listLock)
@@ -124,10 +102,7 @@ public abstract class GameComponentModel : IGameComponentModel
     /// <inheritdoc />
     public IGameComponent GetRequiredComponent(Type componentType)
     {
-        if (!_components.ContainsKey(componentType))
-        {
-            throw new ArgumentException($"Component of type {componentType.FullName} does not exists.");
-        }
+        if (!_components.ContainsKey(componentType)) throw new ArgumentException($"Component of type {componentType.FullName} does not exists.");
 
         return _components[componentType];
     }
@@ -160,20 +135,14 @@ public abstract class GameComponentModel : IGameComponentModel
     public bool RemoveComponent(Type type)
     {
         bool removed = _components.TryRemove(type, out IGameComponent? component);
-        if (!removed)
-        {
-            return false;
-        }
+        if (!removed) return false;
 
         lock (_listLock)
         {
             _typesOrder.Remove(type);
         }
 
-        if (component is not null)
-        {
-            ComponentRemoved?.Invoke(this, component);
-        }
+        if (component is not null) ComponentRemoved?.Invoke(this, component);
 
         return true;
     }
@@ -182,5 +151,17 @@ public abstract class GameComponentModel : IGameComponentModel
     public bool RemoveComponent<TComponent>() where TComponent : IGameComponent
     {
         return RemoveComponent(typeof(TComponent));
+    }
+
+    /// <summary>
+    ///     Clears the components collection.
+    /// </summary>
+    protected void ClearComponents()
+    {
+        _components.Clear();
+        lock (_listLock)
+        {
+            _typesOrder.Clear();
+        }
     }
 }

@@ -3,7 +3,7 @@
 namespace ZEngine.Systems.Inputs.Devices.Pointers;
 
 /// <summary>
-/// This struct is used to save mouse position from the platform API.
+///     This struct is used to save mouse position from the platform API.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 public struct MousePosition : IEquatable<MousePosition>

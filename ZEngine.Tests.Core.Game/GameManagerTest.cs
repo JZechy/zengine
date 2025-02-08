@@ -9,12 +9,12 @@ using ZEngine.Tests.Core.Game.TestSystems;
 namespace ZEngine.Tests.Core.Game;
 
 /// <summary>
-/// Tests basic functionality of the game manager.
+///     Tests basic functionality of the game manager.
 /// </summary>
 public class GameManagerTest
 {
     /// <summary>
-    /// Test basic game loop behaviour.
+    ///     Test basic game loop behaviour.
     /// </summary>
     [Test]
     public async Task Test_BasicGameLoop()
@@ -22,13 +22,13 @@ public class GameManagerTest
         GameManager gameManager = new(Mock.Of<IServiceProvider>(), Enumerable.Empty<IGameSystem>(), new NullLogger<GameManager>());
         BasicSystem basicSystem = new(); // Basic system will interrupt the game loop after some iterations.
         gameManager.AddSystem(basicSystem);
-        
+
         gameManager.Start();
-        
+
         await gameManager.GameTask;
-        
+
         GameTime.DeltaTimeMs.Should().BeGreaterThan(0);
-        
+
         basicSystem.Initialized.Should().BeTrue();
         basicSystem.Updated.Should().BeTrue();
         basicSystem.CleanedUp.Should().BeTrue();

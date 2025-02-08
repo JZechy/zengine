@@ -8,47 +8,47 @@ using ZEngine.Systems.GameObjects.Events;
 namespace ZEngine.Systems.GameObjects;
 
 /// <summary>
-/// System responsible for managing game objects.
+///     System responsible for managing game objects.
 /// </summary>
 public class GameObjectSystem : IGameSystem
 {
     /// <summary>
-    /// Thread-safe lock for adding new game objects.
+    ///     Thread-safe lock for adding new game objects.
     /// </summary>
     private static readonly object AddingLock = new();
 
     /// <summary>
-    /// Thread-safe lock for removing game objects.
+    ///     Thread-safe lock for removing game objects.
     /// </summary>
     private static readonly object RemovingLock = new();
 
     /// <summary>
-    /// Collection of all game objects available in the game.
-    /// </summary>
-    private readonly HashSet<IGameObject> _gameObjects = new();
-
-    /// <summary>
-    /// Collection of all game objects, that were created in the current frame.
-    /// </summary>
-    private readonly HashSet<IGameObject> _newGameObjects = new();
-
-    /// <summary>
-    /// Collection of all game objects, that were destroyed in the current frame.
+    ///     Collection of all game objects, that were destroyed in the current frame.
     /// </summary>
     private readonly HashSet<IGameObject> _destroyedGameObjects = new();
 
     /// <summary>
-    /// Event Mediator serves for notifying about new game object or removed ones.
+    ///     Event Mediator serves for notifying about new game object or removed ones.
     /// </summary>
     private readonly IEventMediator _eventMediator;
 
     /// <summary>
-    /// Logs exceptions catched from game objects.
+    ///     Collection of all game objects available in the game.
+    /// </summary>
+    private readonly HashSet<IGameObject> _gameObjects = new();
+
+    /// <summary>
+    ///     Logs exceptions catched from game objects.
     /// </summary>
     private readonly ILogger<GameObjectSystem> _logger;
 
     /// <summary>
-    /// Used to satisfy game objects component dependencies.
+    ///     Collection of all game objects, that were created in the current frame.
+    /// </summary>
+    private readonly HashSet<IGameObject> _newGameObjects = new();
+
+    /// <summary>
+    ///     Used to satisfy game objects component dependencies.
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
@@ -60,17 +60,17 @@ public class GameObjectSystem : IGameSystem
     }
 
     /// <summary>
-    /// From the native systems, this system has the highest priority.
-    /// </summary>
-    public int Priority => 1;
-
-    /// <summary>
-    /// Every update, we want to iterate over active game objects and those, who are not children of any other game object.
+    ///     Every update, we want to iterate over active game objects and those, who are not children of any other game object.
     /// </summary>
     /// <remarks>
-    /// Children should be updated by their parents.
+    ///     Children should be updated by their parents.
     /// </remarks>
     private IEnumerable<IGameObject> ActiveRootObjects => _gameObjects.Where(x => x is { Active: true, Transform.Parent: null });
+
+    /// <summary>
+    ///     From the native systems, this system has the highest priority.
+    /// </summary>
+    public int Priority => 1;
 
     /// <inheritdoc />
     public void Initialize()
@@ -85,7 +85,6 @@ public class GameObjectSystem : IGameSystem
         AddNewObjects();
 
         foreach (IGameObject gameObject in ActiveRootObjects)
-        {
             try
             {
                 gameObject.SendMessage(SystemMethod.Update);
@@ -94,14 +93,12 @@ public class GameObjectSystem : IGameSystem
             {
                 _logger.LogError(e, "An exception occured while updating game object {GameObjectName}", gameObject.Name);
             }
-        }
     }
 
     /// <inheritdoc />
     public void CleanUp()
     {
         foreach (IGameObject gameObject in ActiveRootObjects)
-        {
             try
             {
                 gameObject.SendMessage(SystemMethod.OnDestroy);
@@ -110,11 +107,10 @@ public class GameObjectSystem : IGameSystem
             {
                 _logger.LogError(e, "An exception occured while destroying game object {GameObjectName}", gameObject.Name);
             }
-        }
     }
 
     /// <summary>
-    /// Registers a game object in the system.
+    ///     Registers a game object in the system.
     /// </summary>
     /// <param name="gameObject"></param>
     public void Register(IGameObject gameObject)
@@ -135,7 +131,7 @@ public class GameObjectSystem : IGameSystem
     }
 
     /// <summary>
-    /// Marks a game object as destroyed.
+    ///     Marks a game object as destroyed.
     /// </summary>
     /// <param name="gameObject"></param>
     public void Unregister(IGameObject gameObject)
@@ -147,7 +143,7 @@ public class GameObjectSystem : IGameSystem
     }
 
     /// <summary>
-    /// Adds new game objects to the collection of all game objects.
+    ///     Adds new game objects to the collection of all game objects.
     /// </summary>
     private void AddNewObjects()
     {
@@ -173,7 +169,7 @@ public class GameObjectSystem : IGameSystem
     }
 
     /// <summary>
-    /// Destroys game objects, that were marked as destroyed.
+    ///     Destroys game objects, that were marked as destroyed.
     /// </summary>
     private void DestroyObjects()
     {

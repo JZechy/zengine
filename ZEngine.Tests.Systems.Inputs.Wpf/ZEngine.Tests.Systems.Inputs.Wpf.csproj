@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj" />
+        <ProjectReference Include="..\ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj"/>
     </ItemGroup>
 
 </Project>

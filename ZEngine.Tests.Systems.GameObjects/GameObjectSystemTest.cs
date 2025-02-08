@@ -12,7 +12,7 @@ namespace ZEngine.Tests.Systems.GameObjects;
 public class GameObjectSystemTest
 {
     /// <summary>
-    /// Tests initialization of the game object system.
+    ///     Tests initialization of the game object system.
     /// </summary>
     public void Test_Initialization()
     {
@@ -26,7 +26,7 @@ public class GameObjectSystemTest
     }
 
     /// <summary>
-    /// Tests the lifetime of the game object system.
+    ///     Tests the lifetime of the game object system.
     /// </summary>
     [Test]
     public void Test_SystemLifetime()

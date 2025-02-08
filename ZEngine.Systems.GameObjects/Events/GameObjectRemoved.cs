@@ -4,7 +4,7 @@ using ZEngine.Architecture.GameObjects;
 namespace ZEngine.Systems.GameObjects.Events;
 
 /// <summary>
-/// Event message notifying about removing a game object from the game.
+///     Event message notifying about removing a game object from the game.
 /// </summary>
 public class GameObjectRemoved : IEventMessage
 {
@@ -12,9 +12,9 @@ public class GameObjectRemoved : IEventMessage
     {
         GameObject = gameObject;
     }
-    
+
     /// <summary>
-    /// Instance of removed game object.
+    ///     Instance of removed game object.
     /// </summary>
     public IGameObject GameObject { get; }
 }

@@ -12,24 +12,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ZEngine.Core.Game\ZEngine.Core.Game.csproj" />
-      <ProjectReference Include="..\ZEngine.Core\ZEngine.Core.csproj" />
+        <ProjectReference Include="..\ZEngine.Core.Game\ZEngine.Core.Game.csproj"/>
+        <ProjectReference Include="..\ZEngine.Core\ZEngine.Core.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" />
-
-
-
-
-
-
-
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1"/>
 
 
     </ItemGroup>
-
-
 
 
 </Project>

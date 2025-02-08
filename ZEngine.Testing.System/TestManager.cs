@@ -4,17 +4,17 @@ using ZEngine.Testing.System.Watchers;
 namespace ZEngine.Testing.System;
 
 /// <summary>
-/// Exposed API to interact with the testing system for engine.
+///     Exposed API to interact with the testing system for engine.
 /// </summary>
 public class TestManager
 {
     /// <summary>
-    /// Instance of the test manager.
+    ///     Instance of the test manager.
     /// </summary>
     private static TestManager? _testManager;
-    
+
     /// <summary>
-    /// Access to the testing system.
+    ///     Access to the testing system.
     /// </summary>
     private readonly TestingSystem _testingSystem;
 
@@ -24,17 +24,14 @@ public class TestManager
     }
 
     /// <summary>
-    /// Singletion instance of the test manager.
+    ///     Singletion instance of the test manager.
     /// </summary>
     /// <exception cref="InvalidOperationException">Testing System was not initialized.</exception>
     public static TestManager Instance
     {
         get
         {
-            if (_testManager is null)
-            {
-                throw new InvalidOperationException("Test manager is not initialized");
-            }
+            if (_testManager is null) throw new InvalidOperationException("Test manager is not initialized");
 
             return _testManager;
         }
@@ -42,7 +39,7 @@ public class TestManager
     }
 
     /// <summary>
-    /// Creates aa new instance of the test manager.
+    ///     Creates aa new instance of the test manager.
     /// </summary>
     /// <param name="testingSystem"></param>
     internal static void CreateInstance(TestingSystem testingSystem)
@@ -51,7 +48,7 @@ public class TestManager
     }
 
     /// <summary>
-    /// Creates an watcher that is awaiting the predicate to be met.
+    ///     Creates an watcher that is awaiting the predicate to be met.
     /// </summary>
     /// <param name="component">Instance of component.</param>
     /// <param name="predicate">Predicate function to check the value.</param>

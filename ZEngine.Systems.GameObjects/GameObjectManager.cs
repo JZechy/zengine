@@ -4,22 +4,22 @@ using ZEngine.Systems.GameObjects.Factory;
 namespace ZEngine.Systems.GameObjects;
 
 /// <summary>
-/// Exposed API for managing game objects.
+///     Exposed API for managing game objects.
 /// </summary>
 public class GameObjectManager
 {
     /// <summary>
-    /// Current instance of <see cref="GameObjectManager"/>.
+    ///     Current instance of <see cref="GameObjectManager" />.
     /// </summary>
     private static GameObjectManager? _objectManager;
 
     /// <summary>
-    /// Reference to the <see cref="GameObjectSystem"/> instance.
+    ///     Reference to the <see cref="GameObjectSystem" /> instance.
     /// </summary>
     private readonly GameObjectSystem _gameObjectSystem;
 
     /// <summary>
-    /// Service provider is used to be passed to game objects, to satisfy game component dependencies.
+    ///     Service provider is used to be passed to game objects, to satisfy game component dependencies.
     /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
@@ -30,16 +30,13 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Current instance of <see cref="GameObjectManager"/>.
+    ///     Current instance of <see cref="GameObjectManager" />.
     /// </summary>
     public static GameObjectManager Instance
     {
         get
         {
-            if (_objectManager is null)
-            {
-                throw new InvalidOperationException("Object manager is not initialized.");
-            }
+            if (_objectManager is null) throw new InvalidOperationException("Object manager is not initialized.");
 
             return _objectManager;
         }
@@ -47,10 +44,10 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Factory method for creating a new instance of <see cref="GameObjectManager"/>.
+    ///     Factory method for creating a new instance of <see cref="GameObjectManager" />.
     /// </summary>
     /// <remarks>
-    /// Object manager is instantiated by <see cref="GameObjectSystem"/> during its initialization.
+    ///     Object manager is instantiated by <see cref="GameObjectSystem" /> during its initialization.
     /// </remarks>
     /// <param name="gameObjectSystem"></param>
     /// <param name="serviceProvider"></param>
@@ -60,7 +57,7 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Creates a new instance of game object.
+    ///     Creates a new instance of game object.
     /// </summary>
     /// <param name="active">Controls whether the created game object will be active.</param>
     /// <returns></returns>
@@ -73,7 +70,7 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Creates a new instance of game object as a child of another game object.
+    ///     Creates a new instance of game object as a child of another game object.
     /// </summary>
     /// <param name="parent">Parent game object.</param>
     /// <param name="active">Controls whether the created game object will be active.</param>
@@ -88,7 +85,7 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Creates a game object from a prefab factory.
+    ///     Creates a game object from a prefab factory.
     /// </summary>
     /// <param name="gameObjectFactory"></param>
     /// <returns></returns>
@@ -102,7 +99,7 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Creates a game object from a prefab factory as a child of another game object.
+    ///     Creates a game object from a prefab factory as a child of another game object.
     /// </summary>
     /// <param name="gameObjectFactory"></param>
     /// <param name="parent"></param>
@@ -118,7 +115,7 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Creates a game object from a factory method.
+    ///     Creates a game object from a factory method.
     /// </summary>
     /// <param name="factoryMethod"></param>
     /// <returns></returns>
@@ -132,7 +129,7 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Creates a game object from a factory method as a child of another game object.
+    ///     Creates a game object from a factory method as a child of another game object.
     /// </summary>
     /// <param name="factoryMethod"></param>
     /// <param name="parent"></param>
@@ -148,7 +145,7 @@ public class GameObjectManager
     }
 
     /// <summary>
-    /// Destroys a game object.
+    ///     Destroys a game object.
     /// </summary>
     /// <param name="gameObject"></param>
     public static void Destroy(IGameObject gameObject)

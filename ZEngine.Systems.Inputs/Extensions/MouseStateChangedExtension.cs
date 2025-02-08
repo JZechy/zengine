@@ -8,7 +8,7 @@ namespace ZEngine.Systems.Inputs.Extensions;
 public static class MouseStateChangedExtension
 {
     /// <summary>
-    /// Converts native state changed event to the context for input manager.
+    ///     Converts native state changed event to the context for input manager.
     /// </summary>
     /// <param name="stateChanged"></param>
     /// <returns></returns>
@@ -28,7 +28,7 @@ public static class MouseStateChangedExtension
     }
 
     /// <summary>
-    /// Converts native state changed event to the context for input manager.   
+    ///     Converts native state changed event to the context for input manager.
     /// </summary>
     /// <param name="stateChanged"></param>
     /// <returns></returns>

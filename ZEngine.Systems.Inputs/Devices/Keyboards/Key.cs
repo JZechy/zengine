@@ -1,7 +1,7 @@
 ﻿namespace ZEngine.Systems.Inputs.Devices.Keyboards;
 
 /// <summary>
-/// Enumeration of supported keyboard keys and their respective codes.
+///     Enumeration of supported keyboard keys and their respective codes.
 /// </summary>
 public enum Key : byte
 {
@@ -17,7 +17,7 @@ public enum Key : byte
     DownArrow = 40,
 
     #endregion
-    
+
     #region Character keys
 
     Space = 32,

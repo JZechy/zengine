@@ -6,12 +6,12 @@ using ZEngine.Tests.Architecture.Components.Cases;
 namespace ZEngine.Tests.Architecture.Components;
 
 /// <summary>
-/// Tests abstract implementation of <see cref="IGameComponent"/>.
+///     Tests abstract implementation of <see cref="IGameComponent" />.
 /// </summary>
 public class GameComponentTest
 {
     /// <summary>
-    /// Tests calling of OnEnable and OnDisable methods when the component is activated or deactivated.
+    ///     Tests calling of OnEnable and OnDisable methods when the component is activated or deactivated.
     /// </summary>
     [Test]
     public void Test_ComponentLifetime()

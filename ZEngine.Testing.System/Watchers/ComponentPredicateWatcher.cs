@@ -3,19 +3,19 @@
 namespace ZEngine.Testing.System.Watchers;
 
 /// <summary>
-/// Instance of watcher that is used to wait until the predicate is met.
+///     Instance of watcher that is used to wait until the predicate is met.
 /// </summary>
 /// <typeparam name="TGameComponent"></typeparam>
 public class ComponentPredicateWatcher<TGameComponent> : Watcher
     where TGameComponent : IGameComponent
 {
     /// <summary>
-    /// Instance of the component that is used to check the predicate.
+    ///     Instance of the component that is used to check the predicate.
     /// </summary>
     private readonly TGameComponent _component;
-    
+
     /// <summary>
-    /// Predicate callback that is used to check the component.
+    ///     Predicate callback that is used to check the component.
     /// </summary>
     private readonly Func<TGameComponent, bool> _predicate;
 
@@ -26,14 +26,11 @@ public class ComponentPredicateWatcher<TGameComponent> : Watcher
     }
 
     /// <summary>
-    /// Check the predicate return value.
+    ///     Check the predicate return value.
     /// </summary>
     public override void Check()
     {
-        if (!_predicate.Invoke(_component))
-        {
-            return;
-        }
+        if (!_predicate.Invoke(_component)) return;
 
         Source.TrySetResult();
     }

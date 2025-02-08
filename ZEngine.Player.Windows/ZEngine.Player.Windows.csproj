@@ -12,14 +12,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="OpenTK" Version="4.9.3" />
-      <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.6" />
+        <PackageReference Include="OpenTK" Version="4.9.3"/>
+        <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.6"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ZEngine.Core.Game\ZEngine.Core.Game.csproj" />
-      <ProjectReference Include="..\ZEngine.Systems.GameObjects\ZEngine.Systems.GameObjects.csproj" />
-      <ProjectReference Include="..\ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj" />
+        <ProjectReference Include="..\ZEngine.Core.Game\ZEngine.Core.Game.csproj"/>
+        <ProjectReference Include="..\ZEngine.Systems.GameObjects\ZEngine.Systems.GameObjects.csproj"/>
+        <ProjectReference Include="..\ZEngine.Systems.Inputs\ZEngine.Systems.Inputs.csproj"/>
     </ItemGroup>
 
 </Project>

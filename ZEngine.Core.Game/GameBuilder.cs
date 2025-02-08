@@ -4,7 +4,7 @@ using ZEngine.Architecture.Communication.Events;
 namespace ZEngine.Core.Game;
 
 /// <summary>
-/// Core class used to build the game.
+///     Core class used to build the game.
 /// </summary>
 public class GameBuilder
 {
@@ -18,14 +18,14 @@ public class GameBuilder
         Services = services;
         RegisterBasics();
     }
-    
+
     /// <summary>
-    /// Access to the service collection.
+    ///     Access to the service collection.
     /// </summary>
     public IServiceCollection Services { get; } = new ServiceCollection();
-    
+
     /// <summary>
-    /// Creates a new instance of the <see cref="GameBuilder"/> class.
+    ///     Creates a new instance of the <see cref="GameBuilder" /> class.
     /// </summary>
     /// <returns></returns>
     public static GameBuilder Create()
@@ -34,7 +34,7 @@ public class GameBuilder
     }
 
     /// <summary>
-    /// Creates a new instance of the GameBuilder based on the provided service collection.
+    ///     Creates a new instance of the GameBuilder based on the provided service collection.
     /// </summary>
     /// <param name="services">Instance of existing collection services.</param>
     /// <returns></returns>
@@ -44,7 +44,7 @@ public class GameBuilder
     }
 
     /// <summary>
-    /// Register basic engine services.
+    ///     Register basic engine services.
     /// </summary>
     private void RegisterBasics()
     {
@@ -53,7 +53,7 @@ public class GameBuilder
     }
 
     /// <summary>
-    /// Builds the basic dependencies and creates GameManager.
+    ///     Builds the basic dependencies and creates GameManager.
     /// </summary>
     /// <returns></returns>
     public IGameManager Build()
@@ -64,7 +64,7 @@ public class GameBuilder
     }
 
     /// <summary>
-    /// Registers a game system.
+    ///     Registers a game system.
     /// </summary>
     /// <typeparam name="TGameSystem"></typeparam>
     public void AddSystem<TGameSystem>() where TGameSystem : class, IGameSystem
@@ -73,7 +73,7 @@ public class GameBuilder
     }
 
     /// <summary>
-    /// Register a game system with custom implementation callback.
+    ///     Register a game system with custom implementation callback.
     /// </summary>
     /// <param name="implementationCallback"></param>
     public void AddSystem(Func<IServiceProvider, IGameSystem> implementationCallback)

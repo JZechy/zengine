@@ -8,7 +8,7 @@ public class GameObjectLifetime : GameComponent
     public bool EnableCalled { get; set; }
     public bool DisbleCalled { get; set; }
     public bool Destroyed { get; set; }
-    
+
     private void Awake()
     {
         Awaken = true;

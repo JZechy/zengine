@@ -5,15 +5,15 @@ using ZEngine.Systems.ThreadSynchronization.Operations;
 namespace ZEngine.Systems.ThreadSynchronization;
 
 /// <summary>
-/// This system synchronizes calls from other threads in a safer way to ensure multi-threading stability with the game loop. 
+///     This system synchronizes calls from other threads in a safer way to ensure multi-threading stability with the game loop.
 /// </summary>
 public class ThreadSynchronizationSystem : IGameSystem
 {
     /// <summary>
-    /// Queue containing all registered operations.
+    ///     Queue containing all registered operations.
     /// </summary>
     private readonly ConcurrentQueue<IAsyncOperation> _operations = new();
-    
+
     /// <inheritdoc />
     public int Priority => 99;
 
@@ -26,23 +26,17 @@ public class ThreadSynchronizationSystem : IGameSystem
     /// <inheritdoc />
     public void Update()
     {
-        while (_operations.TryDequeue(out IAsyncOperation? operation))
-        {
-            operation.Invoke();
-        }
+        while (_operations.TryDequeue(out IAsyncOperation? operation)) operation.Invoke();
     }
 
     /// <inheritdoc />
     public void CleanUp()
     {
-        while (_operations.TryDequeue(out IAsyncOperation? operation))
-        {
-            operation.Cancel();
-        }
+        while (_operations.TryDequeue(out IAsyncOperation? operation)) operation.Cancel();
     }
-    
+
     /// <summary>
-    /// Registers new async operation.
+    ///     Registers new async operation.
     /// </summary>
     /// <param name="operation"></param>
     public void RegisterOperation(IAsyncOperation operation)
